@@ -1,0 +1,48 @@
+---
+layout: base.njk
+---
+<section id="noticia-detalle" class="activa">
+  <div class="detalle-cabecera">
+    <div class="detalle-cabecera-inner">
+      <a href="/#noticias" class="volver-portada-clara">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Volver
+      </a>
+      <span class="tag">{{ category }}</span>
+      <h1>{{ title }}</h1>
+      <div class="detalle-meta-row">
+        <span class="fecha-detalle">{{ date }}</span>
+        <div class="detalle-compartir">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://cesmcyl.org/noticias/{{ page.fileSlug }}/" target="_blank" rel="noopener" aria-label="Compartir en Facebook">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.87.24-1.5 1.53-1.5H16.5V4.3c-.28-.04-1.23-.12-2.33-.12-2.3 0-3.87 1.4-3.87 3.98V10.5H8v3h2.3V21h3.2z"/></svg>
+          </a>
+          <a href="https://twitter.com/intent/tweet?url=https://cesmcyl.org/noticias/{{ page.fileSlug }}/&text={{ title | urlencode }}" target="_blank" rel="noopener" aria-label="Compartir en X">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.3 8.3L23.3 22H16.7l-5.2-6.8L5.5 22H2.4l7.8-8.9L1.7 2h6.8l4.7 6.2L18.9 2zm-1.2 18h1.7L7.4 4H5.6l12.1 16z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="noticia-detalle-contenido">
+    {%- if image %}<img src="{{ image }}" alt="">{% endif -%}
+    <div class="cuerpo">
+      {{ content | safe }}
+    </div>
+  </div>
+  <div class="te-puede-interesar">
+    <div class="te-puede-interesar-inner">
+      <h3>Te puede interesar</h3>
+      <div class="relacionadas-grid">
+        {%- for n in collections.noticias | reverse | limit(4) -%}
+          {%- if n.data.title != title -%}
+          <a href="/noticias/{{ n.fileSlug }}/" class="relacionada-card">
+            <span class="tag-small">{{ n.data.category }}</span>
+            <h4>{{ n.data.title }}</h4>
+            <div class="fecha">{{ n.data.date }}</div>
+          </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>

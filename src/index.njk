@@ -1,0 +1,142 @@
+---
+layout: base.njk
+title: "CESMCYL · Confederación de Sindicatos Médicos de Castilla y León"
+---
+<!-- HERO -->
+<div class="hero" id="inicio">
+  <div class="hero-img-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-inner">
+
+    <!-- COLUMNA IZQUIERDA -->
+    <div class="hero-content">
+      <div class="hero-eyebrow">Sindicato Médico · Castilla y León</div>
+      <h1 class="hero-title">Defendemos los derechos<br>de los <span>médicos de CYL</span></h1>
+      <p class="hero-desc">CESMCYL es la Confederación Española de Sindicatos Médicos en Castilla y León. Somos la primera fuerza sindical en SACYL, trabajando cada día en defensa de las condiciones laborales de los médicos en nuestras 9 provincias.</p>
+      <div class="hero-btns">
+        <a href="#contacto" class="btn-gold">Afíliate ahora</a>
+        <a href="#quienes" class="btn-outline-w">Conócenos</a>
+      </div>
+      <div class="hero-stats-bar">
+        <div class="stat-bar-item"><div class="stat-bar-num">9</div><div class="stat-bar-label">Provincias</div></div>
+        <div class="stat-bar-item"><div class="stat-bar-num">+30</div><div class="stat-bar-label">Años de historia</div></div>
+        <div class="stat-bar-item"><div class="stat-bar-num">1ª</div><div class="stat-bar-label">Fuerza en SACYL</div></div>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA: TABLÓN -->
+    <div class="hero-tablon">
+      <div class="tablon-header">
+        Tablón
+      </div>
+      <div id="tablon-destacados-wrap">
+        <div class="tablon-subtitle">Destacado</div>
+        <div id="tablon-destacados">
+          {%- for noticia in collections.noticias | selectattr("data.pinned") | reverse -%}
+          <a href="{{ noticia.data.url or ('/noticias/' + noticia.fileSlug + '/') }}" class="tablon-item tablon-fixed" {% if noticia.data.url %}target="_blank" rel="noopener"{% endif %}>
+            <div class="tablon-item-header">
+              <span class="tablon-tag tablon-mir">{{ noticia.data.category }}</span>
+              <span class="tablon-pin">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7z"/></svg>
+                Fijo
+              </span>
+            </div>
+            <h4>{{ noticia.data.title }}</h4>
+            {%- if noticia.data.description %}<p class="tablon-desc">{{ noticia.data.description }}</p>{% endif -%}
+            {%- if noticia.data.cta %}<span class="tablon-cta">↓ {{ noticia.data.cta }}</span>{% endif -%}
+          </a>
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="tablon-divider">
+        Últimas noticias
+      </div>
+      <div id="tablon-noticias">
+        {%- for noticia in collections.noticias | rejectattr("data.pinned") | reverse | limit(3) -%}
+        <a href="/noticias/{{ noticia.fileSlug }}/" class="tablon-item">
+          <div class="tablon-item-header">
+            <span class="tablon-tag{% if noticia.data.category == 'CESM' %} verde{% endif %}">{{ noticia.data.category }}</span>
+            <span class="fecha">{{ noticia.data.date }}</span>
+          </div>
+          <div class="tablon-titulo-row">
+            <h4>{{ noticia.data.title }}</h4>
+            <svg class="tablon-flecha" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </a>
+        {%- endfor -%}
+      </div>
+      <a href="#noticias" class="tablon-ver-mas">
+        Ver todas las noticias
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- NOTICIAS -->
+<section id="noticias">
+  <div class="noticias-inner">
+    <div class="section-header reveal">
+      <span class="eyebrow">Actualidad</span>
+      <h2 class="section-title">Noticias</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="buscador-noticias">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="buscador-noticias-input" placeholder="Buscar noticias...">
+    </div>
+    <p class="buscador-resultado" id="buscador-resultado"></p>
+    <div class="todas-noticias-grid" id="todas-noticias-grid">
+      {%- for noticia in collections.noticias | reverse -%}
+      <a href="/noticias/{{ noticia.fileSlug }}/" class="noticia-burbuja">
+        <div class="noticia-burbuja-body">
+          <div>
+            <span class="tag-small">{{ noticia.data.category }}</span>
+            <h3>{{ noticia.data.title }}</h3>
+            <div class="meta">{{ noticia.data.date }}</div>
+          </div>
+          <svg class="ticker-flecha-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contacto-inner">
+    <div class="section-header reveal">
+      <span class="eyebrow">Contacto</span>
+      <h2 class="section-title">Estamos aquí para ayudarte</h2>
+    </div>
+    <div class="contacto-grid">
+      <div class="cinfo reveal">
+        <div class="citem"><div class="cicon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.06 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div><div><small>Teléfono</small><p>+34 983 218 524</p></div></div>
+        <div class="citem"><div class="cicon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><small>Email</small><a href="mailto:cesmcyl@cesmcyl.es">cesmcyl@cesmcyl.es</a></div></div>
+        <div class="citem"><div class="cicon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><small>Sede central</small><p>Valladolid, Castilla y León</p></div></div>
+        <div class="citem"><div class="cicon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><small>Horario</small><p>Lunes a viernes · 9:00–14:00 y 16:00–19:00</p></div></div>
+        <div class="citem"><div class="cicon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div><div><small>Web</small><a href="#">www.cesmcyl.org</a></div></div>
+      </div>
+      <div class="form-box reveal reveal-1">
+        <h3>Envíanos un mensaje</h3>
+        <div class="fgrid">
+          <div class="fg"><label>Nombre</label><input type="text" placeholder="Tu nombre"></div>
+          <div class="fg"><label>Apellidos</label><input type="text" placeholder="Tus apellidos"></div>
+          <div class="fg"><label>Email</label><input type="email" placeholder="tu@email.com"></div>
+          <div class="fg"><label>Teléfono</label><input type="tel" placeholder="+34 000 000 000"></div>
+          <div class="fg full"><label>Provincia</label>
+            <select><option value="">Selecciona tu provincia</option>
+              <option>Ávila</option><option>Burgos</option><option>León</option>
+              <option>Palencia</option><option>Salamanca</option><option>Segovia</option>
+              <option>Soria</option><option>Valladolid</option><option>Zamora</option>
+            </select>
+          </div>
+          <div class="fg full"><label>Mensaje</label><textarea rows="4" placeholder="¿En qué podemos ayudarte?"></textarea></div>
+        </div>
+        <button class="btn-submit">Enviar mensaje</button>
+      </div>
+    </div>
+  </div>
+</section>

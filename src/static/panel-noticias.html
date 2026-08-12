@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>CESMCYL — Panel de noticias</title>
+<style>
+  :root{
+    --green-dark:#1a3d2e; --green-pale:#eaf2ec; --gold:#e0a527; --gold-dark:#b8841a;
+    --off-white:#f7f6f3; --border:#e2ddd2; --stone:#8a8578; --white:#fff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--off-white); color:var(--green-dark); margin:0; padding:2rem 1rem;
+  }
+  .wrap{max-width:640px;margin:0 auto;}
+  h1{font-size:1.5rem;margin-bottom:.25rem;}
+  .sub{color:var(--stone);font-size:.9rem;margin-bottom:2rem;}
+  .card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.75rem;margin-bottom:1.25rem;}
+  label{display:block;font-weight:600;font-size:.85rem;margin-bottom:.35rem;margin-top:1.1rem;}
+  label:first-child{margin-top:0;}
+  input[type=text], input[type=date], select, textarea{
+    width:100%;padding:.65rem .8rem;border:1px solid var(--border);border-radius:8px;
+    font-size:.95rem;font-family:inherit;background:var(--off-white);color:var(--green-dark);
+  }
+  textarea{min-height:140px;resize:vertical;}
+  .toolbar{display:flex;gap:.4rem;margin-bottom:.4rem;align-items:center;}
+  .fmt-btn{width:34px;height:34px;border:1px solid var(--border);border-radius:6px;background:var(--off-white);color:var(--green-dark);font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .fmt-btn.activo{background:var(--green-dark);color:white;border-color:var(--green-dark);}
+  .editor-enriquecido{min-height:80px;padding:.65rem .8rem;border:1px solid var(--border);border-radius:8px;background:var(--off-white);font-size:.95rem;font-family:inherit;outline:none;}
+  .editor-enriquecido:empty::before{content:attr(data-placeholder);color:var(--stone);}
+  .editor-enriquecido:focus{border-color:var(--green-mid);}
+  .fmt-btn:hover{background:var(--green-pale);border-color:var(--green-dark);}
+  .hint{font-size:.78rem;color:var(--stone);margin-top:.3rem;}
+  .checkbox-row{display:flex;align-items:center;gap:.5rem;margin-top:1.1rem;}
+  .checkbox-row input{width:auto;}
+  .checkbox-row label{margin:0;}
+  .fijo-extra{display:none;border-left:3px solid var(--gold);padding-left:1rem;margin-top:1rem;}
+  .fijo-extra.show{display:block;}
+  button{
+    background:var(--gold);color:var(--green-dark);border:none;border-radius:8px;
+    padding:.85rem 1.5rem;font-weight:700;font-size:.95rem;cursor:pointer;width:100%;margin-top:1.5rem;
+  }
+  button:hover{background:var(--gold-dark);color:var(--white);}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+  .msg{padding:.9rem 1rem;border-radius:8px;font-size:.88rem;margin-top:1rem;display:none;}
+  .msg.ok{background:var(--green-pale);color:var(--green-dark);display:block;}
+  .msg.err{background:#fce8e6;color:#a33;display:block;}
+  .token-box{background:#fff8e6;border:1px solid var(--gold);border-radius:8px;padding:1rem;margin-bottom:1.5rem;font-size:.85rem;}
+  .token-box a{color:var(--gold-dark);}
+  small.req{color:#c0392b;}
+  .gestion-item{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.75rem 0;border-bottom:1px solid var(--border);}
+  .gestion-item:last-child{border-bottom:none;}
+  .gestion-info{min-width:0;}
+  .gestion-info .fecha-pequena{font-size:.75rem;color:var(--stone);}
+  .gestion-info .titulo-pequeno{font-size:.9rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .btn-eliminar{background:#fce8e6;color:#a33;border:1px solid #f0c4c0;border-radius:6px;padding:.4rem .8rem;font-size:.8rem;font-weight:600;cursor:pointer;flex-shrink:0;width:auto;margin:0;}
+  .btn-eliminar:hover{background:#f5cbc7;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📋 Panel de noticias CESMCYL</h1>
+  <p class="sub">Crea una noticia nueva sin tocar código. Se publica directamente en la web.</p>
+
+  <div class="token-box">
+    <strong>Clave de acceso</strong> — pégala aquí una vez, tu navegador la recordará.
+    <div class="hint">Si no la tienes, pídesela a quien administre la web.</div>
+    <input type="text" id="token" placeholder="Pega aquí la clave de acceso" style="margin-top:.6rem;">
+  </div>
+
+  <div class="card">
+    <div id="avisoEdicion" style="display:none;background:var(--green-pale);border-radius:8px;padding:.7rem 1rem;margin-bottom:1.2rem;font-size:.85rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+      <span>✏️ Editando: <strong id="tituloEdicion"></strong></span>
+      <button type="button" id="btnCancelarEdicion" style="width:auto;margin:0;padding:.35rem .8rem;background:var(--white);color:var(--green-dark);border:1px solid var(--border);font-size:.78rem;">Cancelar</button>
+    </div>
+
+    <label>Título <small class="req">*</small></label>
+    <input type="text" id="title" placeholder="Ej: Listados definitivos Bolsa de empleo...">
+
+    <label>Fecha <small class="req">*</small></label>
+    <input type="date" id="date">
+
+    <label>Categoría <small class="req">*</small></label>
+    <select id="category">
+      <option value="">Cargando categorías...</option>
+    </select>
+    <div id="nuevaCategoriaWrap" style="display:none;margin-top:.6rem;">
+      <input type="text" id="nuevaCategoriaInput" placeholder="Escribe el nombre de la nueva categoría">
+    </div>
+
+    <label>Imagen (opcional)</label>
+    <input type="file" id="image" accept="image/png,image/jpeg,image/webp">
+    <div class="hint">Se mostrará en la noticia destacada y en la tarjeta de la lista.</div>
+    <img id="imagePreview" style="display:none;max-width:100%;border-radius:8px;margin-top:.6rem;">
+
+    <label>Texto de la noticia <small class="req">*</small></label>
+    <div class="toolbar">
+      <button type="button" class="fmt-btn" id="btnBold" title="Negrita"><b>N</b></button>
+      <button type="button" class="fmt-btn" id="btnItalic" title="Cursiva"><i>C</i></button>
+    </div>
+    <textarea id="body" placeholder="Escribe aquí el contenido de la noticia..."></textarea>
+    <div class="hint">Selecciona una palabra o frase y pulsa N o C para darle formato.</div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="pinned">
+      <label for="pinned" style="margin:0;">Fijar en "Destacado" (arriba del todo, en el Tablón)</label>
+    </div>
+
+    <div class="fijo-extra" id="fijoExtra">
+      <label>Descripción corta (opcional)</label>
+      <input type="text" id="description" placeholder="Frase corta bajo el título">
+      <label>Enlace (PDF u otra página, opcional)</label>
+      <input type="text" id="url" placeholder="https://...">
+      <label>Texto del botón</label>
+      <input type="text" id="cta" placeholder="Ej: Descargar programa" value="Ver más">
+    </div>
+
+    <button id="btnPublicar">Publicar noticia</button>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <p class="hint" style="text-align:center;">
+    La noticia tarda 1-2 minutos en aparecer en la web tras publicarse.
+  </p>
+
+  <div class="card" style="margin-top:2.5rem;">
+    <h2 style="font-size:1.1rem;margin:0 0 .25rem;">⚠️ Aviso urgente (franja dorada de la portada)</h2>
+    <p class="sub" style="margin-bottom:1.2rem;">Úsalo para avisos importantes tipo "Huelga convocada el día X". Se muestra en la franja de arriba de la web, sustituyendo al texto normal.</p>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="avisoActivo">
+      <label for="avisoActivo" style="margin:0;">Mostrar aviso urgente en la portada</label>
+    </div>
+
+    <label>Mensaje del aviso</label>
+    <div class="toolbar" id="avisoToolbar">
+      <button type="button" class="fmt-btn" id="avisoBtnBold" title="Negrita"><b>N</b></button>
+      <button type="button" class="fmt-btn" id="avisoBtnItalic" title="Cursiva"><i>C</i></button>
+      <button type="button" class="fmt-btn" id="avisoBtnUnderline" title="Subrayado"><u>S</u></button>
+      <input type="color" id="avisoColorPicker" value="#0c3316" title="Color del texto seleccionado" style="width:34px;height:34px;padding:2px;border:1px solid var(--border);border-radius:6px;cursor:pointer;">
+      <select id="avisoTamano" title="Tamaño de letra" style="height:34px;border:1px solid var(--border);border-radius:6px;background:var(--off-white);padding:0 .5rem;font-size:.85rem;">
+        <option value="15px">Normal</option>
+        <option value="19px">Grande</option>
+        <option value="24px">Muy grande</option>
+      </select>
+    </div>
+    <div id="avisoTexto" contenteditable="true" class="editor-enriquecido" data-placeholder="Ej: Huelga convocada para el próximo lunes 20 de julio. Consulta los servicios mínimos aquí."></div>
+    <p class="hint">Selecciona una palabra o frase y usa los botones para darle color, tamaño, negrita, cursiva o subrayado.</p>
+
+    <button id="btnGuardarAviso" style="margin-top:1rem;">Guardar aviso</button>
+    <div class="msg" id="avisoMsg"></div>
+  </div>
+
+  <div class="card" style="margin-top:2.5rem;">
+    <h2 style="font-size:1.1rem;margin:0 0 .25rem;">📄 Página de huelga</h2>
+    <p class="sub" style="margin-bottom:1.2rem;">Este texto aparece arriba del todo en la página de huelga (/huelga.html), a la que se accede desde la flecha del aviso urgente.</p>
+
+    <label>Texto de la página de huelga</label>
+    <div class="toolbar" id="huelgaToolbar">
+      <button type="button" class="fmt-btn" id="huelgaBtnBold" title="Negrita"><b>N</b></button>
+      <button type="button" class="fmt-btn" id="huelgaBtnItalic" title="Cursiva"><i>C</i></button>
+      <button type="button" class="fmt-btn" id="huelgaBtnUnderline" title="Subrayado"><u>S</u></button>
+      <input type="color" id="huelgaColorPicker" value="#0c3316" title="Color del texto seleccionado" style="width:34px;height:34px;padding:2px;border:1px solid var(--border);border-radius:6px;cursor:pointer;">
+    </div>
+    <div id="huelgaTexto" contenteditable="true" class="editor-enriquecido" data-placeholder="Ej: Información sobre la huelga convocada, fechas, servicios mínimos, motivos de la convocatoria..." style="min-height:160px;"></div>
+
+    <button id="btnGuardarHuelga" style="margin-top:1rem;">Guardar página de huelga</button>
+    <div class="msg" id="huelgaMsg"></div>
+  </div>
+
+  <div class="card" style="margin-top:2.5rem;">
+    <h2 style="font-size:1.1rem;margin:0 0 .25rem;">Noticias publicadas</h2>
+    <p class="sub" style="margin-bottom:1.2rem;">Pulsa eliminar para quitar una noticia de la web.</p>
+    <div id="listaGestion"><p class="hint">Cargando noticias...</p></div>
+  </div>
+</div>
+
+<script>
+const REPO = 'cesmcylredes/cesmcyl-web';
+const BRANCH = 'main';
+
+// Recordar el token en este navegador para no tener que pegarlo cada vez
+const tokenInput = document.getElementById('token');
+tokenInput.value = localStorage.getItem('cesmcyl-token') || '';
+tokenInput.addEventListener('input', () => {
+  localStorage.setItem('cesmcyl-token', tokenInput.value.trim());
+});
+
+// Categorías conocidas de respaldo, por si falla la carga desde GitHub
+// (para que el formulario nunca se quede sin opciones).
+const CATEGORIAS_RESPALDO = ['OPE', 'Bolsa', 'CESM', 'Estatuto Marco', 'Fidelización', 'MIR 2026', 'Electoral 2026', 'Estabilización', 'Tutores', 'Inspección Sanitaria', 'Concurso de traslados', 'Novedades normativas estatales', 'Noticias'];
+
+const categorySelect = document.getElementById('category');
+const nuevaCategoriaWrap = document.getElementById('nuevaCategoriaWrap');
+const nuevaCategoriaInput = document.getElementById('nuevaCategoriaInput');
+
+function pintarOpcionesCategoria(categorias) {
+  categorySelect.innerHTML = '';
+  categorias.forEach(cat => {
+    const opt = document.createElement('option');
+    opt.value = cat;
+    opt.textContent = cat;
+    categorySelect.appendChild(opt);
+  });
+  const optNueva = document.createElement('option');
+  optNueva.value = '__nueva__';
+  optNueva.textContent = '➕ Crear categoría nueva…';
+  categorySelect.appendChild(optNueva);
+}
+
+categorySelect.addEventListener('change', () => {
+  if (categorySelect.value === '__nueva__') {
+    nuevaCategoriaWrap.style.display = 'block';
+    nuevaCategoriaInput.focus();
+  } else {
+    nuevaCategoriaWrap.style.display = 'none';
+  }
+});
+
+// Carga las categorías reales a partir de las noticias ya publicadas en
+// GitHub, para que la lista esté siempre al día sin mantenimiento manual.
+async function cargarCategoriasReales() {
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/noticias?ref=${BRANCH}`);
+    if (!res.ok) throw new Error('No se pudo listar noticias');
+    const listado = await res.json();
+    const archivos = listado
+      .filter(item => item.type === 'file' && item.name.endsWith('.md') && !item.name.startsWith('_'))
+      .map(item => item.name);
+
+    const categoriasEncontradas = new Set();
+    for (const archivo of archivos) {
+      const r = await fetch('/noticias/' + archivo);
+      if (!r.ok) continue;
+      const texto = await r.text();
+      const match = texto.match(/^category:\s*"(.+?)"/m);
+      if (match) categoriasEncontradas.add(match[1]);
+    }
+
+    CATEGORIAS_RESPALDO.forEach(c => categoriasEncontradas.add(c));
+    const categoriasOrdenadas = Array.from(categoriasEncontradas).sort((a, b) => a.localeCompare(b));
+    pintarOpcionesCategoria(categoriasOrdenadas);
+  } catch (e) {
+    console.log('No se pudieron cargar las categorías reales, usando respaldo', e);
+    pintarOpcionesCategoria(CATEGORIAS_RESPALDO);
+  }
+}
+cargarCategoriasReales();
+
+// Mostrar/ocultar campos extra de "Destacado"
+const pinnedCheckbox = document.getElementById('pinned');
+const fijoExtra = document.getElementById('fijoExtra');
+pinnedCheckbox.addEventListener('change', () => {
+  fijoExtra.classList.toggle('show', pinnedCheckbox.checked);
+});
+
+// Fecha de hoy por defecto
+document.getElementById('date').valueAsDate = new Date();
+
+// Vista previa de la imagen seleccionada
+const imageInput = document.getElementById('image');
+const imagePreview = document.getElementById('imagePreview');
+imageInput.addEventListener('change', () => {
+  const archivo = imageInput.files[0];
+  if (!archivo) { imagePreview.style.display = 'none'; return; }
+  const lector = new FileReader();
+  lector.onload = (e) => {
+    imagePreview.src = e.target.result;
+    imagePreview.style.display = 'block';
+  };
+  lector.readAsDataURL(archivo);
+});
+
+// Botones de formato (negrita / cursiva) sobre el texto seleccionado
+function aplicarFormato(marca) {
+  const textarea = document.getElementById('body');
+  const inicio = textarea.selectionStart;
+  const fin = textarea.selectionEnd;
+  const texto = textarea.value;
+  const seleccion = texto.substring(inicio, fin) || 'texto';
+
+  const nuevoTexto = texto.substring(0, inicio) + marca + seleccion + marca + texto.substring(fin);
+  textarea.value = nuevoTexto;
+
+  // Volver a seleccionar el texto recién formateado, para poder seguir escribiendo
+  textarea.focus();
+  textarea.selectionStart = inicio + marca.length;
+  textarea.selectionEnd = inicio + marca.length + seleccion.length;
+}
+
+document.getElementById('btnBold').addEventListener('click', () => aplicarFormato('**'));
+document.getElementById('btnItalic').addEventListener('click', () => aplicarFormato('*'));
+
+function slugify(texto) {
+  return texto
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quitar acentos
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .slice(0, 60);
+}
+
+function escaparComillas(texto) {
+  return (texto || '').replace(/"/g, '\\"');
+}
+
+// Rellena la plantilla de página de noticia con los datos concretos,
+// para generar un archivo .html real y propio para cada noticia.
+function generarPaginaHtml(plantilla, datos) {
+  const parrafos = (datos.body || '')
+    .split(/\n\s*\n/)
+    .map(p => p.trim())
+    .filter(Boolean)
+    .map(p => `<p>${escaparHtml(p).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>')}</p>`)
+    .join('\n      ');
+
+  const imagenHtml = datos.imagePath ? `<img src="${datos.imagePath}" alt="">` : '';
+  const urlPagina = `https://cesmcyl-web.pages.dev/noticias/paginas/${datos.slug}.html`;
+
+  return plantilla
+    .replaceAll('{{TITULO}}', escaparHtml(datos.title))
+    .replaceAll('{{TITULO_CODIFICADO}}', encodeURIComponent(datos.title))
+    .replaceAll('{{CATEGORIA}}', escaparHtml(datos.category))
+    .replaceAll('{{FECHA}}', datos.date)
+    .replaceAll('{{PARRAFOS}}', parrafos)
+    .replaceAll('{{IMAGEN_HTML}}', imagenHtml)
+    .replaceAll('{{URL_CODIFICADA}}', encodeURIComponent(urlPagina));
+}
+
+function escaparHtml(texto) {
+  return (texto || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function leerArchivoComoBase64(archivo) {
+  return new Promise((resolve, reject) => {
+    const lector = new FileReader();
+    lector.onload = () => {
+      // FileReader da "data:image/png;base64,AAAA..." — solo nos interesa la parte tras la coma
+      resolve(lector.result.split(',')[1]);
+    };
+    lector.onerror = reject;
+    lector.readAsDataURL(archivo);
+  });
+}
+
+document.getElementById('btnPublicar').addEventListener('click', async () => {
+  const msg = document.getElementById('msg');
+  const btn = document.getElementById('btnPublicar');
+  msg.className = 'msg';
+  msg.textContent = '';
+
+  const token = tokenInput.value.trim();
+  const title = document.getElementById('title').value.trim();
+  const date = document.getElementById('date').value;
+  const category = categorySelect.value === '__nueva__'
+    ? nuevaCategoriaInput.value.trim()
+    : categorySelect.value;
+  const body = document.getElementById('body').value.trim();
+  const pinned = pinnedCheckbox.checked;
+  const description = document.getElementById('description').value.trim();
+  const url = document.getElementById('url').value.trim();
+  const cta = document.getElementById('cta').value.trim();
+  const archivoImagen = imageInput.files[0];
+
+  if (!token) { msg.className = 'msg err'; msg.textContent = 'Falta la clave de acceso.'; return; }
+  if (categorySelect.value === '__nueva__' && !category) {
+    msg.className = 'msg err';
+    msg.textContent = 'Escribe el nombre de la nueva categoría.';
+    return;
+  }
+  if (!title || !date || !body) { msg.className = 'msg err'; msg.textContent = 'Título, fecha y texto son obligatorios.'; return; }
+
+  const slug = slugify(title);
+  // En modo edición, mantenemos el nombre de archivo original (no lo regeneramos
+  // aunque cambien el título/fecha), así no se duplica la noticia.
+  const filename = archivoEnEdicion || `${date}-${slug || 'noticia'}.md`;
+  const esEdicion = !!archivoEnEdicion;
+
+  btn.disabled = true;
+  btn.textContent = esEdicion ? 'Guardando...' : 'Publicando...';
+
+  try {
+    let imagePath = '';
+
+    // 1) Si hay imagen nueva, subirla primero a noticias/imagenes/
+    if (archivoImagen) {
+      btn.textContent = 'Subiendo imagen...';
+      const extension = archivoImagen.name.split('.').pop().toLowerCase();
+      const imageFilename = `${date}-${slug || 'noticia'}.${extension}`;
+      const imageBase64 = await leerArchivoComoBase64(archivoImagen);
+
+      const resImagen = await fetch(`https://api.github.com/repos/${REPO}/contents/noticias/imagenes/${imageFilename}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: `Imagen para noticia: ${title}`,
+          content: imageBase64,
+          branch: BRANCH
+        })
+      });
+
+      if (!resImagen.ok) {
+        const dataImg = await resImagen.json().catch(() => ({}));
+        throw new Error('No se pudo subir la imagen: ' + (dataImg.message || resImagen.status));
+      }
+
+      imagePath = `/noticias/imagenes/${imageFilename}`;
+    }
+
+    // 2) Crear o actualizar el archivo .md de la noticia
+    btn.textContent = esEdicion ? 'Guardando cambios...' : 'Publicando noticia...';
+    let frontmatter = `---\ntitle: "${escaparComillas(title)}"\ndate: "${date}"\ncategory: "${category}"\npinned: ${pinned}\n`;
+    if (imagePath) frontmatter += `image: "${imagePath}"\n`;
+    if (pinned) {
+      if (description) frontmatter += `description: "${escaparComillas(description)}"\n`;
+      if (url) frontmatter += `url: "${escaparComillas(url)}"\n`;
+      if (cta) frontmatter += `cta: "${escaparComillas(cta)}"\n`;
+    }
+    frontmatter += `---\n${body}\n`;
+
+    const contenidoBase64 = btoa(unescape(encodeURIComponent(frontmatter)));
+
+    // Si estamos editando, GitHub exige el "sha" del archivo actual para
+    // permitir sobrescribirlo (evita que dos personas se pisen sin darse cuenta).
+    let shaActual = undefined;
+    if (esEdicion) {
+      const resInfo = await fetch(`https://api.github.com/repos/${REPO}/contents/noticias/${filename}?ref=${BRANCH}`, {
+        headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' }
+      });
+      if (resInfo.ok) {
+        const info = await resInfo.json();
+        shaActual = info.sha;
+      }
+    }
+
+    const cuerpoPeticion = {
+      message: esEdicion ? `Editar noticia: ${title}` : `Nueva noticia: ${title}`,
+      content: contenidoBase64,
+      branch: BRANCH
+    };
+    if (shaActual) cuerpoPeticion.sha = shaActual;
+
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/noticias/${filename}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(cuerpoPeticion)
+    });
+
+    if (res.ok) {
+      // 3) Generar y subir la página HTML real de la noticia
+      btn.textContent = esEdicion ? 'Generando página...' : 'Generando página...';
+      try {
+        const resPlantilla = await fetch('/plantilla-noticia.html');
+        if (resPlantilla.ok) {
+          const plantilla = await resPlantilla.text();
+          const htmlPagina = generarPaginaHtml(plantilla, {
+            title, category, date, body,
+            imagePath: imagePath || '',
+            slug: filename.replace(/\.md$/, '')
+          });
+          const htmlBase64 = btoa(unescape(encodeURIComponent(htmlPagina)));
+          const nombrePagina = filename.replace(/\.md$/, '.html');
+
+          // Si ya existe (edición), hace falta su sha para poder sobrescribirla
+          let shaPagina = undefined;
+          const resInfoPagina = await fetch(`https://api.github.com/repos/${REPO}/contents/noticias/paginas/${nombrePagina}?ref=${BRANCH}`, {
+            headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' }
+          });
+          if (resInfoPagina.ok) {
+            const infoPagina = await resInfoPagina.json();
+            shaPagina = infoPagina.sha;
+          }
+
+          const cuerpoPagina = {
+            message: `Página HTML de noticia: ${title}`,
+            content: htmlBase64,
+            branch: BRANCH
+          };
+          if (shaPagina) cuerpoPagina.sha = shaPagina;
+
+          await fetch(`https://api.github.com/repos/${REPO}/contents/noticias/paginas/${nombrePagina}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github+json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(cuerpoPagina)
+          });
+        }
+      } catch (eHtml) {
+        console.log('No se pudo generar la página HTML de la noticia', eHtml);
+        // No bloqueamos la publicación por esto: el .md ya se guardó bien
+      }
+
+      msg.className = 'msg ok';
+      msg.textContent = esEdicion
+        ? '✅ Cambios guardados. Tardará 1-2 minutos en verse en la web.'
+        : '✅ Noticia publicada. Tardará 1-2 minutos en verse en la web.';
+      document.getElementById('title').value = '';
+      document.getElementById('body').value = '';
+      document.getElementById('description').value = '';
+      document.getElementById('url').value = '';
+      imageInput.value = '';
+      imagePreview.style.display = 'none';
+      pinnedCheckbox.checked = false;
+      fijoExtra.classList.remove('show');
+      document.getElementById('avisoEdicion').style.display = 'none';
+      archivoEnEdicion = null;
+      btn.textContent = 'Publicar noticia';
+      cargarListaGestion();
+    } else {
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 401) {
+        msg.className = 'msg err';
+        msg.textContent = '❌ La clave de acceso no es válida.';
+      } else if (res.status === 422) {
+        msg.className = 'msg err';
+        msg.textContent = '❌ Ya existe una noticia con ese mismo nombre de archivo (título + fecha). Cambia ligeramente el título o la fecha.';
+      } else {
+        msg.className = 'msg err';
+        msg.textContent = '❌ Error al publicar: ' + (data.message || res.status);
+      }
+    }
+  } catch (e) {
+    msg.className = 'msg err';
+    msg.textContent = '❌ ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Publicar noticia';
+  }
+});
+
+// --- Gestión de noticias existentes (listar + eliminar) ---
+
+async function cargarListaGestion() {
+  const cont = document.getElementById('listaGestion');
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/noticias?ref=${BRANCH}`);
+    if (!res.ok) throw new Error('No se pudo obtener el listado');
+    const listado = await res.json();
+    const archivos = listado
+      .filter(item => item.type === 'file' && item.name.endsWith('.md') && !item.name.startsWith('_'))
+      .map(item => item.name)
+      .sort((a, b) => b.localeCompare(a)); // más recientes primero (el nombre empieza por fecha)
+
+    if (archivos.length === 0) {
+      cont.innerHTML = '<p class="hint">No hay noticias publicadas.</p>';
+      return;
+    }
+
+    cont.innerHTML = '';
+    for (const archivo of archivos) {
+      let meta = { title: archivo, date: '', category: 'Noticias', pinned: false, body: '', image: '', description: '', url: '', cta: '' };
+      try {
+        const resArchivo = await fetch(`/noticias/${archivo}`);
+        if (resArchivo.ok) {
+          const texto = await resArchivo.text();
+          const match = texto.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+          if (match) {
+            match[1].split('\n').forEach(linea => {
+              const [clave, ...valor] = linea.split(':');
+              if (clave && valor.length) {
+                meta[clave.trim()] = valor.join(':').trim().replace(/^"|"$/g, '');
+              }
+            });
+            meta.body = match[2].trim();
+          }
+        }
+      } catch (e) { /* si falla, mostramos el nombre del archivo tal cual */ }
+
+      const div = document.createElement('div');
+      div.className = 'gestion-item';
+      div.innerHTML = `
+        <div class="gestion-info">
+          <div class="fecha-pequena">${meta.date}</div>
+          <div class="titulo-pequeno">${meta.title}</div>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-shrink:0;">
+          <button class="btn-editar" style="background:var(--green-pale);color:var(--green-dark);border:1px solid var(--border);border-radius:6px;padding:.4rem .8rem;font-size:.8rem;font-weight:600;cursor:pointer;width:auto;margin:0;">Editar</button>
+          <button class="btn-eliminar" data-titulo="${meta.title.replace(/"/g, '&quot;')}">Eliminar</button>
+        </div>
+      `;
+      div.querySelector('.btn-eliminar').dataset.archivo = archivo;
+      div.querySelector('.btn-editar').addEventListener('click', () => cargarNoticiaEnFormulario(archivo, meta));
+      cont.appendChild(div);
+    }
+
+    cont.querySelectorAll('.btn-eliminar').forEach(boton => {
+      boton.addEventListener('click', () => eliminarNoticia(boton.dataset.archivo, boton.dataset.titulo, boton));
+    });
+  } catch (e) {
+    cont.innerHTML = '<p class="hint">No se pudo cargar el listado de noticias.</p>';
+  }
+}
+
+// --- Edición de una noticia existente ---
+let archivoEnEdicion = null;
+
+function cargarNoticiaEnFormulario(archivo, meta) {
+  archivoEnEdicion = archivo;
+
+  document.getElementById('title').value = meta.title || '';
+  document.getElementById('date').value = meta.date || '';
+  document.getElementById('category').value = meta.category || 'Noticias';
+  nuevaCategoriaWrap.style.display = 'none';
+  document.getElementById('body').value = meta.body || '';
+  document.getElementById('description').value = meta.description || '';
+  document.getElementById('url').value = meta.url || '';
+  document.getElementById('cta').value = meta.cta || 'Ver más';
+
+  const pinned = String(meta.pinned).toLowerCase() === 'true';
+  pinnedCheckbox.checked = pinned;
+  fijoExtra.classList.toggle('show', pinned);
+
+  document.getElementById('avisoEdicion').style.display = 'flex';
+  document.getElementById('tituloEdicion').textContent = meta.title || archivo;
+  document.getElementById('btnPublicar').textContent = 'Guardar cambios';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('btnCancelarEdicion').addEventListener('click', () => {
+  archivoEnEdicion = null;
+  document.getElementById('title').value = '';
+  document.getElementById('body').value = '';
+  document.getElementById('description').value = '';
+  document.getElementById('url').value = '';
+  document.getElementById('date').valueAsDate = new Date();
+  pinnedCheckbox.checked = false;
+  fijoExtra.classList.remove('show');
+  document.getElementById('avisoEdicion').style.display = 'none';
+  document.getElementById('btnPublicar').textContent = 'Publicar noticia';
+});
+
+async function eliminarNoticia(archivo, titulo, boton) {
+  const token = tokenInput.value.trim();
+  if (!token) {
+    alert('Pega primero la clave de acceso arriba para poder eliminar noticias.');
+    return;
+  }
+
+  const confirmado = confirm(`¿Seguro que quieres eliminar la noticia "${titulo}"?\n\nEsta acción no se puede deshacer.`);
+  if (!confirmado) return;
+
+  boton.disabled = true;
+  boton.textContent = 'Eliminando...';
+
+  try {
+    // Hace falta el sha actual del archivo para poder borrarlo en GitHub
+    const resInfo = await fetch(`https://api.github.com/repos/${REPO}/contents/noticias/${archivo}?ref=${BRANCH}`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (!resInfo.ok) throw new Error('No se pudo localizar el archivo en GitHub');
+    const info = await resInfo.json();
+
+    const resDelete = await fetch(`https://api.github.com/repos/${REPO}/contents/noticias/${archivo}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Eliminar noticia: ${titulo}`,
+        sha: info.sha,
+        branch: BRANCH
+      })
+    });
+
+    if (resDelete.ok) {
+      boton.closest('.gestion-item').remove();
+    } else {
+      const data = await resDelete.json().catch(() => ({}));
+      alert('No se pudo eliminar: ' + (data.message || resDelete.status));
+      boton.disabled = false;
+      boton.textContent = 'Eliminar';
+    }
+  } catch (e) {
+    alert('Error al eliminar: ' + e.message);
+    boton.disabled = false;
+    boton.textContent = 'Eliminar';
+  }
+}
+
+cargarListaGestion();
+
+// --- Aviso urgente (franja dorada de la portada) ---
+
+async function cargarAvisoUrgente() {
+  try {
+    const res = await fetch('/aviso-urgente.json');
+    if (res.ok) {
+      const datos = await res.json();
+      document.getElementById('avisoActivo').checked = !!datos.activo;
+      document.getElementById('avisoTexto').innerHTML = datos.texto || '';
+    }
+  } catch (e) {
+    console.log('No se pudo cargar el aviso urgente actual', e);
+  }
+}
+
+// Barra de herramientas del editor de aviso: negrita, cursiva, subrayado,
+// color y tamaño, aplicados sobre el texto que el usuario tenga seleccionado.
+const avisoEditor = document.getElementById('avisoTexto');
+
+function aplicarComandoAviso(comando) {
+  avisoEditor.focus();
+  document.execCommand(comando, false, null);
+}
+document.getElementById('avisoBtnBold').addEventListener('click', () => aplicarComandoAviso('bold'));
+document.getElementById('avisoBtnItalic').addEventListener('click', () => aplicarComandoAviso('italic'));
+document.getElementById('avisoBtnUnderline').addEventListener('click', () => aplicarComandoAviso('underline'));
+
+document.getElementById('avisoColorPicker').addEventListener('input', (e) => {
+  avisoEditor.focus();
+  document.execCommand('foreColor', false, e.target.value);
+});
+
+document.getElementById('avisoTamano').addEventListener('change', (e) => {
+  avisoEditor.focus();
+  const seleccion = window.getSelection();
+  if (!seleccion.rangeCount || seleccion.isCollapsed) return;
+  const span = document.createElement('span');
+  span.style.fontSize = e.target.value;
+  const rango = seleccion.getRangeAt(0);
+  span.appendChild(rango.extractContents());
+  rango.insertNode(span);
+});
+
+document.getElementById('btnGuardarAviso').addEventListener('click', async () => {
+  const token = tokenInput.value.trim();
+  const msg = document.getElementById('avisoMsg');
+  const btn = document.getElementById('btnGuardarAviso');
+  msg.className = 'msg';
+  msg.textContent = '';
+
+  if (!token) { msg.className = 'msg err'; msg.textContent = 'Falta la clave de acceso.'; return; }
+
+  const activo = document.getElementById('avisoActivo').checked;
+  const texto = avisoEditor.innerHTML.trim();
+
+  if (activo && !texto) {
+    msg.className = 'msg err';
+    msg.textContent = 'Escribe el mensaje del aviso antes de activarlo.';
+    return;
+  }
+
+  const contenido = JSON.stringify({ activo, texto }, null, 2);
+  const contenidoBase64 = btoa(unescape(encodeURIComponent(contenido)));
+
+  btn.disabled = true;
+  btn.textContent = 'Guardando...';
+
+  try {
+    let shaActual = undefined;
+    const resInfo = await fetch(`https://api.github.com/repos/${REPO}/contents/aviso-urgente.json?ref=${BRANCH}`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (resInfo.ok) {
+      const info = await resInfo.json();
+      shaActual = info.sha;
+    }
+
+    const cuerpo = {
+      message: activo ? 'Activar aviso urgente' : 'Actualizar aviso urgente',
+      content: contenidoBase64,
+      branch: BRANCH
+    };
+    if (shaActual) cuerpo.sha = shaActual;
+
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/aviso-urgente.json`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(cuerpo)
+    });
+
+    if (res.ok) {
+      msg.className = 'msg ok';
+      msg.textContent = '✅ Aviso guardado. Tardará 1-2 minutos en verse en la web.';
+    } else {
+      const data = await res.json().catch(() => ({}));
+      msg.className = 'msg err';
+      msg.textContent = '❌ Error al guardar: ' + (data.message || res.status);
+    }
+  } catch (e) {
+    msg.className = 'msg err';
+    msg.textContent = '❌ ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Guardar aviso';
+  }
+});
+
+cargarAvisoUrgente();
+
+// --- Página de huelga (/huelga.html) ---
+
+async function cargarHuelgaInfo() {
+  try {
+    const res = await fetch('/huelga-info.json');
+    if (res.ok) {
+      const datos = await res.json();
+      document.getElementById('huelgaTexto').innerHTML = datos.texto || '';
+    }
+  } catch (e) {
+    console.log('No se pudo cargar el texto de la página de huelga', e);
+  }
+}
+
+const huelgaEditor = document.getElementById('huelgaTexto');
+function aplicarComandoHuelga(comando) {
+  huelgaEditor.focus();
+  document.execCommand(comando, false, null);
+}
+document.getElementById('huelgaBtnBold').addEventListener('click', () => aplicarComandoHuelga('bold'));
+document.getElementById('huelgaBtnItalic').addEventListener('click', () => aplicarComandoHuelga('italic'));
+document.getElementById('huelgaBtnUnderline').addEventListener('click', () => aplicarComandoHuelga('underline'));
+document.getElementById('huelgaColorPicker').addEventListener('input', (e) => {
+  huelgaEditor.focus();
+  document.execCommand('foreColor', false, e.target.value);
+});
+
+document.getElementById('btnGuardarHuelga').addEventListener('click', async () => {
+  const token = tokenInput.value.trim();
+  const msg = document.getElementById('huelgaMsg');
+  const btn = document.getElementById('btnGuardarHuelga');
+  msg.className = 'msg';
+  msg.textContent = '';
+
+  if (!token) { msg.className = 'msg err'; msg.textContent = 'Falta la clave de acceso.'; return; }
+
+  const texto = huelgaEditor.innerHTML.trim();
+  const contenido = JSON.stringify({ texto }, null, 2);
+  const contenidoBase64 = btoa(unescape(encodeURIComponent(contenido)));
+
+  btn.disabled = true;
+  btn.textContent = 'Guardando...';
+
+  try {
+    let shaActual = undefined;
+    const resInfo = await fetch(`https://api.github.com/repos/${REPO}/contents/huelga-info.json?ref=${BRANCH}`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (resInfo.ok) {
+      const info = await resInfo.json();
+      shaActual = info.sha;
+    }
+
+    const cuerpo = {
+      message: 'Actualizar página de huelga',
+      content: contenidoBase64,
+      branch: BRANCH
+    };
+    if (shaActual) cuerpo.sha = shaActual;
+
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/huelga-info.json`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(cuerpo)
+    });
+
+    if (res.ok) {
+      msg.className = 'msg ok';
+      msg.textContent = '✅ Página de huelga guardada. Tardará 1-2 minutos en verse en la web.';
+    } else {
+      const data = await res.json().catch(() => ({}));
+      msg.className = 'msg err';
+      msg.textContent = '❌ Error al guardar: ' + (data.message || res.status);
+    }
+  } catch (e) {
+    msg.className = 'msg err';
+    msg.textContent = '❌ ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Guardar página de huelga';
+  }
+});
+
+cargarHuelgaInfo();
+</script>
+</body>
+</html>

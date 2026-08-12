@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de edición · CESMCYL</title>
+  <style>
+    body{font-family:system-ui,sans-serif;background:#f8f9f7;margin:0;}
+    #login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;}
+    #login-box{background:white;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.08);padding:2.5rem;max-width:340px;width:100%;text-align:center;}
+    #login-box h1{font-size:1.2rem;color:#0c3316;margin:0 0 .3rem;}
+    #login-box p{font-size:.85rem;color:#5a6b5b;margin:0 0 1.5rem;}
+    #login-box input{width:100%;padding:.7rem 1rem;border:1px solid #d8e4d9;border-radius:8px;font-size:1rem;box-sizing:border-box;margin-bottom:1rem;}
+    #login-box button{width:100%;padding:.8rem;border:none;border-radius:8px;background:#e9a94a;color:#0c3316;font-weight:700;font-size:1rem;cursor:pointer;}
+    #login-error{color:#c0392b;font-size:.82rem;margin-top:.8rem;min-height:1.2em;}
+  </style>
+</head>
+<body>
+
+<div id="login-wrap">
+  <div id="login-box">
+    <h1>Panel de edición</h1>
+    <p>Introduce la clave de acceso compartida del sindicato.</p>
+    <input type="password" id="login-password" placeholder="Clave de acceso" autofocus>
+    <button id="login-btn">Entrar</button>
+    <div id="login-error"></div>
+  </div>
+</div>
+
+<div id="cms-root" style="display:none;"></div>
+
+<script>
+  // Comprueba la clave contra nuestro Worker antes de cargar Decap CMS.
+  // Si es correcta, el propio Worker (a través del backend "proxy" que
+  // Decap CMS usa) es quien habla con GitHub de ahí en adelante.
+  const PROXY_URL = "https://cesmcyl-cms-proxy.TU-SUBDOMINIO.workers.dev";
+
+  document.getElementById('login-btn').addEventListener('click', intentarEntrar);
+  document.getElementById('login-password').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') intentarEntrar();
+  });
+
+  async function intentarEntrar() {
+    const clave = document.getElementById('login-password').value;
+    const error = document.getElementById('login-error');
+    const btn = document.getElementById('login-btn');
+    error.textContent = '';
+    btn.disabled = true;
+    btn.textContent = 'Comprobando...';
+
+    try {
+      const res = await fetch(PROXY_URL + '/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: clave })
+      });
+      const datos = await res.json();
+      if (res.ok && datos.token) {
+        // Guardamos el token temporal que da el Worker; Decap CMS lo usará
+        // para todas sus peticiones siguientes.
+        sessionStorage.setItem('cesmcyl-cms-token', datos.token);
+        document.getElementById('login-wrap').style.display = 'none';
+        document.getElementById('cms-root').style.display = 'block';
+        cargarDecapCMS();
+      } else {
+        error.textContent = 'Clave incorrecta. Inténtalo de nuevo.';
+        btn.disabled = false;
+        btn.textContent = 'Entrar';
+      }
+    } catch (e) {
+      error.textContent = 'No se pudo comprobar la clave. Revisa tu conexión.';
+      btn.disabled = false;
+      btn.textContent = 'Entrar';
+    }
+  }
+
+  function cargarDecapCMS() {
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+    document.body.appendChild(script);
+  }
+</script>
+
+</body>
+</html>
