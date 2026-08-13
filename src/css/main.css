@@ -48,8 +48,8 @@ footer *,
 /* NAV */
 nav{background:white;border-bottom:4px solid var(--green-dark);box-shadow:0 2px 12px rgba(0,0,0,.08);position:sticky;top:0;z-index:100;}
 .nav-inner{margin:0 auto;padding:0 3%;display:flex;align-items:stretch;justify-content:space-between;}
-.nav-logo{display:flex;align-items:center;padding:.5rem 0;text-decoration:none;}
-.nav-logo img{height:95px;width:auto;display:block;}
+.nav-logo{display:flex;align-items:center;padding:.5rem 0;text-decoration:none;margin-left:3rem;}
+.nav-logo img{height:115px;width:auto;display:block;}
 .nav-links{display:flex;align-items:stretch;justify-content:flex-end;flex:1;list-style:none;gap:.5rem;}
 .nav-links>li{position:relative;}
 .nav-links>li>a{display:flex;align-items:center;padding:0 1.3rem;height:100%;font-size:1.05rem;font-weight:700;letter-spacing:.01em;color:var(--dark);text-decoration:none;transition:color .2s,background .2s;white-space:nowrap;border-bottom:3px solid transparent;}
