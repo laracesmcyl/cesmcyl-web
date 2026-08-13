@@ -1,0 +1,54 @@
+backend:
+  name: proxy
+  proxy_url: "https://cesmcyl-cms-proxy.laracesmcyl.workers.dev"
+  branch: main
+
+# Aparece el editor de contenido enriquecido (negrita, cursiva, enlaces...)
+# en los campos que lo pidan explícitamente con widget "markdown".
+media_folder: "src/static/imagenes-noticias"
+public_folder: "/imagenes-noticias"
+
+collections:
+  - name: "noticias"
+    label: "Noticias"
+    label_singular: "Noticia"
+    folder: "src/noticias"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    identifier_field: "title"
+    summary: "{{title}} — {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Fecha", name: "date", widget: "date", format: "YYYY-MM-DD" }
+      - label: "Categoría"
+        name: "category"
+        widget: "select"
+        options: ["OPE", "Bolsa", "CESM", "Estatuto Marco", "Fidelización", "MIR 2026", "Electoral 2026", "Estabilización", "Tutores", "Inspección Sanitaria", "Concurso de traslados", "Novedades normativas estatales", "Noticias"]
+      - { label: "Fijar en Destacado (Tablón)", name: "pinned", widget: "boolean", default: false }
+      - { label: "Imagen (opcional)", name: "image", widget: "image", required: false }
+      - { label: "Descripción corta (solo si está Fijada)", name: "description", widget: "string", required: false }
+      - { label: "Enlace (solo si está Fijada)", name: "url", widget: "string", required: false }
+      - { label: "Texto del botón (solo si está Fijada)", name: "cta", widget: "string", required: false, default: "Ver más" }
+      - { label: "Cuerpo de la noticia", name: "body", widget: "markdown" }
+
+  - name: "aviso"
+    label: "Aviso urgente"
+    files:
+      - name: "aviso-urgente"
+        label: "Franja de aviso (portada)"
+        file: "src/static/aviso-urgente.json"
+        fields:
+          - { label: "Mostrar el aviso en la portada", name: "activo", widget: "boolean", default: false }
+          - { label: "Mensaje del aviso", name: "texto", widget: "markdown", required: false }
+
+  - name: "huelga"
+    label: "Página de huelga"
+    files:
+      - name: "huelga-info"
+        label: "Contenido de /huelga/"
+        file: "src/static/huelga-info.json"
+        fields:
+          - { label: "Texto de la página de huelga", name: "texto", widget: "markdown", required: false }
