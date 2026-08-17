@@ -155,8 +155,11 @@ nav{background:white;border-bottom:4px solid var(--green-dark);box-shadow:0 2px 
 .ticker.vacio.desplegado{max-height:12px;}
 .ticker-label{background:var(--green-dark);color:white;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .9rem;border-radius:3px;flex-shrink:0;}
 .ticker-text{font-size:.95rem;font-weight:700;text-transform:uppercase;letter-spacing:.02em;}
-.ticker-flecha{margin-left:auto;flex-shrink:0;color:var(--green-dark);display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:rgba(12,51,22,.12);transition:background .2s,transform .2s;}
-.ticker-flecha:hover{background:rgba(12,51,22,.22);transform:translateX(3px);}
+.ticker-dot{width:7px;height:7px;border-radius:50%;background:#e2394b;display:inline-block;margin-right:.35rem;vertical-align:middle;}
+.ticker-flecha{margin-left:auto;flex-shrink:0;color:var(--green-dark);display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.ticker-flecha-texto{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;line-height:1.25;text-align:right;}
+.ticker-flecha-icon{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:rgba(12,51,22,.12);transition:background .2s,transform .2s;flex-shrink:0;}
+.ticker-flecha:hover .ticker-flecha-icon{background:rgba(12,51,22,.22);transform:translateX(3px);}
 .ticker-text a{color:var(--green-dark);font-weight:700;text-decoration:underline;}
 
 /* SECTION */
