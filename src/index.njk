@@ -32,7 +32,8 @@ title: "CESMCYL · Confederación de Sindicatos Médicos de Castilla y León"
       <div id="tablon-destacados-wrap">
         <div class="tablon-subtitle">Destacado</div>
         <div id="tablon-destacados">
-          {%- for noticia in collections.noticias | selectattr("data.pinned") | reverse -%}
+          {%- for noticia in collections.noticias | reverse -%}
+          {%- if noticia.data.pinned -%}
           <a href="{{ noticia.data.url or ('/noticias/' + noticia.fileSlug + '/') }}" class="tablon-item tablon-fixed" {% if noticia.data.url %}target="_blank" rel="noopener"{% endif %}>
             <div class="tablon-item-header">
               <span class="tablon-tag tablon-mir">{{ noticia.data.category }}</span>
@@ -45,6 +46,7 @@ title: "CESMCYL · Confederación de Sindicatos Médicos de Castilla y León"
             {%- if noticia.data.description %}<p class="tablon-desc">{{ noticia.data.description }}</p>{% endif -%}
             {%- if noticia.data.cta %}<span class="tablon-cta">↓ {{ noticia.data.cta }}</span>{% endif -%}
           </a>
+          {%- endif -%}
           {%- endfor -%}
         </div>
       </div>
