@@ -10,8 +10,11 @@
     #login-box{background:white;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.08);padding:2.5rem;max-width:340px;width:100%;text-align:center;}
     #login-box h1{font-size:1.2rem;color:#0c3316;margin:0 0 .3rem;}
     #login-box p{font-size:.85rem;color:#5a6b5b;margin:0 0 1.5rem;}
-    #login-box input{width:100%;padding:.7rem 1rem;border:1px solid #d8e4d9;border-radius:8px;font-size:1rem;box-sizing:border-box;margin-bottom:1rem;}
-    #login-box button{width:100%;padding:.8rem;border:none;border-radius:8px;background:#e9a94a;color:#0c3316;font-weight:700;font-size:1rem;cursor:pointer;}
+    #password-wrap{position:relative;margin-bottom:1rem;}
+    #login-box input{width:100%;padding:.7rem 2.6rem .7rem 1rem;border:1px solid #d8e4d9;border-radius:8px;font-size:1rem;box-sizing:border-box;}
+    #toggle-password{position:absolute;right:.5rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:.35rem;display:flex;align-items:center;justify-content:center;color:#5a6b5b;width:auto;}
+    #toggle-password:hover{color:#0c3316;}
+    #login-box button#login-btn{width:100%;padding:.8rem;border:none;border-radius:8px;background:#e9a94a;color:#0c3316;font-weight:700;font-size:1rem;cursor:pointer;}
     #login-error{color:#c0392b;font-size:.82rem;margin-top:.8rem;min-height:1.2em;}
   </style>
 </head>
@@ -21,7 +24,12 @@
   <div id="login-box">
     <h1>Panel de edición</h1>
     <p>Introduce la clave de acceso compartida del sindicato.</p>
-    <input type="password" id="login-password" placeholder="Clave de acceso" autofocus>
+    <div id="password-wrap">
+      <input type="password" id="login-password" placeholder="Clave de acceso" autofocus>
+      <button type="button" id="toggle-password" aria-label="Mostrar clave">
+        <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
     <button id="login-btn">Entrar</button>
     <div id="login-error"></div>
   </div>
@@ -33,11 +41,23 @@
   // Comprueba la clave contra nuestro Worker antes de cargar Decap CMS.
   // Si es correcta, el propio Worker (a través del backend "proxy" que
   // Decap CMS usa) es quien habla con GitHub de ahí en adelante.
-  const PROXY_URL = "https://cesmcyl-cms-proxy.TU-SUBDOMINIO.workers.dev";
+  const PROXY_URL = "https://cesmcyl-cms-proxy.laracesmcyl.workers.dev";
 
   document.getElementById('login-btn').addEventListener('click', intentarEntrar);
   document.getElementById('login-password').addEventListener('keydown', function (e) {
     if (e.key === 'Enter') intentarEntrar();
+  });
+
+  const toggleBtn = document.getElementById('toggle-password');
+  const pwInput = document.getElementById('login-password');
+  const eyeIcon = document.getElementById('eye-icon');
+  const eyeOpen = '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>';
+  const eyeClosed = '<path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-7-11-7a18.6 18.6 0 015.06-5.94M9.9 4.24A10.4 10.4 0 0112 4c7 0 11 7 11 7a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+  toggleBtn.addEventListener('click', function () {
+    const showing = pwInput.type === 'text';
+    pwInput.type = showing ? 'password' : 'text';
+    eyeIcon.innerHTML = showing ? eyeOpen : eyeClosed;
+    toggleBtn.setAttribute('aria-label', showing ? 'Mostrar clave' : 'Ocultar clave');
   });
 
   async function intentarEntrar() {
