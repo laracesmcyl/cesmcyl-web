@@ -95,6 +95,26 @@
   }
 
   function cargarDecapCMS() {
+    // Decap CMS, con el backend "proxy", no sabe nada de nuestra pantalla
+    // de contraseña ni del token que nos dio el Worker al hacer login.
+    // Por eso interceptamos fetch() aquí: cualquier petición que Decap
+    // mande a nuestro Worker (para leer o guardar noticias) se le añade
+    // automáticamente la cabecera Authorization con ese token.
+    const tokenSesion = sessionStorage.getItem('cesmcyl-cms-token');
+    const fetchOriginal = window.fetch.bind(window);
+    window.fetch = function (recurso, opciones) {
+      const urlPeticion = typeof recurso === 'string' ? recurso : (recurso && recurso.url) || '';
+      const esParaElProxy = urlPeticion.indexOf(PROXY_URL) === 0;
+      const esLogin = urlPeticion.indexOf(PROXY_URL + '/login') === 0;
+      if (esParaElProxy && !esLogin && tokenSesion) {
+        opciones = opciones || {};
+        const cabeceras = new Headers(opciones.headers || {});
+        cabeceras.set('Authorization', 'Bearer ' + tokenSesion);
+        opciones = Object.assign({}, opciones, { headers: cabeceras });
+      }
+      return fetchOriginal(recurso, opciones);
+    };
+
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
     document.body.appendChild(script);
