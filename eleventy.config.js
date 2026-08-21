@@ -6,6 +6,22 @@ module.exports = function (eleventyConfig) {
     return array.slice(0, n);
   });
 
+  // Filtro "excerpt": quita las etiquetas HTML del cuerpo ya renderizado de
+  // una noticia y lo recorta a N caracteres, cortando por palabra completa,
+  // para usarlo como resumen en las tarjetas de la cuadrícula de noticias.
+  eleventyConfig.addFilter("excerpt", function (html, longitud) {
+    if (!html) return "";
+    const n = longitud || 160;
+    const texto = String(html)
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (texto.length <= n) return texto;
+    const cortado = texto.slice(0, n);
+    const ultimoEspacio = cortado.lastIndexOf(" ");
+    return (ultimoEspacio > 0 ? cortado.slice(0, ultimoEspacio) : cortado) + "…";
+  });
+
   // Copiamos tal cual los archivos que no necesitan procesado
   eleventyConfig.addPassthroughCopy("src/css");
   eleventyConfig.addPassthroughCopy("src/js");
