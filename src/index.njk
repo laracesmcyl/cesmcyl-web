@@ -96,6 +96,7 @@ title: "CESMCYL · Confederación de Sindicatos Médicos de Castilla y León"
           <div>
             <span class="tag-small">{{ noticia.data.category }}</span>
             <h3>{{ noticia.data.title }}</h3>
+            <p class="resumen">{{ noticia.data.description or (noticia.templateContent | excerpt(160)) }}</p>
             <div class="meta">{{ noticia.data.date }}</div>
           </div>
           <svg class="ticker-flecha-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
