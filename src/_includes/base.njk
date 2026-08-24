@@ -76,19 +76,64 @@
 
 <!-- TICKER (aviso urgente) -->
 <div class="ticker vacio" id="ticker">
+  <div class="ticker-inner">
+  <div class="ticker-msg">
   <span class="ticker-label" id="ticker-label" style="display:none;">
     <span class="ticker-dot" aria-hidden="true"></span>
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:.3rem;"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
     Aviso
   </span>
   <span class="ticker-text" id="ticker-text"></span>
+  </div>
   <a href="/huelga/" class="ticker-flecha" id="ticker-flecha" style="display:none;" aria-label="Más información sobre la huelga">
     <span class="ticker-flecha-texto">Toda la información<br>de la huelga</span>
     <span class="ticker-flecha-icon">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
     </span>
   </a>
+  <button type="button" class="ticker-toggle" id="ticker-toggle" aria-label="Mostrar u ocultar los detalles del aviso">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </button>
+  </div>
 </div>
+
+<script>
+  // La franja del aviso se queda pegada bajo el menú al bajar la página,
+  // encogida a una versión compacta. Se puede volver a abrir del todo
+  // pulsando la flechita, sin necesidad de subir arriba.
+  (function () {
+    var ticker = document.getElementById('ticker');
+    var boton = document.getElementById('ticker-toggle');
+    if (!ticker) return;
+
+    function fijarAlturaNav() {
+      var nav = document.querySelector('nav');
+      if (nav) {
+        document.documentElement.style.setProperty('--nav-height', nav.offsetHeight + 'px');
+      }
+    }
+    fijarAlturaNav();
+    window.addEventListener('resize', fijarAlturaNav);
+
+    var UMBRAL = 80;
+    function actualizarEncogido() {
+      if (window.scrollY > UMBRAL) {
+        ticker.classList.add('encogido');
+      } else {
+        ticker.classList.remove('encogido');
+        ticker.classList.remove('forzado-abierto');
+      }
+    }
+    window.addEventListener('scroll', actualizarEncogido, { passive: true });
+    actualizarEncogido();
+
+    if (boton) {
+      boton.addEventListener('click', function (e) {
+        e.preventDefault();
+        ticker.classList.toggle('forzado-abierto');
+      });
+    }
+  })();
+</script>
 
 {{ content | safe }}
 
