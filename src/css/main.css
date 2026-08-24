@@ -259,14 +259,18 @@ section{padding:5.2rem 3%;}
 
 /* Burbuja de noticia (enlace a su página de detalle) — tarjeta vertical de cuadrícula */
 .todas-noticias-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem;margin-top:2.8rem;}
-.noticia-burbuja{background:white;border-radius:10px;transition:box-shadow .25s,transform .25s;border:1px solid var(--border);border-top:4px solid var(--green-dark);text-decoration:none;color:inherit;display:block;height:100%;}
-.noticia-burbuja:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translateY(-3px);}
-.noticia-burbuja-body{padding:2.2rem 2.2rem 1.9rem;display:flex;flex-direction:column;align-items:flex-start;gap:.8rem;height:100%;min-height:290px;}
-.noticia-burbuja .tag-small{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.22rem .65rem;border-radius:4px;background:var(--green-pale);color:var(--green-dark);display:inline-block;}
-.noticia-burbuja h3{font-family:"Lato",sans-serif;font-size:1.2rem;color:var(--green-dark);line-height:1.35;font-weight:700;}
-.noticia-burbuja .resumen{font-size:.9rem;color:var(--stone);line-height:1.6;font-weight:500;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-.noticia-burbuja .meta{font-size:.78rem;color:var(--stone);font-weight:600;margin-top:auto;}
-.noticia-burbuja-chevron{flex-shrink:0;color:var(--stone);align-self:flex-end;}
+.noticia-burbuja{background:white;border-radius:12px;transition:box-shadow .25s,transform .25s;border:1px solid var(--border);text-decoration:none;color:inherit;display:block;height:100%;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.noticia-burbuja:hover{box-shadow:0 10px 28px rgba(0,0,0,.09);transform:translateY(-3px);}
+.noticia-burbuja-body{padding:2.4rem 2.4rem 2.1rem;display:flex;flex-direction:column;justify-content:space-between;gap:1.4rem;height:100%;min-height:300px;}
+.noticia-burbuja .tag-small{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--green-dark);padding-bottom:.4rem;border-bottom:2px solid var(--gold);display:inline-block;margin-bottom:1.1rem;}
+.noticia-burbuja h3{font-family:"Lato",sans-serif;font-size:1.2rem;color:var(--green-dark);line-height:1.4;font-weight:500;margin-bottom:.7rem;}
+.noticia-burbuja .resumen{font-size:.9rem;color:var(--stone);line-height:1.65;font-weight:400;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.noticia-burbuja-footer{display:flex;align-items:center;justify-content:space-between;}
+.noticia-burbuja .meta{font-size:.78rem;color:var(--stone);font-weight:400;}
+.noticia-burbuja-chevron{flex-shrink:0;display:inline-flex;align-items:center;gap:.5rem;color:var(--green-dark);font-size:.85rem;font-weight:500;transition:gap .2s;}
+.noticia-burbuja-chevron .circulo{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s,color .2s;}
+.noticia-burbuja:hover .noticia-burbuja-chevron{gap:.7rem;}
+.noticia-burbuja:hover .noticia-burbuja-chevron .circulo{background:var(--gold);}
 
 /* NOTICIA INDIVIDUAL (detalle a página completa, estilo editorial) */
 #noticia-detalle{background:var(--white);display:none;}
