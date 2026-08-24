@@ -43,7 +43,7 @@ title: "CESMCYL · Confederación de Sindicatos Médicos de Castilla y León"
               </span>
             </div>
             <h4>{{ noticia.data.title }}</h4>
-            {%- if noticia.data.description %}<p class="tablon-desc">{{ noticia.data.description }}</p>{% endif -%}
+            <p class="tablon-desc">{{ noticia.data.description or (noticia.templateContent | excerpt(90)) }}</p>
             {%- if noticia.data.cta %}<span class="tablon-cta">↓ {{ noticia.data.cta }}</span>{% endif -%}
           </a>
           {%- endif -%}
@@ -54,7 +54,7 @@ title: "CESMCYL · Confederación de Sindicatos Médicos de Castilla y León"
         Últimas noticias
       </div>
       <div id="tablon-noticias">
-        {%- for noticia in collections.noticias | rejectattr("data.pinned") | reverse | limit(3) -%}
+        {%- for noticia in collections.noticias | reverse | sinFijar | limit(3) -%}
         <a href="/noticias/{{ noticia.fileSlug }}/" class="tablon-item">
           <div class="tablon-item-header">
             <span class="tablon-tag{% if noticia.data.category == 'CESM' %} verde{% endif %}">{{ noticia.data.category }}</span>
@@ -64,6 +64,7 @@ title: "CESMCYL · Confederación de Sindicatos Médicos de Castilla y León"
             <h4>{{ noticia.data.title }}</h4>
             <svg class="tablon-flecha" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
+          <p class="tablon-desc">{{ noticia.data.description or (noticia.templateContent | excerpt(90)) }}</p>
         </a>
         {%- endfor -%}
       </div>
@@ -97,9 +98,16 @@ title: "CESMCYL · Confederación de Sindicatos Médicos de Castilla y León"
             <span class="tag-small">{{ noticia.data.category }}</span>
             <h3>{{ noticia.data.title }}</h3>
             <p class="resumen">{{ noticia.data.description or (noticia.templateContent | excerpt(160)) }}</p>
-            <div class="meta">{{ noticia.data.date }}</div>
           </div>
-          <svg class="ticker-flecha-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          <div class="noticia-burbuja-footer">
+            <span class="meta">{{ noticia.data.date }}</span>
+            <span class="noticia-burbuja-chevron">
+              Leer más
+              <span class="circulo">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </span>
+          </div>
         </div>
       </a>
       {%- endfor -%}
