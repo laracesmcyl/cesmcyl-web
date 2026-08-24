@@ -6,6 +6,14 @@ module.exports = function (eleventyConfig) {
     return array.slice(0, n);
   });
 
+  // Filtro "sinFijar": versión de rejectattr("data.pinned") que sí funciona
+  // (rejectattr/selectattr de Nunjucks no leen bien rutas con punto como
+  // "data.pinned", así que hay que filtrar a mano).
+  eleventyConfig.addFilter("sinFijar", function (array) {
+    if (!Array.isArray(array)) return array;
+    return array.filter((item) => !item.data.pinned);
+  });
+
   // Filtro "excerpt": quita las etiquetas HTML del cuerpo ya renderizado de
   // una noticia y lo recorta a N caracteres, cortando por palabra completa,
   // para usarlo como resumen en las tarjetas de la cuadrícula de noticias.
