@@ -176,7 +176,6 @@ nav{background:white;border-bottom:4px solid var(--green-dark);box-shadow:0 2px 
 .ticker.vacio.desplegado{max-height:12px;}
 .ticker.encogido:not(.forzado-abierto) .ticker-text div{display:none;}
 .ticker.encogido.forzado-abierto{max-height:130px;padding:1.3rem 3%;}
-.ticker.encogido:not(.forzado-abierto) .ticker-flecha-texto br{display:none;}
 .ticker-toggle{display:none;position:absolute;left:0;right:0;bottom:7px;border:none;background:none;color:var(--green-dark);cursor:pointer;align-items:center;justify-content:center;padding:.1rem 0;opacity:.85;transition:opacity .2s;}
 .ticker-toggle:hover{opacity:1;}
 .ticker.encogido .ticker-toggle{display:flex;}
