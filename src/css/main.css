@@ -170,17 +170,17 @@ nav{background:white;border-bottom:4px solid var(--green-dark);box-shadow:0 2px 
 .ticker-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
 .ticker-msg{display:flex;align-items:flex-start;gap:1rem;transition:opacity .25s;}
 .ticker.desplegado{max-height:130px;}
-.ticker.desplegado.encogido{max-height:78px;padding:.55rem 3%;}
+.ticker.desplegado.encogido{max-height:90px;padding:.6rem 3%;}
 .ticker.vacio{padding:.2rem 3%;animation:none;background:var(--gold);}
 .ticker.vacio.desplegado{max-height:12px;}
 .ticker.encogido:not(.forzado-abierto) .ticker-text div{display:none;}
 .ticker.encogido.forzado-abierto{max-height:130px;padding:1.3rem 3%;}
 .ticker.encogido:not(.forzado-abierto) .ticker-label{padding:.22rem .6rem;font-size:.62rem;}
 .ticker.encogido:not(.forzado-abierto) .ticker-text{font-size:.9rem;}
-.ticker.encogido:not(.forzado-abierto) .ticker-flecha-texto{font-size:.6rem;line-height:1.2;}
-.ticker.encogido:not(.forzado-abierto) .ticker-flecha-icon{width:26px;height:26px;}
-.ticker.encogido:not(.forzado-abierto) .ticker-flecha-icon svg{width:13px;height:13px;}
-.ticker-toggle{display:none;position:absolute;left:0;right:0;bottom:0;border:none;background:var(--green-dark);color:var(--gold);cursor:pointer;align-items:center;justify-content:center;padding:.18rem 0;transition:background .2s;}
+.ticker.encogido:not(.forzado-abierto) .ticker-flecha-texto{font-size:.75rem;line-height:1.25;}
+.ticker.encogido:not(.forzado-abierto) .ticker-flecha-icon{width:32px;height:32px;}
+.ticker.encogido:not(.forzado-abierto) .ticker-flecha-icon svg{width:16px;height:16px;}
+.ticker-toggle{display:none;position:absolute;left:0;right:0;bottom:0;border:none;background:var(--green-dark);color:var(--gold);cursor:pointer;align-items:center;justify-content:center;padding:.3rem 0;transition:background .2s;}
 .ticker-toggle:hover{background:#0a2812;}
 .ticker.encogido .ticker-toggle{display:flex;}
 .ticker.encogido:not(.forzado-abierto){padding-bottom:1rem;}
