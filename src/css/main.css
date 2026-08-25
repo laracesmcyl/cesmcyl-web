@@ -177,7 +177,8 @@ nav{background:white;border-bottom:4px solid var(--green-dark);box-shadow:0 2px 
 .ticker.encogido:not(.forzado-abierto) .ticker-text div{display:none;}
 .ticker.encogido.forzado-abierto{max-height:130px;padding:1.3rem 3%;}
 .ticker.encogido:not(.forzado-abierto) .ticker-inner{justify-content:center;gap:1.6rem;}
-.ticker.encogido:not(.forzado-abierto) .ticker-label{padding:.22rem .6rem;font-size:.62rem;}
+.ticker.encogido:not(.forzado-abierto) .ticker-msg{align-items:center;}
+.ticker.encogido:not(.forzado-abierto) .ticker-label{padding:.22rem .6rem;font-size:.62rem;margin-top:0;}
 .ticker.encogido:not(.forzado-abierto) .ticker-text{font-size:.9rem;}
 .ticker.encogido:not(.forzado-abierto) .ticker-flecha-texto br{display:none;}
 .ticker.encogido:not(.forzado-abierto) .ticker-flecha-texto{font-size:1rem;}
