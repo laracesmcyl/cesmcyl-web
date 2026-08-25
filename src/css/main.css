@@ -170,8 +170,8 @@ nav{background:white;border-bottom:4px solid var(--green-dark);box-shadow:0 2px 
 }
 .ticker-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
 .ticker-msg{display:flex;align-items:flex-start;gap:1rem;transition:opacity .25s;}
-.ticker.desplegado{max-height:130px;margin-bottom:.7rem;}
-.ticker.desplegado.encogido{max-height:104px;padding:.6rem 3%;margin-bottom:.5rem;}
+.ticker.desplegado{max-height:130px;}
+.ticker.desplegado.encogido{max-height:104px;padding:.6rem 3%;}
 .ticker.vacio{padding:.2rem 3%;animation:none;background:var(--gold);}
 .ticker.vacio.desplegado{max-height:12px;}
 .ticker.encogido:not(.forzado-abierto) .ticker-text div{display:none;}
