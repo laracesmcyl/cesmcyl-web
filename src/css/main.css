@@ -169,27 +169,20 @@ nav{background:white;border-bottom:4px solid var(--green-dark);box-shadow:0 2px 
   100%{background-position:150% 0;}
 }
 .ticker-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
-.ticker-msg{display:flex;align-items:flex-start;gap:1rem;transition:opacity .25s;}
+.ticker-msg{display:flex;align-items:center;gap:2.2rem;transition:opacity .25s;}
 .ticker.desplegado{max-height:130px;}
-.ticker.desplegado.encogido{max-height:84px;padding:.6rem 3%;}
+.ticker.desplegado.encogido{max-height:96px;padding:.6rem 3%;}
 .ticker.vacio{padding:.2rem 3%;animation:none;background:var(--gold);}
 .ticker.vacio.desplegado{max-height:12px;}
 .ticker.encogido:not(.forzado-abierto) .ticker-text div{display:none;}
 .ticker.encogido.forzado-abierto{max-height:130px;padding:1.3rem 3%;}
-.ticker.encogido:not(.forzado-abierto) .ticker-inner{justify-content:center;gap:1.6rem;}
-.ticker.encogido:not(.forzado-abierto) .ticker-msg{align-items:center;}
-.ticker.encogido:not(.forzado-abierto) .ticker-label{padding:.22rem .6rem;font-size:.62rem;margin-top:0;}
-.ticker.encogido:not(.forzado-abierto) .ticker-text{font-size:.9rem;}
 .ticker.encogido:not(.forzado-abierto) .ticker-flecha-texto br{display:none;}
-.ticker.encogido:not(.forzado-abierto) .ticker-flecha-texto{font-size:1rem;}
-.ticker.encogido:not(.forzado-abierto) .ticker-flecha-icon{width:32px;height:32px;}
-.ticker.encogido:not(.forzado-abierto) .ticker-flecha-icon svg{width:16px;height:16px;}
 .ticker-toggle{display:none;position:absolute;left:0;right:0;bottom:7px;border:none;background:none;color:var(--green-dark);cursor:pointer;align-items:center;justify-content:center;padding:.1rem 0;opacity:.85;transition:opacity .2s;}
 .ticker-toggle:hover{opacity:1;}
 .ticker.encogido .ticker-toggle{display:flex;}
 .ticker.encogido:not(.forzado-abierto){padding-bottom:1.1rem;}
 .ticker.forzado-abierto .ticker-toggle svg{transform:rotate(180deg);}
-.ticker-label{background:var(--green-dark);color:white;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.35rem .8rem;border-radius:3px;flex-shrink:0;margin-top:.2rem;display:inline-flex;align-items:center;gap:.45rem;}
+.ticker-label{background:var(--green-dark);color:white;font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.5rem 1.1rem;border-radius:4px;flex-shrink:0;display:inline-flex;align-items:center;gap:.5rem;}
 .ticker-text{font-size:1.05rem;font-weight:600;line-height:1.5;}
 .ticker-text u{text-decoration:none;border-bottom:2px solid var(--green-dark);}
 .ticker-text div{display:inline;font-size:.82rem;font-weight:400;color:#5a4520;}
