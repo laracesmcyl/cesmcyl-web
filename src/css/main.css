@@ -157,6 +157,7 @@ nav{background:white;border-bottom:4px solid var(--green-dark);box-shadow:0 2px 
   background-size:300% 100%;
   animation:brillo 4s linear infinite;
   padding:1.3rem 3%;
+  border-bottom:4px solid var(--green-dark);
   overflow:hidden;
   max-height:0;
   transition:max-height .6s ease, padding .35s ease;
@@ -169,8 +170,8 @@ nav{background:white;border-bottom:4px solid var(--green-dark);box-shadow:0 2px 
 }
 .ticker-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
 .ticker-msg{display:flex;align-items:flex-start;gap:1rem;transition:opacity .25s;}
-.ticker.desplegado{max-height:130px;}
-.ticker.desplegado.encogido{max-height:90px;padding:.6rem 3%;}
+.ticker.desplegado{max-height:130px;margin-bottom:.7rem;}
+.ticker.desplegado.encogido{max-height:104px;padding:.6rem 3%;margin-bottom:.5rem;}
 .ticker.vacio{padding:.2rem 3%;animation:none;background:var(--gold);}
 .ticker.vacio.desplegado{max-height:12px;}
 .ticker.encogido:not(.forzado-abierto) .ticker-text div{display:none;}
@@ -183,7 +184,7 @@ nav{background:white;border-bottom:4px solid var(--green-dark);box-shadow:0 2px 
 .ticker-toggle{display:none;position:absolute;left:0;right:0;bottom:0;border:none;background:var(--green-dark);color:var(--gold);cursor:pointer;align-items:center;justify-content:center;padding:.3rem 0;transition:background .2s;}
 .ticker-toggle:hover{background:#0a2812;}
 .ticker.encogido .ticker-toggle{display:flex;}
-.ticker.encogido:not(.forzado-abierto){padding-bottom:1rem;}
+.ticker.encogido:not(.forzado-abierto){padding-bottom:1.6rem;}
 .ticker.forzado-abierto .ticker-toggle svg{transform:rotate(180deg);}
 .ticker-label{background:var(--green-dark);color:white;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.35rem .8rem;border-radius:3px;flex-shrink:0;margin-top:.2rem;display:inline-flex;align-items:center;gap:.45rem;}
 .ticker-text{font-size:1.05rem;font-weight:600;line-height:1.5;}
