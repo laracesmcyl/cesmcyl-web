@@ -157,7 +157,7 @@ nav{background:white;border-bottom:4px solid var(--green-dark);box-shadow:0 2px 
   background-size:300% 100%;
   animation:brillo 4s linear infinite;
   padding:1.3rem 3%;
-  border-bottom:1px solid var(--green-dark);
+  border-bottom:4px solid var(--green-dark);
   overflow:hidden;
   max-height:0;
   transition:max-height .6s ease, padding .35s ease;
