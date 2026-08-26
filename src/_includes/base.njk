@@ -114,16 +114,27 @@
     fijarAlturaNav();
     window.addEventListener('resize', fijarAlturaNav);
 
-    var UMBRAL = 80;
+    var UMBRAL_ENCOGER = 130;
+    var UMBRAL_ABRIR = 40;
+    var tickeando = false;
     function actualizarEncogido() {
-      if (window.scrollY > UMBRAL) {
+      var y = window.scrollY;
+      if (y > UMBRAL_ENCOGER) {
         ticker.classList.add('encogido');
-      } else {
+      } else if (y < UMBRAL_ABRIR) {
         ticker.classList.remove('encogido');
         ticker.classList.remove('forzado-abierto');
       }
+      // Entre los dos umbrales no tocamos nada: así no "vibra" si el
+      // scroll se queda justo en medio.
+      tickeando = false;
     }
-    window.addEventListener('scroll', actualizarEncogido, { passive: true });
+    window.addEventListener('scroll', function () {
+      if (!tickeando) {
+        tickeando = true;
+        requestAnimationFrame(actualizarEncogido);
+      }
+    }, { passive: true });
     actualizarEncogido();
 
     if (boton) {
