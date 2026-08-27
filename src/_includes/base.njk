@@ -107,12 +107,39 @@
 
     function fijarAlturaNav() {
       var nav = document.querySelector('nav');
+      var topbar = document.querySelector('.topbar');
       if (nav) {
         document.documentElement.style.setProperty('--nav-height', nav.offsetHeight + 'px');
+      }
+      if (topbar) {
+        document.documentElement.style.setProperty('--topbar-height', topbar.offsetHeight + 'px');
       }
     }
     fijarAlturaNav();
     window.addEventListener('resize', fijarAlturaNav);
+
+    // Cabecera compacta (barra verde + menú más finos) al bajar la página,
+    // con dos umbrales distintos (igual que el aviso) para que no "vibre".
+    var UMBRAL_CABECERA_COMPACTA = 60;
+    var UMBRAL_CABECERA_NORMAL = 15;
+    var cabeceraTickeando = false;
+    function actualizarCabecera() {
+      var y = window.scrollY;
+      if (y > UMBRAL_CABECERA_COMPACTA) {
+        document.body.classList.add('cabecera-compacta');
+      } else if (y < UMBRAL_CABECERA_NORMAL) {
+        document.body.classList.remove('cabecera-compacta');
+      }
+      fijarAlturaNav();
+      cabeceraTickeando = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!cabeceraTickeando) {
+        cabeceraTickeando = true;
+        requestAnimationFrame(actualizarCabecera);
+      }
+    }, { passive: true });
+    actualizarCabecera();
 
     var UMBRAL_ENCOGER = 130;
     var UMBRAL_ABRIR = 40;
