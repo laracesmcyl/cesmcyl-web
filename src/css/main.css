@@ -47,10 +47,10 @@ body.cabecera-compacta .topbar{padding:.15rem 3%;font-size:.68rem;}
 .tb-btn.outline:hover{border-color:white;color:white!important;background:rgba(255,255,255,.1);}
 
 /* NAV */
-nav{background:white;border-bottom:4px solid var(--green-dark);box-shadow:0 2px 12px rgba(0,0,0,.08);position:sticky;top:var(--topbar-height,40px);z-index:100;transition:top .3s ease;}
+nav{background:white;box-shadow:0 2px 12px rgba(0,0,0,.08);position:sticky;top:var(--topbar-height,40px);z-index:100;transition:top .3s ease;}
 .nav-inner{margin:0 auto;padding:0 2%;display:flex;align-items:stretch;justify-content:space-between;}
 .nav-logo{display:flex;align-items:center;padding:.5rem 0;text-decoration:none;margin-left:2rem;transition:padding .3s ease;}
-body.cabecera-compacta .nav-logo{padding:.15rem 0;}
+body.cabecera-compacta .nav-logo{padding:.03rem 0;}
 .nav-logo img{height:115px;width:auto;display:block;}
 .nav-links{display:flex;align-items:stretch;justify-content:flex-end;flex:1;list-style:none;gap:.5rem;}
 .nav-links>li{position:relative;}
