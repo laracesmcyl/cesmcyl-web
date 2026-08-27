@@ -16,7 +16,7 @@
   --sans:        "Lato", system-ui, sans-serif;
   --serif:       "Lato", system-ui, sans-serif;
 }
-html{scroll-behavior:smooth;font-size:19px;}
+html{scroll-behavior:smooth;font-size:17px;}
 body{font-family:var(--sans);color:var(--text);background:var(--white);line-height:1.6;overflow-x:hidden;font-size:1rem;font-weight:700;}
 /* All white text bold */
 .hero-content *,
@@ -35,7 +35,7 @@ footer *,
 .btn-gold, .btn-outline-w, .tb-btn, .nav-afiliacion { font-weight:700 !important; }
 
 /* TOP BAR */
-.topbar{background:var(--green-dark);color:rgba(255,255,255,.75);font-size:.78rem;padding:.5rem 3%;display:flex;justify-content:space-between;align-items:center;gap:1rem;position:sticky;top:0;z-index:101;transition:padding .3s ease,font-size .3s ease;}
+.topbar{background:var(--green-dark);color:rgba(255,255,255,.75);font-size:.75rem;padding:.35rem 3%;display:flex;justify-content:space-between;align-items:center;gap:1rem;position:sticky;top:0;z-index:101;transition:padding .3s ease,font-size .3s ease;}
 body.cabecera-compacta .topbar{padding:0 3%;font-size:.62rem;}
 .topbar a{color:rgba(255,255,255,.75);text-decoration:none;transition:color .2s;}
 .topbar a:hover{color:white;}
@@ -51,8 +51,8 @@ nav{background:white;box-shadow:0 2px 12px rgba(0,0,0,.08);position:sticky;top:v
 .nav-inner{margin:0 auto;padding:0 2%;display:flex;align-items:stretch;justify-content:space-between;}
 .nav-logo{display:flex;align-items:center;padding:.5rem 0;text-decoration:none;margin-left:2rem;transition:padding .3s ease;}
 body.cabecera-compacta .nav-logo{padding:0;}
-.nav-logo img{height:115px;width:auto;display:block;transition:height .3s ease;}
-body.cabecera-compacta .nav-logo img{height:52px;}
+.nav-logo img{height:92px;width:auto;display:block;transition:height .3s ease;}
+body.cabecera-compacta .nav-logo img{height:48px;}
 .nav-links{display:flex;align-items:stretch;justify-content:flex-end;flex:1;list-style:none;gap:.5rem;}
 .nav-links>li{position:relative;}
 .nav-links>li>a{display:flex;align-items:center;padding:0 1.3rem;height:100%;font-size:1.1rem;font-weight:700;letter-spacing:.01em;color:var(--dark);text-decoration:none;transition:color .2s,background .2s;white-space:nowrap;border-bottom:3px solid transparent;}
@@ -100,7 +100,7 @@ body.cabecera-compacta .nav-logo img{height:52px;}
 .hero-title{font-family:"Lato",sans-serif;font-size:clamp(2.8rem,5vw,4.4rem);color:white;line-height:1.1;font-weight:900;letter-spacing:-.01em;}
 .hero-title span{color:var(--gold);}
 
-.hero-desc{color:rgba(255,255,255,.9);font-size:1.35rem;line-height:2.1;max-width:640px;}
+.hero-desc{color:rgba(255,255,255,.9);font-size:1.1rem;line-height:1.85;max-width:640px;}
 .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
 .btn-gold{background:var(--gold);color:var(--green-dark);padding:1rem 2.2rem;font-weight:700;font-size:.92rem;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;border-radius:5px;transition:all .25s;display:inline-block;box-shadow:0 4px 15px rgba(233,169,74,.35);}
 .btn-gold:hover{background:#f0b955;transform:translateY(-2px);box-shadow:0 8px 22px rgba(233,169,74,.45);}
