@@ -55,7 +55,9 @@ body.cabecera-compacta .nav-logo{padding:0;}
 body.cabecera-compacta .nav-logo img{height:48px;}
 .nav-links{display:flex;align-items:stretch;justify-content:flex-end;flex:1;list-style:none;gap:.5rem;}
 .nav-links>li{position:relative;}
-.nav-links>li>a{display:flex;align-items:center;padding:0 1.3rem;height:100%;font-size:1.1rem;font-weight:700;letter-spacing:.01em;color:var(--dark);text-decoration:none;transition:color .2s,background .2s;white-space:nowrap;border-bottom:3px solid transparent;}
+.nav-links>li>a{display:flex;align-items:center;padding:0 1.3rem;height:100%;font-size:1.1rem;font-weight:700;letter-spacing:.01em;color:var(--dark);text-decoration:none;transition:color .2s,background .2s,font-size .3s ease,padding .3s ease;white-space:nowrap;border-bottom:3px solid transparent;}
+body.cabecera-compacta .nav-links>li>a{font-size:.9rem;padding:0 1rem;}
+body.cabecera-compacta .nav-afiliacion{font-size:.75rem!important;padding:.32rem 1rem!important;}
 .nav-links>li>a:hover{color:var(--green-mid);background:var(--green-pale);}
 .nav-links>li>a.active{color:var(--green-dark);border-bottom-color:var(--gold);}
 .topbar-social{display:flex;gap:.7rem;align-items:center;}
@@ -178,6 +180,11 @@ body.cabecera-compacta .nav-logo img{height:48px;}
 .ticker.vacio.desplegado{max-height:12px;}
 .ticker.encogido:not(.forzado-abierto) .ticker-text div{display:none;}
 .ticker.encogido.forzado-abierto{max-height:130px;padding:1.3rem 3%;}
+.ticker.encogido:not(.forzado-abierto) .ticker-label{font-size:.62rem;padding:.28rem .7rem;}
+.ticker.encogido:not(.forzado-abierto) .ticker-text{font-size:.85rem;}
+.ticker.encogido:not(.forzado-abierto) .ticker-flecha-texto{font-size:.68rem;}
+.ticker.encogido:not(.forzado-abierto) .ticker-flecha-icon{width:28px;height:28px;}
+.ticker.encogido:not(.forzado-abierto) .ticker-flecha-icon svg{width:14px;height:14px;}
 .ticker-toggle{display:none;position:absolute;left:0;right:0;bottom:7px;border:none;background:none;color:var(--green-dark);cursor:pointer;align-items:center;justify-content:center;padding:.1rem 0;opacity:.85;transition:opacity .2s;}
 .ticker-toggle:hover{opacity:1;}
 .ticker.encogido .ticker-toggle{display:flex;}
