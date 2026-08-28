@@ -9,6 +9,8 @@
 </head>
 <body>
 
+<!-- CABECERA FIJA: topbar + menú + aviso, todo junto, apilado de forma natural -->
+<div id="cabecera-fija">
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-left">
@@ -92,6 +94,8 @@
     <svg width="20" height="10" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 2 12 10 22 2"/></svg>
   </button>
 </div>
+</div>
+<!-- fin cabecera-fija -->
 
 
 <script>
@@ -122,58 +126,23 @@
     // antes). Así no hace falta calcular a mano cada vez que se retoca
     // el CSS, y evitamos que la barra blanca se quede corta y se pise
     // con lo de al lado.
-    var medidas = { topbarNormal: 32, navNormal: 133, topbarCompacta: 17, navCompacta: 60 };
-
-    function medirAlturasCabecera() {
-      var topbarEl = document.querySelector('.topbar');
-      var navEl = document.querySelector('nav');
-      if (!topbarEl || !navEl) return;
-      var estabaCompacta = document.body.classList.contains('cabecera-compacta');
-
-      topbarEl.style.transition = 'none';
-      navEl.style.transition = 'none';
-
-      document.body.classList.remove('cabecera-compacta');
-      medidas.topbarNormal = topbarEl.offsetHeight;
-      medidas.navNormal = navEl.offsetHeight;
-
-      document.body.classList.add('cabecera-compacta');
-      medidas.topbarCompacta = topbarEl.offsetHeight;
-      medidas.navCompacta = navEl.offsetHeight;
-
-      document.body.classList.toggle('cabecera-compacta', estabaCompacta);
-      aplicarAlturas(estabaCompacta);
-
-      requestAnimationFrame(function () {
-        topbarEl.style.transition = '';
-        navEl.style.transition = '';
-      });
-    }
-
-    function aplicarAlturas(compacta) {
-      var raiz = document.documentElement.style;
-      raiz.setProperty('--topbar-height', (compacta ? medidas.topbarCompacta : medidas.topbarNormal) + 'px');
-      raiz.setProperty('--nav-height', (compacta ? medidas.navCompacta : medidas.navNormal) + 'px');
-      ajustarEspacioContenido();
-    }
-
-    window.addEventListener('load', medirAlturasCabecera);
-    window.addEventListener('resize', medirAlturasCabecera);
-    medirAlturasCabecera();
-
+    // La cabecera (barra verde + menú + aviso) va dentro de un único
+    // envoltorio fijo (#cabecera-fija) donde las tres piezas se apilan
+    // solas, sin ningún cálculo de alturas — así se evita el desajuste
+    // (y la vibración) que daba el método anterior.
     function ajustarEspacioContenido() {
+      var cabecera = document.getElementById('cabecera-fija');
       var contenido = document.getElementById('contenido-pagina');
-      if (!ticker || !contenido) return;
-      var espacio = ticker.offsetTop + ticker.offsetHeight;
-      contenido.style.marginTop = espacio + 'px';
+      if (!cabecera || !contenido) return;
+      contenido.style.marginTop = cabecera.offsetHeight + 'px';
     }
+    window.addEventListener('load', ajustarEspacioContenido);
+    window.addEventListener('resize', ajustarEspacioContenido);
+    ajustarEspacioContenido();
     // El aviso carga sus datos de forma asíncrona (fetch al JSON) y puede
     // cambiar de "vacío" a "con contenido" después de cargar la página;
     // cuando eso pase, el hueco tiene que volver a calcularse una vez.
     new MutationObserver(ajustarEspacioContenido).observe(ticker, { attributes: true, attributeFilter: ['class'] });
-    // Red de seguridad: si por lo que sea el aviso tarda en llegar y el
-    // observador no llega a tiempo, volvemos a comprobar el hueco un par
-    // de veces más, poco después de cargar.
     setTimeout(ajustarEspacioContenido, 500);
     setTimeout(ajustarEspacioContenido, 1500);
 
@@ -191,7 +160,9 @@
       }
       if (debeSerCompacta !== estabaCompacta) {
         document.body.classList.toggle('cabecera-compacta', debeSerCompacta);
-        aplicarAlturas(debeSerCompacta);
+        // Al cambiar de tama\u00f1o, el envoltorio cambia de altura; esperamos
+        // a que termine la transici\u00f3n (0.3s) antes de volver a medir.
+        window.setTimeout(ajustarEspacioContenido, 320);
       }
       cabeceraTickeando = false;
     }
