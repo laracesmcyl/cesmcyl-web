@@ -54,7 +54,7 @@ body.cabecera-compacta .topbar{padding:0 3%;font-size:.62rem;}
 
 /* NAV */
 nav{background:white;box-shadow:0 2px 12px rgba(0,0,0,.08);position:fixed;top:var(--topbar-height,40px);left:0;right:0;z-index:100;transition:top .3s ease;}
-.nav-inner{margin:0 auto;padding:0 2%;display:flex;align-items:stretch;justify-content:space-between;}
+.nav-inner{margin:0 auto;padding:0 2%;display:flex;align-items:center;justify-content:space-between;}
 .nav-logo{display:flex;align-items:center;padding:.5rem 0;text-decoration:none;margin-left:2rem;transition:padding .3s ease;}
 body.cabecera-compacta .nav-logo{padding:0;}
 .nav-logo img{height:92px;width:auto;display:block;transition:height .3s ease;}
