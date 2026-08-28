@@ -171,6 +171,11 @@
     // cambiar de "vacío" a "con contenido" después de cargar la página;
     // cuando eso pase, el hueco tiene que volver a calcularse una vez.
     new MutationObserver(ajustarEspacioContenido).observe(ticker, { attributes: true, attributeFilter: ['class'] });
+    // Red de seguridad: si por lo que sea el aviso tarda en llegar y el
+    // observador no llega a tiempo, volvemos a comprobar el hueco un par
+    // de veces más, poco después de cargar.
+    setTimeout(ajustarEspacioContenido, 500);
+    setTimeout(ajustarEspacioContenido, 1500);
 
     var UMBRAL_CABECERA_COMPACTA = 60;
     var UMBRAL_CABECERA_NORMAL = 15;
