@@ -103,39 +103,42 @@
     var boton = document.getElementById('ticker-toggle');
     if (!ticker) return;
 
-    function fijarAlturaNav() {
-      var nav = document.querySelector('nav');
-      var topbar = document.querySelector('.topbar');
-      if (nav) {
-        document.documentElement.style.setProperty('--nav-height', nav.offsetHeight + 'px');
-      }
-      if (topbar) {
-        document.documentElement.style.setProperty('--topbar-height', topbar.offsetHeight + 'px');
-      }
-    }
-    fijarAlturaNav();
-    window.addEventListener('resize', fijarAlturaNav);
-
     // Cabecera compacta (barra verde + menú más finos) al bajar la página,
-    // con dos umbrales distintos (igual que el aviso) para que no "vibre".
+    // con dos umbrales distintos para que no "vibre". Las alturas de cada
+    // estado están fijadas en el CSS (variables --topbar-height y
+    // --nav-height), no se miden por JavaScript, para evitar que se
+    // recalculen en bucle mientras se hace scroll.
+    // La cabecera (barra verde + menú + aviso) ahora "flota" fija sobre la
+    // página en vez de empujar el contenido (position:fixed), para evitar
+    // el bucle de vibración que causaba al cambiar de tamaño en mitad del
+    // scroll. Como consecuencia, hay que dejarle el hueco correspondiente
+    // arriba de la página a mano, con este margen. OJO: esto se mide solo
+    // al cargar, al cambiar el tamaño de ventana, y cuando cambia el aviso
+    // (activo/inactivo) — nunca durante el scroll, para no repetir el
+    // problema de antes.
+    function ajustarEspacioContenido() {
+      var contenido = document.getElementById('contenido-pagina');
+      if (!ticker || !contenido) return;
+      var espacio = ticker.offsetTop + ticker.offsetHeight;
+      contenido.style.marginTop = espacio + 'px';
+    }
+    window.addEventListener('load', ajustarEspacioContenido);
+    window.addEventListener('resize', ajustarEspacioContenido);
+    ajustarEspacioContenido();
+    // El aviso carga sus datos de forma asíncrona (fetch al JSON) y puede
+    // cambiar de "vacío" a "con contenido" después de cargar la página;
+    // cuando eso pase, el hueco tiene que volver a calcularse una vez.
+    new MutationObserver(ajustarEspacioContenido).observe(ticker, { attributes: true, attributeFilter: ['class'] });
+
     var UMBRAL_CABECERA_COMPACTA = 60;
     var UMBRAL_CABECERA_NORMAL = 15;
     var cabeceraTickeando = false;
     function actualizarCabecera() {
       var y = window.scrollY;
-      var estabaCompacta = document.body.classList.contains('cabecera-compacta');
-      var debeSerCompacta = estabaCompacta;
       if (y > UMBRAL_CABECERA_COMPACTA) {
-        debeSerCompacta = true;
+        document.body.classList.add('cabecera-compacta');
       } else if (y < UMBRAL_CABECERA_NORMAL) {
-        debeSerCompacta = false;
-      }
-      if (debeSerCompacta !== estabaCompacta) {
-        document.body.classList.toggle('cabecera-compacta', debeSerCompacta);
-        // Esperamos a que termine la transición (0.3s) antes de volver a
-        // medir la altura; si medimos a mitad de la animación, el valor
-        // cambia en cada fotograma y el aviso "vibra" al reajustarse.
-        window.setTimeout(fijarAlturaNav, 320);
+        document.body.classList.remove('cabecera-compacta');
       }
       cabeceraTickeando = false;
     }
@@ -179,7 +182,9 @@
   })();
 </script>
 
+<div id="contenido-pagina">
 {{ content | safe }}
+</div>
 
 <!-- FOOTER -->
 <footer>
