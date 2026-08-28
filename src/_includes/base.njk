@@ -116,15 +116,57 @@
     // al cargar, al cambiar el tamaño de ventana, y cuando cambia el aviso
     // (activo/inactivo) — nunca durante el scroll, para no repetir el
     // problema de antes.
+    // Medimos las alturas REALES de la topbar y el menú, en sus dos
+    // versiones (normal y compacta), UNA sola vez al cargar la página
+    // (nunca durante el scroll, que es lo que causaba la vibración de
+    // antes). Así no hace falta calcular a mano cada vez que se retoca
+    // el CSS, y evitamos que la barra blanca se quede corta y se pise
+    // con lo de al lado.
+    var medidas = { topbarNormal: 32, navNormal: 133, topbarCompacta: 17, navCompacta: 60 };
+
+    function medirAlturasCabecera() {
+      var topbarEl = document.querySelector('.topbar');
+      var navEl = document.querySelector('nav');
+      if (!topbarEl || !navEl) return;
+      var estabaCompacta = document.body.classList.contains('cabecera-compacta');
+
+      topbarEl.style.transition = 'none';
+      navEl.style.transition = 'none';
+
+      document.body.classList.remove('cabecera-compacta');
+      medidas.topbarNormal = topbarEl.offsetHeight;
+      medidas.navNormal = navEl.offsetHeight;
+
+      document.body.classList.add('cabecera-compacta');
+      medidas.topbarCompacta = topbarEl.offsetHeight;
+      medidas.navCompacta = navEl.offsetHeight;
+
+      document.body.classList.toggle('cabecera-compacta', estabaCompacta);
+      aplicarAlturas(estabaCompacta);
+
+      requestAnimationFrame(function () {
+        topbarEl.style.transition = '';
+        navEl.style.transition = '';
+      });
+    }
+
+    function aplicarAlturas(compacta) {
+      var raiz = document.documentElement.style;
+      raiz.setProperty('--topbar-height', (compacta ? medidas.topbarCompacta : medidas.topbarNormal) + 'px');
+      raiz.setProperty('--nav-height', (compacta ? medidas.navCompacta : medidas.navNormal) + 'px');
+      ajustarEspacioContenido();
+    }
+
+    window.addEventListener('load', medirAlturasCabecera);
+    window.addEventListener('resize', medirAlturasCabecera);
+    medirAlturasCabecera();
+
     function ajustarEspacioContenido() {
       var contenido = document.getElementById('contenido-pagina');
       if (!ticker || !contenido) return;
       var espacio = ticker.offsetTop + ticker.offsetHeight;
       contenido.style.marginTop = espacio + 'px';
     }
-    window.addEventListener('load', ajustarEspacioContenido);
-    window.addEventListener('resize', ajustarEspacioContenido);
-    ajustarEspacioContenido();
     // El aviso carga sus datos de forma asíncrona (fetch al JSON) y puede
     // cambiar de "vacío" a "con contenido" después de cargar la página;
     // cuando eso pase, el hueco tiene que volver a calcularse una vez.
@@ -135,10 +177,16 @@
     var cabeceraTickeando = false;
     function actualizarCabecera() {
       var y = window.scrollY;
+      var estabaCompacta = document.body.classList.contains('cabecera-compacta');
+      var debeSerCompacta = estabaCompacta;
       if (y > UMBRAL_CABECERA_COMPACTA) {
-        document.body.classList.add('cabecera-compacta');
+        debeSerCompacta = true;
       } else if (y < UMBRAL_CABECERA_NORMAL) {
-        document.body.classList.remove('cabecera-compacta');
+        debeSerCompacta = false;
+      }
+      if (debeSerCompacta !== estabaCompacta) {
+        document.body.classList.toggle('cabecera-compacta', debeSerCompacta);
+        aplicarAlturas(debeSerCompacta);
       }
       cabeceraTickeando = false;
     }
