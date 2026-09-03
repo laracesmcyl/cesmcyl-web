@@ -14,7 +14,6 @@ title: "CESMCYL · Confederación de Sindicatos Médicos de Castilla y León"
       <h1 class="hero-title">Defendemos los derechos<br>de los <span>médicos de Valladolid</span></h1>
 
       <div class="quienes-caja">
-        <span class="quienes-caja-num">01</span>
         <span class="quienes-caja-titulo">Quiénes somos</span>
         <p class="quienes-caja-destacado">CESM Valladolid es un sindicato médico confederado a nivel autonómico en CESM Castilla y León (CESMCYL) y a nivel nacional en CESM.</p>
       </div>
@@ -68,25 +67,72 @@ title: "CESMCYL · Confederación de Sindicatos Médicos de Castilla y León"
       <div class="tablon-divider">
         Últimas noticias
       </div>
-      <div id="tablon-noticias">
-        {%- for noticia in collections.noticias | reverse | sinFijar | limit(3) -%}
-        <a href="/noticias/{{ noticia.fileSlug }}/" class="tablon-item">
-          <div class="tablon-item-header">
-            <span class="tablon-tag{% if noticia.data.category == 'CESM' %} verde{% endif %}">{{ noticia.data.category }}</span>
-            <span class="fecha">{{ noticia.data.date }}</span>
-          </div>
-          <div class="tablon-titulo-row">
-            <h4>{{ noticia.data.title }}</h4>
-            <svg class="tablon-flecha" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-          </div>
-          <p class="tablon-desc">{{ noticia.data.description or (noticia.templateContent | excerpt(90)) }}</p>
-        </a>
-        {%- endfor -%}
+      {%- set noticiasCarrusel = collections.noticias | reverse | sinFijar | limit(8) -%}
+      <div class="tablon-carrusel-wrap">
+        <button type="button" class="carrusel-flecha carrusel-flecha-arriba" id="carrusel-arriba" aria-label="Noticia anterior">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+        </button>
+        <div id="tablon-noticias" class="tablon-carrusel">
+          {%- for noticia in noticiasCarrusel -%}
+          <a href="/noticias/{{ noticia.fileSlug }}/" class="tablon-item carrusel-item">
+            <div class="tablon-item-header">
+              <span class="tablon-tag{% if noticia.data.category == 'CESM' %} verde{% endif %}">{{ noticia.data.category }}</span>
+              <span class="fecha">{{ noticia.data.date }}</span>
+            </div>
+            <div class="tablon-titulo-row">
+              <h4>{{ noticia.data.title }}</h4>
+              <svg class="tablon-flecha" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <p class="tablon-desc">{{ noticia.data.description or (noticia.templateContent | excerpt(90)) }}</p>
+          </a>
+          {%- endfor -%}
+        </div>
+        <button type="button" class="carrusel-flecha carrusel-flecha-abajo" id="carrusel-abajo" aria-label="Noticia siguiente">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
       </div>
       <a href="#noticias" class="tablon-ver-mas">
         Ver todas las noticias
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </a>
+
+      <script>
+      (function () {
+        var pista = document.getElementById('tablon-noticias');
+        if (!pista) return;
+        var items = Array.prototype.slice.call(pista.querySelectorAll('.carrusel-item'));
+        var total = items.length;
+        if (total === 0) return;
+        var actual = 0;
+
+        function pintar() {
+          items.forEach(function (item, i) {
+            item.classList.remove('pos-centro', 'pos-arriba', 'pos-abajo', 'pos-oculto');
+            var rel = (i - actual + total) % total;
+            if (rel === 0) { item.classList.add('pos-centro'); item.style.pointerEvents = 'auto'; }
+            else if (rel === 1) { item.classList.add('pos-abajo'); item.style.pointerEvents = 'none'; }
+            else if (rel === total - 1) { item.classList.add('pos-arriba'); item.style.pointerEvents = 'none'; }
+            else { item.classList.add('pos-oculto'); item.style.pointerEvents = 'none'; }
+          });
+        }
+
+        var temporizador;
+        function reiniciarTemporizador() {
+          clearInterval(temporizador);
+          temporizador = setInterval(siguiente, 30000);
+        }
+        function siguiente() { actual = (actual + 1) % total; pintar(); }
+        function anterior() { actual = (actual - 1 + total) % total; pintar(); }
+
+        var btnArriba = document.getElementById('carrusel-arriba');
+        var btnAbajo = document.getElementById('carrusel-abajo');
+        if (btnArriba) btnArriba.addEventListener('click', function () { anterior(); reiniciarTemporizador(); });
+        if (btnAbajo) btnAbajo.addEventListener('click', function () { siguiente(); reiniciarTemporizador(); });
+
+        pintar();
+        reiniciarTemporizador();
+      })();
+      </script>
     </div>
 
   </div>
