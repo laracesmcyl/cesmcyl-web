@@ -190,7 +190,7 @@ body.cabecera-compacta .nav-afiliacion{font-size:.75rem!important;padding:.32rem
   transition:max-height .6s ease, padding .35s ease;
   z-index:90;
   background:linear-gradient(100deg,var(--gold) 35%,#f6d29a 50%,var(--gold) 65%);
-  padding:.9rem 3%;
+  padding:.9rem 2%;
   overflow:hidden;
   max-height:0;
   color:var(--green-dark);
@@ -200,11 +200,11 @@ body.cabecera-compacta .nav-afiliacion{font-size:.75rem!important;padding:.32rem
   0%{background-position:-150% 0;}
   100%{background-position:150% 0;}
 }
-.ticker-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
+.ticker-inner{margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
 .ticker-msg{display:flex;align-items:center;gap:2.2rem;transition:opacity .25s;}
 .ticker.desplegado{max-height:96px;}
-.ticker.desplegado.encogido{max-height:74px;padding:.6rem 3%;}
-.ticker.vacio{padding:.2rem 3%;animation:none;background:var(--gold);}
+.ticker.desplegado.encogido{max-height:74px;padding:.6rem 2%;}
+.ticker.vacio{padding:.2rem 2%;animation:none;background:var(--gold);}
 .ticker.vacio.desplegado{max-height:12px;}
 .ticker.encogido .ticker-text div{display:none;}
 .ticker.encogido .ticker-label{font-size:.62rem;padding:.28rem .7rem;}
