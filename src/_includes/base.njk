@@ -89,9 +89,6 @@
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
   </a>
   </div>
-  <button type="button" class="ticker-toggle" id="ticker-toggle" aria-label="Mostrar u ocultar los detalles del aviso">
-    <svg width="20" height="10" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 2 12 10 22 2"/></svg>
-  </button>
 </div>
 </div>
 <!-- fin cabecera-fija -->
@@ -103,7 +100,6 @@
   // pulsando la flechita, sin necesidad de subir arriba.
   (function () {
     var ticker = document.getElementById('ticker');
-    var boton = document.getElementById('ticker-toggle');
     if (!ticker) return;
 
     // Cabecera compacta (barra verde + menú más finos) al bajar la página,
@@ -182,7 +178,6 @@
         ticker.classList.add('encogido');
       } else if (y < UMBRAL_ABRIR) {
         ticker.classList.remove('encogido');
-        ticker.classList.remove('forzado-abierto');
       }
       // Entre los dos umbrales no tocamos nada: así no "vibra" si el
       // scroll se queda justo en medio.
@@ -195,13 +190,6 @@
       }
     }, { passive: true });
     actualizarEncogido();
-
-    if (boton) {
-      boton.addEventListener('click', function (e) {
-        e.preventDefault();
-        ticker.classList.toggle('forzado-abierto');
-      });
-    }
   })();
 </script>
 
