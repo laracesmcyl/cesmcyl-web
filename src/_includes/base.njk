@@ -129,10 +129,18 @@
       var cabecera = document.getElementById('cabecera-fija');
       var contenido = document.getElementById('contenido-pagina');
       if (!cabecera || !contenido) return;
-      contenido.style.marginTop = (cabecera.offsetHeight + 48) + 'px';
+      contenido.style.marginTop = cabecera.offsetHeight + 'px';
     }
     window.addEventListener('load', ajustarEspacioContenido);
+    // La tipografía (Lato) puede tardar un poco en cargar y cambiar la
+    // altura real del menú; en cuanto termine de cargar, recalculamos el
+    // hueco para que el título no se quede tapado detrás de la cabecera.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(ajustarEspacioContenido);
+    }
     window.addEventListener('resize', ajustarEspacioContenido);
+    setTimeout(ajustarEspacioContenido, 300);
+    setTimeout(ajustarEspacioContenido, 1000);
     ajustarEspacioContenido();
     // El aviso carga sus datos de forma asíncrona (fetch al JSON) y puede
     // cambiar de "vacío" a "con contenido" después de cargar la página;
@@ -155,9 +163,7 @@
       }
       if (debeSerCompacta !== estabaCompacta) {
         document.body.classList.toggle('cabecera-compacta', debeSerCompacta);
-        // Al cambiar de tama\u00f1o, el envoltorio cambia de altura; esperamos
-        // a que termine la transici\u00f3n (0.3s) antes de volver a medir.
-        window.setTimeout(ajustarEspacioContenido, 320);
+        ajustarEspacioContenido();
       }
       cabeceraTickeando = false;
     }
