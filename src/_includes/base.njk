@@ -163,7 +163,13 @@
       }
       if (debeSerCompacta !== estabaCompacta) {
         document.body.classList.toggle('cabecera-compacta', debeSerCompacta);
-        ajustarEspacioContenido();
+        // OJO: no volvemos a llamar a ajustarEspacioContenido() aquí a
+        // propósito. El hueco del contenido se fija una sola vez, con la
+        // cabecera en su tamaño normal, y se queda quieto aunque la
+        // cabecera se encoja al hacer scroll — si no, el contenido "salta"
+        // hacia arriba cada vez que la cabecera cambia de tamaño, dando
+        // la sensación de haber bajado mucho más de lo que se ha movido
+        // el ratón.
       }
       cabeceraTickeando = false;
     }
