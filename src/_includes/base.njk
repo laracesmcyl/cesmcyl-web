@@ -129,7 +129,7 @@
       var cabecera = document.getElementById('cabecera-fija');
       var contenido = document.getElementById('contenido-pagina');
       if (!cabecera || !contenido) return;
-      contenido.style.marginTop = cabecera.offsetHeight + 'px';
+      contenido.style.marginTop = (cabecera.offsetHeight + 48) + 'px';
     }
     window.addEventListener('load', ajustarEspacioContenido);
     window.addEventListener('resize', ajustarEspacioContenido);
