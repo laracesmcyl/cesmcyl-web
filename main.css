@@ -433,10 +433,21 @@ footer{background:white;color:var(--stone);}
   .fgrid{grid-template-columns:1fr;}
   .reveal{opacity:1!important;transform:none!important;}
   .mir-actions{flex-wrap:wrap;}
+
+  /* AVISO en móvil: se apila en vertical, en vez de intentar caber en una fila */
+  .ticker-inner{flex-direction:column;align-items:center;gap:.6rem;text-align:center;}
+  .ticker-msg{flex-direction:column;align-items:center;text-align:center;gap:.5rem;}
+  .ticker-label{margin:0 auto;}
+  .hero-desc{font-size:.9rem;}
+  .quienes-caja-destacado{font-size:.9rem;}
+  .quienes-objetivos .objetivos-list li{font-size:.85rem;}
+  .quienes-lema{font-size:.7rem;white-space:normal;}
+  .tablon-carrusel{height:200px;}
 }
 @media(max-width:540px){
   .hero-cards{grid-template-columns:1fr 1fr;}
   .provincias-grid{grid-template-columns:1fr 1fr;}
   .footer-grid{grid-template-columns:1fr 1fr;gap:2rem;}
   .todas-noticias-grid{grid-template-columns:1fr;}
+  .ticker-flecha-texto{display:none;}
 }
