@@ -19,7 +19,7 @@
 html{scroll-behavior:smooth;font-size:17px;}
 #cabecera-fija{position:fixed;top:0;left:0;right:0;z-index:100;}
 #contenido-pagina{transition:margin-top .3s ease;}
-body{font-family:var(--sans);color:var(--text);background:var(--white);line-height:1.6;overflow-x:hidden;font-size:1rem;font-weight:700;}
+body{font-family:var(--sans);color:var(--text);background:var(--green-dark);line-height:1.6;overflow-x:hidden;font-size:1rem;font-weight:700;}
 /* All white text bold */
 .hero-content *,
 .hero-cards *,
