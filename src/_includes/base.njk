@@ -129,7 +129,14 @@
       var cabecera = document.getElementById('cabecera-fija');
       var contenido = document.getElementById('contenido-pagina');
       if (!cabecera || !contenido) return;
-      contenido.style.marginTop = cabecera.offsetHeight + 'px';
+      // Medimos SIEMPRE con la cabecera en su tamaño normal (aunque en
+      // ese instante ya esté encogida por el scroll), para que el hueco
+      // fijado nunca se quede "congelado" con un valor demasiado pequeño.
+      var estabaCompacta = document.body.classList.contains('cabecera-compacta');
+      if (estabaCompacta) document.body.classList.remove('cabecera-compacta');
+      var altura = cabecera.offsetHeight;
+      if (estabaCompacta) document.body.classList.add('cabecera-compacta');
+      contenido.style.marginTop = altura + 'px';
     }
     window.addEventListener('load', ajustarEspacioContenido);
     // La tipografía (Lato) puede tardar un poco en cargar y cambiar la
@@ -163,13 +170,10 @@
       }
       if (debeSerCompacta !== estabaCompacta) {
         document.body.classList.toggle('cabecera-compacta', debeSerCompacta);
-        // OJO: no volvemos a llamar a ajustarEspacioContenido() aquí a
-        // propósito. El hueco del contenido se fija una sola vez, con la
-        // cabecera en su tamaño normal, y se queda quieto aunque la
-        // cabecera se encoja al hacer scroll — si no, el contenido "salta"
-        // hacia arriba cada vez que la cabecera cambia de tamaño, dando
-        // la sensación de haber bajado mucho más de lo que se ha movido
-        // el ratón.
+        // El contenido NO se reajusta aquí a propósito: solo las barras
+        // cambian de tamaño (rápido, en cuanto se empieza a bajar), y el
+        // contenido de la página se queda quieto en su sitio, sin moverse
+        // a la vez ni después.
       }
       cabeceraTickeando = false;
     }
