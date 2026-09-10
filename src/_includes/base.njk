@@ -95,53 +95,50 @@
 
 
 <script>
-  // La franja del aviso se queda pegada bajo el menú al bajar la página,
-  // encogida a una versión compacta. Se puede volver a abrir del todo
-  // pulsando la flechita, sin necesidad de subir arriba.
+  // Cabecera fija (#cabecera-fija): barra verde + menú + aviso, apilados
+  // dentro de un único bloque con position:fixed. Como flota sobre la
+  // página, el contenido necesita un margen superior igual a la altura de
+  // la cabecera en su tamaño NORMAL (arriba del todo).
+  // Al bajar, la barra verde y el menú se encogen (clase cabecera-compacta
+  // en <body>) y el aviso también (clase encogido en #ticker), pero el
+  // contenido NO se mueve: el margen se queda siempre con la altura normal.
   (function () {
     var ticker = document.getElementById('ticker');
     if (!ticker) return;
 
-    // Cabecera compacta (barra verde + menú más finos) al bajar la página,
-    // con dos umbrales distintos para que no "vibre". Las alturas de cada
-    // estado están fijadas en el CSS (variables --topbar-height y
-    // --nav-height), no se miden por JavaScript, para evitar que se
-    // recalculen en bucle mientras se hace scroll.
-    // La cabecera (barra verde + menú + aviso) ahora "flota" fija sobre la
-    // página en vez de empujar el contenido (position:fixed), para evitar
-    // el bucle de vibración que causaba al cambiar de tamaño en mitad del
-    // scroll. Como consecuencia, hay que dejarle el hueco correspondiente
-    // arriba de la página a mano, con este margen. OJO: esto se mide solo
-    // al cargar, al cambiar el tamaño de ventana, y cuando cambia el aviso
-    // (activo/inactivo) — nunca durante el scroll, para no repetir el
-    // problema de antes.
-    // Medimos las alturas REALES de la topbar y el menú, en sus dos
-    // versiones (normal y compacta), UNA sola vez al cargar la página
-    // (nunca durante el scroll, que es lo que causaba la vibración de
-    // antes). Así no hace falta calcular a mano cada vez que se retoca
-    // el CSS, y evitamos que la barra blanca se quede corta y se pise
-    // con lo de al lado.
-    // La cabecera (barra verde + menú + aviso) va dentro de un único
-    // envoltorio fijo (#cabecera-fija) donde las tres piezas se apilan
-    // solas, sin ningún cálculo de alturas — así se evita el desajuste
-    // (y la vibración) que daba el método anterior.
-    function ajustarEspacioContenido() {
+    // Mide la cabecera como si estuviera arriba del todo: quita un momento
+    // los dos encogidos (barras y aviso) y desactiva las animaciones para
+    // leer la altura final real, no una a medio camino. Todo ocurre en el
+    // mismo instante, así que en pantalla no se ve ningún cambio.
+    function medirCabecera(compacta) {
       var cabecera = document.getElementById('cabecera-fija');
-      var contenido = document.getElementById('contenido-pagina');
-      if (!cabecera || !contenido) return;
-      // Medimos SIEMPRE con la cabecera en su tamaño normal (aunque en
-      // ese instante ya esté encogida por el scroll), para que el hueco
-      // fijado nunca se quede "congelado" con un valor demasiado pequeño.
-      var estabaCompacta = document.body.classList.contains('cabecera-compacta');
-      if (estabaCompacta) document.body.classList.remove('cabecera-compacta');
+      var body = document.body;
+      var barrasCompactas = body.classList.contains('cabecera-compacta');
+      var avisoEncogido = ticker.classList.contains('encogido');
+      body.classList.add('midiendo-cabecera');
+      body.classList.toggle('cabecera-compacta', compacta);
+      ticker.classList.toggle('encogido', compacta);
       var altura = cabecera.offsetHeight;
-      if (estabaCompacta) document.body.classList.add('cabecera-compacta');
-      contenido.style.marginTop = altura + 'px';
+      body.classList.toggle('cabecera-compacta', barrasCompactas);
+      ticker.classList.toggle('encogido', avisoEncogido);
+      void cabecera.offsetHeight; // aplica el estado restaurado sin animación
+      body.classList.remove('midiendo-cabecera');
+      return altura;
     }
+
+    function ajustarEspacioContenido() {
+      var contenido = document.getElementById('contenido-pagina');
+      if (!document.getElementById('cabecera-fija') || !contenido) return;
+      var alturaNormal = medirCabecera(false);
+      var alturaCompacta = medirCabecera(true);
+      contenido.style.marginTop = alturaNormal + 'px';
+      // Al pulsar un enlace del menú (#servicios, #noticias...), que la
+      // sección quede justo debajo de la cabecera y no tapada por ella.
+      document.documentElement.style.scrollPaddingTop = (alturaCompacta + 16) + 'px';
+    }
+
     window.addEventListener('load', ajustarEspacioContenido);
-    // La tipografía (Lato) puede tardar un poco en cargar y cambiar la
-    // altura real del menú; en cuanto termine de cargar, recalculamos el
-    // hueco para que el título no se quede tapado detrás de la cabecera.
+    // La tipografía puede tardar en cargar y cambiar la altura del menú.
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(ajustarEspacioContenido);
     }
@@ -149,12 +146,21 @@
     setTimeout(ajustarEspacioContenido, 300);
     setTimeout(ajustarEspacioContenido, 1000);
     ajustarEspacioContenido();
-    // El aviso carga sus datos de forma asíncrona (fetch al JSON) y puede
-    // cambiar de "vacío" a "con contenido" después de cargar la página;
-    // cuando eso pase, el hueco tiene que volver a calcularse una vez.
-    new MutationObserver(ajustarEspacioContenido).observe(ticker, { attributes: true, attributeFilter: ['class'] });
-    setTimeout(ajustarEspacioContenido, 500);
-    setTimeout(ajustarEspacioContenido, 1500);
+
+    // El aviso carga sus datos después (fetch al JSON) y pasa de "vacío" a
+    // "con contenido". Solo entonces hay que recalcular. Los cambios de
+    // encogido por el scroll se IGNORAN a propósito: eran los que estropeaban
+    // la medición y dejaban el contenido tapado al volver arriba.
+    function estadoAviso() {
+      return ticker.classList.contains('vacio') + '|' + ticker.classList.contains('desplegado');
+    }
+    var ultimoEstadoAviso = estadoAviso();
+    new MutationObserver(function () {
+      var estado = estadoAviso();
+      if (estado === ultimoEstadoAviso) return;
+      ultimoEstadoAviso = estado;
+      ajustarEspacioContenido();
+    }).observe(ticker, { attributes: true, attributeFilter: ['class'] });
 
     var UMBRAL_CABECERA_COMPACTA = 20;
     var UMBRAL_CABECERA_NORMAL = 5;
