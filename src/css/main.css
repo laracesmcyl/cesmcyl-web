@@ -19,6 +19,9 @@
 html{scroll-behavior:smooth;font-size:17px;}
 #cabecera-fija{position:fixed;top:0;left:0;right:0;z-index:100;}
 #contenido-pagina{transition:margin-top .3s ease;}
+/* Mientras se mide la cabecera (un instante, por JS), sin animaciones */
+body.midiendo-cabecera #cabecera-fija,
+body.midiendo-cabecera #cabecera-fija *{transition:none!important;}
 body{font-family:var(--sans);color:var(--text);background:var(--green-dark);line-height:1.6;overflow-x:hidden;font-size:1rem;font-weight:700;}
 /* All white text bold */
 .hero-content *,
