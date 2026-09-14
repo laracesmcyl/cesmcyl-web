@@ -1,0 +1,40 @@
+{
+  "categorias": [
+    {
+      "nombre": "OPE"
+    },
+    {
+      "nombre": "Bolsa"
+    },
+    {
+      "nombre": "CESM"
+    },
+    {
+      "nombre": "Estatuto Marco"
+    },
+    {
+      "nombre": "Fidelización"
+    },
+    {
+      "nombre": "MIR 2026"
+    },
+    {
+      "nombre": "Electoral 2026"
+    },
+    {
+      "nombre": "Estabilización"
+    },
+    {
+      "nombre": "Tutores"
+    },
+    {
+      "nombre": "Inspección Sanitaria"
+    },
+    {
+      "nombre": "Concurso de traslados"
+    },
+    {
+      "nombre": "Novedades normativas estatales"
+    }
+  ]
+}
