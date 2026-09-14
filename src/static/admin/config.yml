@@ -25,8 +25,13 @@ collections:
       - { label: "Fecha", name: "date", widget: "date", format: "YYYY-MM-DD" }
       - label: "Categoría"
         name: "category"
-        widget: "select"
-        options: ["OPE", "Bolsa", "CESM", "Estatuto Marco", "Fidelización", "MIR 2026", "Electoral 2026", "Estabilización", "Tutores", "Inspección Sanitaria", "Concurso de traslados", "Novedades normativas estatales", "Noticias"]
+        widget: "relation"
+        collection: "categorias"
+        file: "categorias"
+        search_fields: ["categorias.*.nombre"]
+        display_fields: ["categorias.*.nombre"]
+        value_field: "categorias.*.nombre"
+        # La lista sale del apartado "Categorías" del panel: allí se crean y borran.
       - { label: "Fijar en Destacado (Tablón)", name: "pinned", widget: "boolean", default: false }
       - { label: "Imagen (opcional)", name: "image", widget: "image", required: false }
       - { label: "Descripción corta (solo si está Fijada)", name: "description", widget: "string", required: false }
@@ -52,3 +57,18 @@ collections:
         file: "src/static/huelga-info.json"
         fields:
           - { label: "Texto de la página de huelga", name: "texto", widget: "markdown", required: false }
+
+  - name: "categorias"
+    label: "Categorías"
+    files:
+      - name: "categorias"
+        label: "Lista de categorías de noticias"
+        file: "src/static/categorias.json"
+        fields:
+          - label: "Categorías"
+            name: "categorias"
+            widget: "list"
+            label_singular: "Categoría"
+            summary: "{{fields.nombre}}"
+            fields:
+              - { label: "Nombre", name: "nombre", widget: "string" }
