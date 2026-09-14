@@ -1,7 +1,9 @@
 backend:
-  name: proxy
-  proxy_url: "https://cesmcyl-cms-proxy.laracesmcyl.workers.dev"
+  name: github
+  repo: "laracesmcyl/cesmcyl-web"
   branch: main
+  # Worker de acceso (el que has creado en Cloudflare)
+  base_url: "https://sveltia-cms-auth.laracesmcyl.workers.dev"
 
 # Aparece el editor de contenido enriquecido (negrita, cursiva, enlaces...)
 # en los campos que lo pidan explícitamente con widget "markdown".
@@ -18,8 +20,8 @@ collections:
     extension: "md"
     format: "frontmatter"
     identifier_field: "title"
-    # Cada noticia se ve así en el listado: fecha · categoría — título
-    summary: "{{date}}  ·  {{category}}  —  {{title}}"
+    # Cada noticia se ve así en el listado: fecha · categoría · título
+    summary: "{{date}}  ·  {{category}}  ·  {{title}}"
     sortable_fields: ["date", "title", "category"]
     # Botones "Group by" y "Filter by" encima del listado
     view_groups:

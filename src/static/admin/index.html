@@ -3,123 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel de edición · CESMCYL</title>
-  <style>
-    body{font-family:system-ui,sans-serif;background:#f8f9f7;margin:0;}
-    #login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;}
-    #login-box{background:white;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.08);padding:2.5rem;max-width:340px;width:100%;text-align:center;}
-    #login-box h1{font-size:1.2rem;color:#0c3316;margin:0 0 .3rem;}
-    #login-box p{font-size:.85rem;color:#5a6b5b;margin:0 0 1.5rem;}
-    #password-wrap{position:relative;margin-bottom:1rem;}
-    #login-box input{width:100%;padding:.7rem 2.6rem .7rem 1rem;border:1px solid #d8e4d9;border-radius:8px;font-size:1rem;box-sizing:border-box;}
-    #toggle-password{position:absolute;right:.5rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:.35rem;display:flex;align-items:center;justify-content:center;color:#5a6b5b;width:auto;}
-    #toggle-password:hover{color:#0c3316;}
-    #login-box button#login-btn{width:100%;padding:.8rem;border:none;border-radius:8px;background:#e9a94a;color:#0c3316;font-weight:700;font-size:1rem;cursor:pointer;}
-    #login-error{color:#c0392b;font-size:.82rem;margin-top:.8rem;min-height:1.2em;}
-  </style>
+  <title>Panel de edición · CESM Valladolid</title>
+  <link rel="icon" href="/logo-cesm-vll-hq.png">
 </head>
 <body>
-
-<div id="login-wrap">
-  <div id="login-box">
-    <h1>Panel de edición</h1>
-    <p>Introduce la clave de acceso compartida del sindicato.</p>
-    <div id="password-wrap">
-      <input type="password" id="login-password" placeholder="Clave de acceso" autofocus>
-      <button type="button" id="toggle-password" aria-label="Mostrar clave">
-        <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-      </button>
-    </div>
-    <button id="login-btn">Entrar</button>
-    <div id="login-error"></div>
-  </div>
-</div>
-
-<div id="cms-root" style="display:none;"></div>
-
-<script>
-  // Comprueba la clave contra nuestro Worker antes de cargar Decap CMS.
-  // Si es correcta, el propio Worker (a través del backend "proxy" que
-  // Decap CMS usa) es quien habla con GitHub de ahí en adelante.
-  const PROXY_URL = "https://cesmcyl-cms-proxy.laracesmcyl.workers.dev";
-
-  document.getElementById('login-btn').addEventListener('click', intentarEntrar);
-  document.getElementById('login-password').addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') intentarEntrar();
-  });
-
-  const toggleBtn = document.getElementById('toggle-password');
-  const pwInput = document.getElementById('login-password');
-  const eyeIcon = document.getElementById('eye-icon');
-  const eyeOpen = '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>';
-  const eyeClosed = '<path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-7-11-7a18.6 18.6 0 015.06-5.94M9.9 4.24A10.4 10.4 0 0112 4c7 0 11 7 11 7a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
-  toggleBtn.addEventListener('click', function () {
-    const showing = pwInput.type === 'text';
-    pwInput.type = showing ? 'password' : 'text';
-    eyeIcon.innerHTML = showing ? eyeOpen : eyeClosed;
-    toggleBtn.setAttribute('aria-label', showing ? 'Mostrar clave' : 'Ocultar clave');
-  });
-
-  async function intentarEntrar() {
-    const clave = document.getElementById('login-password').value;
-    const error = document.getElementById('login-error');
-    const btn = document.getElementById('login-btn');
-    error.textContent = '';
-    btn.disabled = true;
-    btn.textContent = 'Comprobando...';
-
-    try {
-      const res = await fetch(PROXY_URL + '/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: clave })
-      });
-      const datos = await res.json();
-      if (res.ok && datos.token) {
-        // Guardamos el token temporal que da el Worker; Decap CMS lo usará
-        // para todas sus peticiones siguientes.
-        sessionStorage.setItem('cesmcyl-cms-token', datos.token);
-        document.getElementById('login-wrap').style.display = 'none';
-        document.getElementById('cms-root').style.display = 'block';
-        cargarDecapCMS();
-      } else {
-        error.textContent = 'Clave incorrecta. Inténtalo de nuevo.';
-        btn.disabled = false;
-        btn.textContent = 'Entrar';
-      }
-    } catch (e) {
-      error.textContent = 'No se pudo comprobar la clave. Revisa tu conexión.';
-      btn.disabled = false;
-      btn.textContent = 'Entrar';
-    }
-  }
-
-  function cargarDecapCMS() {
-    // Decap CMS, con el backend "proxy", no sabe nada de nuestra pantalla
-    // de contraseña ni del token que nos dio el Worker al hacer login.
-    // Por eso interceptamos fetch() aquí: cualquier petición que Decap
-    // mande a nuestro Worker (para leer o guardar noticias) se le añade
-    // automáticamente la cabecera Authorization con ese token.
-    const tokenSesion = sessionStorage.getItem('cesmcyl-cms-token');
-    const fetchOriginal = window.fetch.bind(window);
-    window.fetch = function (recurso, opciones) {
-      const urlPeticion = typeof recurso === 'string' ? recurso : (recurso && recurso.url) || '';
-      const esParaElProxy = urlPeticion.indexOf(PROXY_URL) === 0;
-      const esLogin = urlPeticion.indexOf(PROXY_URL + '/login') === 0;
-      if (esParaElProxy && !esLogin && tokenSesion) {
-        opciones = opciones || {};
-        const cabeceras = new Headers(opciones.headers || {});
-        cabeceras.set('Authorization', 'Bearer ' + tokenSesion);
-        opciones = Object.assign({}, opciones, { headers: cabeceras });
-      }
-      return fetchOriginal(recurso, opciones);
-    };
-
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
-    document.body.appendChild(script);
-  }
-</script>
-
+  <!--
+    Sveltia CMS. Lee la configuración de config.yml, que está en esta misma
+    carpeta. El acceso ya no es con la clave compartida: ahora cada persona
+    entra con su cuenta de GitHub, y solo pueden editar quienes tengan
+    permiso en el repositorio.
+  -->
+  <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js" type="module"></script>
 </body>
 </html>
