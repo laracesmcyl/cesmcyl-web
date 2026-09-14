@@ -63,13 +63,6 @@ module.exports = function (eleventyConfig) {
   // Cuando tengáis dominio propio, cambiadla aquí.
   eleventyConfig.addGlobalData("urlSitio", "https://cesmcyl.laracesmcyl.workers.dev");
 
-  // Filtro "sobreHuelga": noticias relacionadas con la huelga (las que
-  // mencionan "huelga" en el título o son de la categoría Estatuto Marco).
-  eleventyConfig.addFilter("sobreHuelga", function (array) {
-    if (!Array.isArray(array)) return array;
-    return array.filter((n) => /huelga/i.test(n.data.title || "") || n.data.category === "Estatuto Marco");
-  });
-
   // Año actual para el pie de página.
   eleventyConfig.addGlobalData("anio", () => new Date().getFullYear());
 
