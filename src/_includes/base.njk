@@ -3,266 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ title or "CESMCYL · Confederación de Sindicatos Médicos de Castilla y León" }}</title>
-<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>{{ title or "CESM Valladolid · Sindicato médico de Valladolid" }}</title>
+<meta name="description" content="{{ descripcion or 'CESM Valladolid, sindicato médico de Valladolid integrado en CESM Castilla y León. Defendemos los derechos de los médicos.' }}">
+<link rel="icon" href="/logo-cesm-vll-hq.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/main.css">
+<script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 
-<!-- CABECERA FIJA: topbar + menú + aviso, todo junto, apilado de forma natural -->
-<div id="cabecera-fija">
-<!-- TOP BAR -->
-<div class="topbar">
-  <div class="topbar-left">
-    <span>📞 +34 983 218 524</span>
-    <a href="mailto:cesmcyl@cesmcyl.es">✉ cesmcyl@cesmcyl.es</a>
-    <span class="topbar-social">
-      <a href="https://www.instagram.com/cesmcyl/?hl=es" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+<!-- CABECERA FIJA: barra superior + menú + aviso -->
+<div id="cabecera">
+  <div class="topbar">
+    <div class="topbar-izq">
+      <a href="tel:+34983218524">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+        983 218 524
       </a>
-      <a href="https://www.tiktok.com/@cesmcyl" target="_blank" rel="noopener" aria-label="TikTok">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82c-.9-.98-1.4-2.26-1.4-3.58h-3.16v13.68c0 1.5-1.22 2.72-2.72 2.72s-2.72-1.22-2.72-2.72 1.22-2.72 2.72-2.72c.3 0 .59.05.86.14V9.94a5.9 5.9 0 00-.86-.06c-3.24 0-5.86 2.62-5.86 5.86S6.16 21.6 9.4 21.6s5.86-2.62 5.86-5.86V9.05a7.24 7.24 0 004.22 1.35V7.24c-1 0-1.94-.35-2.68-.94l-.2-.48z"/></svg>
+      <a href="mailto:cesmvalladolid@cesmcyl.es">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        cesmvalladolid@cesmcyl.es
       </a>
-      <a href="https://www.facebook.com/cesmcyl/" target="_blank" rel="noopener" aria-label="Facebook">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.87.24-1.5 1.53-1.5H16.5V4.3c-.28-.04-1.23-.12-2.33-.12-2.3 0-3.87 1.4-3.87 3.98V10.5H8v3h2.3V21h3.2z"/></svg>
-      </a>
-      <a href="https://x.com/CESM_CYL" target="_blank" rel="noopener" aria-label="X (Twitter)">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.3 8.3L23.3 22H16.7l-5.2-6.8L5.5 22H2.4l7.8-8.9L1.7 2h6.8l4.7 6.2L18.9 2zm-1.2 18h1.7L7.4 4H5.6l12.1 16z"/></svg>
-      </a>
-    </span>
+      <span class="redes">
+        <a href="https://www.instagram.com/cesmcyl/?hl=es" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.tiktok.com/@cesmcyl" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82c-.9-.98-1.4-2.26-1.4-3.58h-3.16v13.68c0 1.5-1.22 2.72-2.72 2.72s-2.72-1.22-2.72-2.72 1.22-2.72 2.72-2.72c.3 0 .59.05.86.14V9.94a5.9 5.9 0 00-.86-.06c-3.24 0-5.86 2.62-5.86 5.86S6.16 21.6 9.4 21.6s5.86-2.62 5.86-5.86V9.05a7.24 7.24 0 004.22 1.35V7.24c-1 0-1.94-.35-2.68-.94l-.2-.48z"/></svg></a>
+        <a href="https://www.facebook.com/cesmcyl/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.87.24-1.5 1.53-1.5H16.5V4.3c-.28-.04-1.23-.12-2.33-.12-2.3 0-3.87 1.4-3.87 3.98V10.5H8v3h2.3V21h3.2z"/></svg></a>
+        <a href="https://x.com/CESM_CYL" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.3 8.3L23.3 22H16.7l-5.2-6.8L5.5 22H2.4l7.8-8.9L1.7 2h6.8l4.7 6.2L18.9 2z"/></svg></a>
+      </span>
+    </div>
+    <div class="topbar-der">
+      <a href="https://www.cesmcyl.org/formacion-tiscyl-cesm/" target="_blank" rel="noopener">Campus TISCYL-CESM</a>
+      <a href="/admin/">Acceso admin</a>
+    </div>
   </div>
-  <div class="topbar-right">
-    <a href="https://www.cesmcyl.org/formacion-tiscyl-cesm/" class="tb-btn outline" target="_blank" rel="noopener">Login Campus TISCYL-CESM</a>
-    <a href="/admin/" class="tb-btn outline">Login Admin</a>
-  </div>
-</div>
 
-<!-- NAV -->
-<nav id="navbar">
-  <div class="nav-inner">
-    <a href="/" class="nav-logo">
-      <img src="/logo-cesm-vll-hq.png" alt="CESMCYL">
-    </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="/#inicio">Inicio</a></li>
-      <li class="dropdown">
-        <a href="/#inicio">Quiénes somos</a>
-        <ul class="dropdown-menu">
-          <li><a href="/#inicio">Sobre CESMCYL</a></li>
-          <li><a href="/#inicio">Objetivos</a></li>
-          <li><a href="/#inicio">Sindicatos provinciales</a></li>
-          <li><a href="/#inicio">Transparencia</a></li>
+  <nav class="nav" id="navbar" aria-label="Menú principal">
+    <a href="/" class="logo"><img src="/logo-cesm-vll-hq.png" alt="CESM Valladolid" width="496" height="242"></a>
+    <button type="button" class="hamburguesa" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+    <ul class="menu" id="navLinks">
+      <li><a href="/#inicio" data-seccion="inicio"{% if page.url == "/" %} class="activo"{% endif %}>Inicio</a></li>
+      <li><a href="/#noticias" data-seccion="noticias"{% if seccion == "noticias" %} class="activo"{% endif %}>Noticias</a></li>
+      <li><a href="/#quienes" data-seccion="quienes">Quiénes somos</a></li>
+      <li class="desplegable">
+        <a href="/#servicios" data-seccion="servicios"{% if seccion == "servicios" %} class="activo"{% endif %}>Servicios<span class="flechita" aria-hidden="true"></span></a>
+        <ul class="submenu">
+          <li><a href="/#servicios">Todos los servicios</a></li>
+          <li><a href="/asesoria-juridica/">Tarifas de asesoría jurídica</a></li>
+          <li><a href="https://www.cesmcyl.org/formacion-tiscyl-cesm/" target="_blank" rel="noopener">Campus TISCYL-CESM</a></li>
+          <li><a href="/canal-de-denuncias/">Canal de denuncias</a></li>
         </ul>
       </li>
-      <li><a href="/#noticias">Noticias</a></li>
-      <li class="dropdown">
-        <a href="/#servicios">Servicios</a>
-        <ul class="dropdown-menu">
-          <li><a href="/#servicios">Información</a></li>
-          <li><a href="/#servicios">Asesoramiento Jurídico</a></li>
-          <li><a href="/#servicios">Formación</a></li>
-          <li><a href="/#servicios">Orientación Laboral</a></li>
-          <li><a href="/#servicios">Acompañamiento</a></li>
-        </ul>
-      </li>
-      <li><a href="/#contacto">Contacto</a></li>
-      <li><a href="/#contacto" class="nav-afiliacion">Afíliate</a></li>
+      <li><a href="/#contacto" data-seccion="contacto">Contacto</a></li>
+      <li><a href="/afiliate/" class="btn-afiliate">Afíliate</a></li>
     </ul>
-    <button class="hamburger" id="hamburger" aria-label="Menú">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
+  </nav>
 
-<!-- TICKER (aviso urgente) -->
-<div class="ticker vacio" id="ticker">
-  <div class="ticker-inner">
-  <div class="ticker-msg">
-  <span class="ticker-label" id="ticker-label" style="display:none;">
-    <span class="ticker-dot" aria-hidden="true"></span>
-    Aviso
-  </span>
-  <span class="ticker-text" id="ticker-text"></span>
-  </div>
-  <a href="/huelga/" class="ticker-flecha" id="ticker-flecha" style="display:none;" aria-label="Más información sobre la huelga">
-    <span class="ticker-flecha-texto">Toda la información</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-  </a>
+  <div class="aviso vacio" id="ticker">
+    <span class="aviso-etiqueta" id="ticker-label" style="display:none"><span class="punto"></span>Aviso</span>
+    <span class="aviso-texto" id="ticker-text"></span>
+    <a href="/huelga/" class="aviso-enlace" id="ticker-flecha" style="display:none">Toda la información <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </div>
 </div>
-</div>
-<!-- fin cabecera-fija -->
 
-
-<script>
-  // Cabecera fija (#cabecera-fija): barra verde + menú + aviso, apilados
-  // dentro de un único bloque con position:fixed. Como flota sobre la
-  // página, el contenido necesita un margen superior igual a la altura de
-  // la cabecera en su tamaño NORMAL (arriba del todo).
-  // Al bajar, la barra verde y el menú se encogen (clase cabecera-compacta
-  // en <body>) y el aviso también (clase encogido en #ticker), pero el
-  // contenido NO se mueve: el margen se queda siempre con la altura normal.
-  (function () {
-    var ticker = document.getElementById('ticker');
-    if (!ticker) return;
-
-    // Mide la cabecera como si estuviera arriba del todo: quita un momento
-    // los dos encogidos (barras y aviso) y desactiva las animaciones para
-    // leer la altura final real, no una a medio camino. Todo ocurre en el
-    // mismo instante, así que en pantalla no se ve ningún cambio.
-    function medirCabecera(compacta) {
-      var cabecera = document.getElementById('cabecera-fija');
-      var body = document.body;
-      var barrasCompactas = body.classList.contains('cabecera-compacta');
-      var avisoEncogido = ticker.classList.contains('encogido');
-      body.classList.add('midiendo-cabecera');
-      body.classList.toggle('cabecera-compacta', compacta);
-      ticker.classList.toggle('encogido', compacta);
-      var altura = cabecera.offsetHeight;
-      body.classList.toggle('cabecera-compacta', barrasCompactas);
-      ticker.classList.toggle('encogido', avisoEncogido);
-      void cabecera.offsetHeight; // aplica el estado restaurado sin animación
-      body.classList.remove('midiendo-cabecera');
-      return altura;
-    }
-
-    function ajustarEspacioContenido() {
-      var contenido = document.getElementById('contenido-pagina');
-      if (!document.getElementById('cabecera-fija') || !contenido) return;
-      var alturaNormal = medirCabecera(false);
-      var alturaCompacta = medirCabecera(true);
-      contenido.style.marginTop = alturaNormal + 'px';
-      // Al pulsar un enlace del menú (#servicios, #noticias...), que la
-      // sección quede justo debajo de la cabecera y no tapada por ella.
-      document.documentElement.style.scrollPaddingTop = (alturaCompacta + 16) + 'px';
-    }
-
-    window.addEventListener('load', ajustarEspacioContenido);
-    // La tipografía puede tardar en cargar y cambiar la altura del menú.
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(ajustarEspacioContenido);
-    }
-    window.addEventListener('resize', ajustarEspacioContenido);
-    setTimeout(ajustarEspacioContenido, 300);
-    setTimeout(ajustarEspacioContenido, 1000);
-    ajustarEspacioContenido();
-
-    // El aviso carga sus datos después (fetch al JSON) y pasa de "vacío" a
-    // "con contenido". Solo entonces hay que recalcular. Los cambios de
-    // encogido por el scroll se IGNORAN a propósito: eran los que estropeaban
-    // la medición y dejaban el contenido tapado al volver arriba.
-    function estadoAviso() {
-      return ticker.classList.contains('vacio') + '|' + ticker.classList.contains('desplegado');
-    }
-    var ultimoEstadoAviso = estadoAviso();
-    new MutationObserver(function () {
-      var estado = estadoAviso();
-      if (estado === ultimoEstadoAviso) return;
-      ultimoEstadoAviso = estado;
-      ajustarEspacioContenido();
-    }).observe(ticker, { attributes: true, attributeFilter: ['class'] });
-
-    var UMBRAL_CABECERA_COMPACTA = 20;
-    var UMBRAL_CABECERA_NORMAL = 5;
-    var cabeceraTickeando = false;
-    function actualizarCabecera() {
-      var y = window.scrollY;
-      var estabaCompacta = document.body.classList.contains('cabecera-compacta');
-      var debeSerCompacta = estabaCompacta;
-      if (y > UMBRAL_CABECERA_COMPACTA) {
-        debeSerCompacta = true;
-      } else if (y < UMBRAL_CABECERA_NORMAL) {
-        debeSerCompacta = false;
-      }
-      if (debeSerCompacta !== estabaCompacta) {
-        document.body.classList.toggle('cabecera-compacta', debeSerCompacta);
-        // El contenido NO se reajusta aquí a propósito: solo las barras
-        // cambian de tamaño (rápido, en cuanto se empieza a bajar), y el
-        // contenido de la página se queda quieto en su sitio, sin moverse
-        // a la vez ni después.
-      }
-      cabeceraTickeando = false;
-    }
-    window.addEventListener('scroll', function () {
-      if (!cabeceraTickeando) {
-        cabeceraTickeando = true;
-        requestAnimationFrame(actualizarCabecera);
-      }
-    }, { passive: true });
-    actualizarCabecera();
-
-    var UMBRAL_ENCOGER = 130;
-    var UMBRAL_ABRIR = 40;
-    var tickeando = false;
-    function actualizarEncogido() {
-      var y = window.scrollY;
-      if (y > UMBRAL_ENCOGER) {
-        ticker.classList.add('encogido');
-      } else if (y < UMBRAL_ABRIR) {
-        ticker.classList.remove('encogido');
-      }
-      // Entre los dos umbrales no tocamos nada: así no "vibra" si el
-      // scroll se queda justo en medio.
-      tickeando = false;
-    }
-    window.addEventListener('scroll', function () {
-      if (!tickeando) {
-        tickeando = true;
-        requestAnimationFrame(actualizarEncogido);
-      }
-    }, { passive: true });
-    actualizarEncogido();
-  })();
-</script>
-
-<div id="contenido-pagina">
+<main id="contenido-pagina">
 {{ content | safe }}
-</div>
+</main>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <img src="/logo-cesm-vll-hq.png" alt="CESMCYL">
-        <p>Confederación Española de Sindicatos Médicos en Castilla y León. Defendiendo los derechos de los médicos desde hace más de 30 años.</p>
+<footer class="pie">
+  <div class="pie-inner">
+    <div class="pie-marca">
+      <img src="/logo-cesm-vll-hq.png" alt="CESM Valladolid" width="496" height="242">
+      <p>Sindicato médico de Valladolid, integrado en CESM Castilla y León y en CESM. Defendiendo los derechos de los médicos desde hace más de 30 años.</p>
+      <div class="pie-redes">
+        <a href="https://www.instagram.com/cesmcyl/?hl=es" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg></a>
+        <a href="https://www.tiktok.com/@cesmcyl" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82c-.9-.98-1.4-2.26-1.4-3.58h-3.16v13.68c0 1.5-1.22 2.72-2.72 2.72s-2.72-1.22-2.72-2.72 1.22-2.72 2.72-2.72c.3 0 .59.05.86.14V9.94a5.9 5.9 0 00-.86-.06c-3.24 0-5.86 2.62-5.86 5.86S6.16 21.6 9.4 21.6s5.86-2.62 5.86-5.86V9.05a7.24 7.24 0 004.22 1.35V7.24c-1 0-1.94-.35-2.68-.94l-.2-.48z"/></svg></a>
+        <a href="https://www.facebook.com/cesmcyl/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.87.24-1.5 1.53-1.5H16.5V4.3c-.28-.04-1.23-.12-2.33-.12-2.3 0-3.87 1.4-3.87 3.98V10.5H8v3h2.3V21h3.2z"/></svg></a>
+        <a href="https://x.com/CESM_CYL" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.3 8.3L23.3 22H16.7l-5.2-6.8L5.5 22H2.4l7.8-8.9L1.7 2h6.8l4.7 6.2L18.9 2z"/></svg></a>
       </div>
-      <div class="fcol">
-        <h4>CESMCYL</h4>
-        <ul>
-          <li><a href="/#inicio">Quiénes somos</a></li>
-          <li><a href="/#inicio">Objetivos</a></li>
-          <li><a href="/#inicio">Sindicatos provinciales</a></li>
-          <li><a href="/#inicio">Transparencia</a></li>
-          <li><a href="/#contacto">Afíliate</a></li>
-        </ul>
-      </div>
-      <div class="fcol">
-        <h4>Servicios</h4>
-        <ul>
-          <li><a href="/#servicios">Información</a></li>
-          <li><a href="/#servicios">Asesoramiento Jurídico</a></li>
-          <li><a href="/#servicios">Formación</a></li>
-          <li><a href="/#servicios">Orientación Laboral</a></li>
-          <li><a href="/#servicios">Acompañamiento</a></li>
-        </ul>
-      </div>
-      <div class="fcol">
-        <h4>Actualidad</h4>
-        <ul>
-          <li><a href="/#noticias">Noticias</a></li>
-          <li><a href="/#noticias">Eventos</a></li>
-          <li><a href="/#inicio">MIR 2026</a></li>
-          <li><a href="/#contacto">Contacto</a></li>
-        </ul>
-      </div>
+    </div>
+    <div class="pie-col" role="navigation" aria-label="CESM Valladolid">
+      <h4>CESM Valladolid</h4>
+      <a href="/#quienes">Quiénes somos</a>
+      <a href="/#noticias">Noticias</a>
+      <a href="/afiliate/">Afíliate</a>
+      <a href="/#contacto">Contacto</a>
+    </div>
+    <div class="pie-col" role="navigation" aria-label="Servicios">
+      <h4>Servicios</h4>
+      <a href="/#servicios">Todos los servicios</a>
+      <a href="/asesoria-juridica/">Tarifas de asesoría jurídica</a>
+      <a href="https://www.cesmcyl.org/formacion-tiscyl-cesm/" target="_blank" rel="noopener">Campus TISCYL-CESM</a>
+      <a href="/canal-de-denuncias/">Canal de denuncias</a>
+    </div>
+    <div class="pie-col">
+      <h4>Contacto</h4>
+      <a href="tel:+34983218524">+34 983 218 524</a>
+      <a href="mailto:cesmvalladolid@cesmcyl.es">cesmvalladolid@cesmcyl.es</a>
+      <p>C/ Angustias 34, 1.º izq.<br>47003 Valladolid</p>
     </div>
   </div>
-  <div class="footer-bottom">
-    <div class="footer-bottom-inner">
-      <span>© 2026 CESMCYL · Confederación Española de Sindicatos Médicos CYL</span>
-      <span><a href="/aviso-legal/">Aviso legal</a> · <a href="/privacidad/">Privacidad</a> · <a href="/cookies/">Cookies</a></span>
-    </div>
+  <div class="pie-barra">
+    <span>© {{ anio }} CESM Valladolid · Sindicato médico de Valladolid</span>
+    <span class="pie-legal"><a href="/canal-de-denuncias/">Canal de denuncias</a></span>
   </div>
 </footer>
 
