@@ -18,16 +18,61 @@ collections:
     extension: "md"
     format: "frontmatter"
     identifier_field: "title"
-    summary: "{{title}} · {{category}} — {{date}}"
+    # Cada noticia se ve así en el listado: fecha · categoría — título
+    summary: "{{date}}  ·  {{category}}  —  {{title}}"
     sortable_fields: ["date", "title", "category"]
+    # Botones "Group by" y "Filter by" encima del listado
+    view_groups:
+      - label: "Categoría"
+        field: category
+      - label: "Año"
+        field: date
+        pattern: "\\d{4}"
+    view_filters:
+      - label: "Estatuto Marco"
+        field: category
+        pattern: "Estatuto Marco"
+      - label: "OPE"
+        field: category
+        pattern: "OPE"
+      - label: "Bolsa"
+        field: category
+        pattern: "Bolsa"
+      - label: "Fidelización"
+        field: category
+        pattern: "Fidelización"
     fields:
       - { label: "Título", name: "title", widget: "string" }
-      - { label: "Fecha", name: "date", widget: "date", format: "YYYY-MM-DD" }
+      - label: "Fecha"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        picker_utc: true
       - label: "Categoría"
         name: "category"
+        widget: "select"
+        required: false
+        options:
+          - "OPE"
+          - "Bolsa"
+          - "CESM"
+          - "Estatuto Marco"
+          - "Fidelización"
+          - "MIR 2026"
+          - "Electoral 2026"
+          - "Estabilización"
+          - "Tutores"
+          - "Inspección Sanitaria"
+          - "Concurso de traslados"
+          - "Novedades normativas estatales"
+          - "Otra categoría (escribir abajo)"
+      - label: "Otra categoría"
+        name: "category_nueva"
         widget: "string"
         required: false
-        hint: "Escribe la categoría. Si pones una nueva, se crea sola y aparecerá como filtro en la web. Las que ya se usan: OPE, Bolsa, CESM, Estatuto Marco, Fidelización, MIR 2026, Electoral 2026, Estabilización, Tutores, Inspección Sanitaria, Concurso de traslados, Novedades normativas estatales."
+        hint: "Rellena esto SOLO si arriba has elegido «Otra categoría». Lo que escribas aquí manda sobre el desplegable y aparecerá como filtro nuevo en la web."
       - { label: "Fijar en Destacado (Tablón)", name: "pinned", widget: "boolean", default: false }
       - { label: "Imagen (opcional)", name: "image", widget: "image", required: false }
       - { label: "Descripción corta (solo si está Fijada)", name: "description", widget: "string", required: false }
@@ -53,4 +98,3 @@ collections:
         file: "src/static/huelga-info.json"
         fields:
           - { label: "Texto de la página de huelga", name: "texto", widget: "markdown", required: false }
-
