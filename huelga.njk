@@ -1,0 +1,32 @@
+---
+layout: base.njk
+title: "Información sobre la huelga · CESM Valladolid"
+seccion: noticias
+---
+<header class="pag-cab">
+  <div class="pag-cab-inner">
+    <a href="/" class="migas">Inicio</a>
+    <h1>Información sobre la huelga</h1>
+    <p>Convocatorias, servicios mínimos y todo lo que necesitas saber sobre las movilizaciones por el Estatuto Marco.</p>
+  </div>
+</header>
+
+<div class="pag">
+  <div class="pag-texto">
+    <div class="cuerpo" id="huelga-texto">
+      <p>Cargando información…</p>
+    </div>
+  </div>
+
+  <aside class="pag-lateral">
+    <div class="documentos">
+      <h2>Noticias sobre la huelga</h2>
+      {%- for n in collections.noticias | reverse | sobreHuelga | limit(8) %}
+      <a href="/noticias/{{ n.fileSlug }}/" class="relacionada">
+        <span class="nota-meta"><span class="nota-tag">{{ n.data.category }}</span><span>{{ n.data.date | fecha }}</span></span>
+        <span class="relacionada-titulo">{{ n.data.title }}</span>
+      </a>
+      {%- endfor %}
+    </div>
+  </aside>
+</div>

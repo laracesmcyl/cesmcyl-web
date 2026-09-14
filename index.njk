@@ -1,0 +1,200 @@
+---
+layout: base.njk
+title: "CESM Valladolid · Sindicato médico de Valladolid"
+---
+{%- set flecha = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' -%}
+{%- set externo = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>' -%}
+
+<!-- ============ PRIMERA PANTALLA ============ -->
+<section class="hero" id="inicio">
+  <div class="hero-foto" aria-hidden="true"></div>
+  <div class="hero-velo" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-texto">
+      <p class="hero-firma entra" style="--d:.1s"><svg class="pulso" viewBox="0 0 74 22" aria-hidden="true"><path d="M1 13h22l4-8 5 15 5-19 4 12 3-2h29"/></svg>Sindicato médico de Valladolid</p>
+      <h1 class="hero-titulo">
+        <span class="linea"><span style="--d:.2s">Defendemos los derechos</span></span>
+        <span class="linea"><span style="--d:.34s">de los <em>médicos</em></span></span>
+        <span class="linea"><span style="--d:.48s"><em>de Valladolid</em></span></span>
+      </h1>
+      <p class="hero-lead entra" style="--d:.8s">Integrados en CESM Castilla y León y en CESM a nivel nacional. Trabajamos para proteger tus derechos, mantenerte informado y darte respaldo cuando lo necesites.</p>
+      <div class="hero-acciones entra" style="--d:.95s">
+        <a href="/afiliate/" class="btn-oro">Afíliate ahora</a>
+        <a href="#quienes" class="enlace-blanco">Conócenos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+      </div>
+    </div>
+
+    <!-- TABLÓN -->
+    <aside class="tablon" aria-label="Tablón">
+      <h2 class="tablon-cab entra" style="--d:.6s">Tablón <a href="#noticias">Ver todas las noticias</a></h2>
+
+      {%- for noticia in collections.noticias | reverse -%}
+      {%- if noticia.data.pinned %}
+      <a href="{{ noticia.data.url or ('/noticias/' + noticia.fileSlug + '/') }}" class="fijo entra" style="--d:.75s"{% if noticia.data.url %} target="_blank" rel="noopener"{% endif %}>
+        <span class="fijo-cab">
+          <span class="tag">{{ noticia.data.category }}</span>
+          <svg class="chincheta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-label="Fijado"><path d="M9 4v6l-2 4h10l-2-4V4M12 14v6M8 4h8"/></svg>
+        </span>
+        <span class="fijo-titulo">{{ noticia.data.title }}</span>
+        <span class="fijo-desc">{{ noticia.data.description or (noticia.templateContent | excerpt(90)) }}</span>
+        {%- if noticia.data.cta %}
+        <span class="descarga"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg>{{ noticia.data.cta }}</span>
+        {%- endif %}
+      </a>
+      {%- endif -%}
+      {%- endfor %}
+
+      {%- set noticiasCarrusel = collections.noticias | reverse | sinFijar | limit(8) %}
+      <div class="tn-cab entra" style="--d:.95s">
+        <span>Últimas noticias</span>
+        <div class="flechas">
+          <button type="button" id="carrusel-anterior" aria-label="Noticia anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <span class="contador" id="carrusel-contador">1 / {{ noticiasCarrusel | length }}</span>
+          <button type="button" id="carrusel-siguiente" aria-label="Noticia siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      <div class="tn-marco entra" style="--d:1.05s" id="carrusel">
+        {%- for noticia in noticiasCarrusel %}
+        <a href="/noticias/{{ noticia.fileSlug }}/" class="tn{% if loop.first %} visible{% endif %}">
+          <span class="tn-meta"><b>{{ noticia.data.category }}</b><span>{{ noticia.data.date | fecha }}</span></span>
+          <span class="tn-titulo">{{ noticia.data.title }}</span>
+          <span class="tn-desc">{{ noticia.data.description or (noticia.templateContent | excerpt(150)) }}</span>
+        </a>
+        {%- endfor %}
+        <span class="progreso" id="carrusel-progreso"></span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ NOTICIAS ============ -->
+<section class="noticias" id="noticias">
+  <div class="noticias-top">
+    <div>
+      <h2 class="titulo-seccion">Noticias</h2>
+      <p class="sub-seccion">Convocatorias, listados y actualidad sindical, según se publican.</p>
+    </div>
+    <label class="buscador">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input type="search" id="buscador-noticias" placeholder="Buscar noticias" aria-label="Buscar noticias">
+    </label>
+  </div>
+  <div class="chips" role="group" aria-label="Filtrar noticias por tema">
+    <button type="button" class="chip activo" data-cat="todas">Todas</button>
+    {%- for cat in collections.noticias | reverse | categorias %}
+    <button type="button" class="chip" data-cat="{{ cat | slugify }}">{{ cat }}</button>
+    {%- endfor %}
+  </div>
+  <div class="notas" id="notas">
+    {%- for noticia in collections.noticias | reverse %}
+    <article class="nota" data-cat="{{ noticia.data.category | slugify }}">
+      <div class="nota-meta"><span class="nota-tag">{{ noticia.data.category }}</span><time datetime="{{ noticia.data.date }}">{{ noticia.data.date | fecha }}</time></div>
+      <h3><a href="/noticias/{{ noticia.fileSlug }}/">{{ noticia.data.title }}</a></h3>
+      <p>{{ noticia.data.description or (noticia.templateContent | excerpt(170)) }}</p>
+      <span class="nota-leer" aria-hidden="true">Leer más {{ flecha | safe }}</span>
+    </article>
+    {%- endfor %}
+  </div>
+  <p class="notas-vacio" id="notas-vacio" hidden>No hay noticias que coincidan con la búsqueda.</p>
+  <div class="notas-pie"><button type="button" class="btn-mas" id="btn-mas">Ver más noticias</button></div>
+</section>
+
+<!-- ============ QUIÉNES SOMOS ============ -->
+<section class="quienes" id="quienes">
+  <div class="quienes-inner">
+    <div>
+      <h2 class="titulo-seccion">Quiénes somos</h2>
+      <p class="intro"><strong>CESM Valladolid es un sindicato médico</strong> confederado a nivel autonómico en CESM Castilla y León (CESMCYL) y a nivel nacional en CESM.</p>
+      <p class="lema">Unión, negociación, defensa, trabajo y movilización.</p>
+    </div>
+    <div class="objetivos">
+      <h3>Nuestros objetivos</h3>
+      <ol>
+        <li><span><strong>Representar</strong> a la profesión médica ante las administraciones y organismos sanitarios.</span></li>
+        <li><span><strong>Defender</strong> los derechos profesionales, laborales y retributivos, individual y colectivamente.</span></li>
+        <li><span><strong>Negociar</strong> mejoras en las condiciones de trabajo en las mesas de negociación.</span></li>
+        <li><span><strong>Impulsar</strong> las movilizaciones necesarias cuando el diálogo no sea suficiente.</span></li>
+        <li><span><strong>Mantener</strong> presencia activa en los centros sanitarios, dando respuesta a los profesionales.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICIOS ============ -->
+<section class="servicios" id="servicios">
+  <div class="servicios-top">
+    <h2 class="titulo-seccion">Servicios</h2>
+    <p>Todo lo que CESM Valladolid pone a tu disposición como afiliado, desde el primer día.</p>
+  </div>
+  <div class="serv-grid">
+    <article class="serv serv-destacado">
+      <svg class="serv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M8 20h8M5 7h14M5 7l-2.5 6a3 3 0 0 0 5 0L5 7M19 7l-2.5 6a3 3 0 0 0 5 0L19 7"/></svg>
+      <h3>Asesoramiento jurídico</h3>
+      <p>Un equipo de abogados especializados te acompaña en consultas, escritos, reclamaciones y procedimientos judiciales, con tarifas reducidas según tu antigüedad como afiliado.</p>
+      <p class="serv-nota">La consulta es gratuita desde el primer día de afiliación.</p>
+      <a href="/asesoria-juridica/" class="btn-tarifas">Consultar tarifas {{ flecha | safe }}</a>
+    </article>
+    <article class="serv">
+      <svg class="serv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+      <h3>Información</h3>
+      <p>Te mantenemos al día de todo lo que afecta a tu profesión: OPE, concursos de traslado, bolsas de empleo, normativa y novedades del sector en Castilla y León.</p>
+    </article>
+    <article class="serv">
+      <svg class="serv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5z"/><path d="M4 19a2 2 0 0 1 2-2h13"/></svg>
+      <h3>Formación</h3>
+      <p>Cursos, jornadas y programas de formación continuada pensados para acompañar tu carrera desde el MIR hasta la jubilación.</p>
+      <a href="https://www.cesmcyl.org/formacion-tiscyl-cesm/" target="_blank" rel="noopener" class="serv-enlace">Acceder al Campus TISCYL-CESM {{ externo | safe }}</a>
+    </article>
+    <article class="serv">
+      <svg class="serv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5 5-2z"/></svg>
+      <h3>Orientación laboral</h3>
+      <p>Te ayudamos a entender tus opciones en oposiciones, carrera profesional, movilidad y condiciones de trabajo dentro de SACYL.</p>
+    </article>
+    <article class="serv">
+      <svg class="serv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 14.2A4.8 4.8 0 0 1 21 19"/></svg>
+      <h3>Acompañamiento</h3>
+      <p>Estamos contigo en cada paso, desde tu incorporación como médico residente hasta cualquier situación difícil en tu día a día profesional.</p>
+    </article>
+  </div>
+  <a href="/canal-de-denuncias/" class="canal-enlace">
+    <svg class="canal-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
+    <span class="canal-txt"><strong>Canal de denuncias</strong><span>Comunica de forma confidencial irregularidades o situaciones de acoso relacionadas con CESM Valladolid.</span></span>
+    <span class="canal-ir">Acceder {{ flecha | safe }}</span>
+  </a>
+</section>
+
+<!-- ============ CONTACTO ============ -->
+<section class="contacto" id="contacto">
+  <div class="contacto-info">
+    <h2 class="titulo-seccion">Contacto</h2>
+    <p class="sub-seccion">Estamos aquí para ayudarte. Llámanos, escríbenos o déjanos un mensaje y te responderemos lo antes posible.</p>
+    <ul class="datos">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><div><span>Teléfono</span><a href="tel:+34983218524">+34 983 218 524</a></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><div><span>Correo electrónico</span><a href="mailto:cesmvalladolid@cesmcyl.es">cesmvalladolid@cesmcyl.es</a></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><div><span>Sede</span><p>C/ Angustias 34, 1.º izq.<br>47003 Valladolid</p></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><span>Horario</span><p>Lunes a viernes, de 9:00 a 14:00 y de 16:00 a 19:00</p></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg><div><span>CESM Castilla y León</span><a href="https://www.cesmcyl.org" target="_blank" rel="noopener">www.cesmcyl.org</a></div></li>
+    </ul>
+  </div>
+
+  <form class="formulario" id="formulario" novalidate>
+    <h3>Envíanos un mensaje</h3>
+    <div class="campos">
+      <label>Nombre<input type="text" name="nombre" autocomplete="given-name" required></label>
+      <label>Apellidos<input type="text" name="apellidos" autocomplete="family-name" required></label>
+      <label>Correo electrónico<input type="email" name="email" autocomplete="email" placeholder="nombre@correo.es" required></label>
+      <label><span>Teléfono <em>(opcional)</em></span><input type="tel" name="telefono" autocomplete="tel" placeholder="600 000 000"></label>
+      <label class="ancho">Provincia
+        <select name="provincia">
+          <option>Ávila</option><option>Burgos</option><option>León</option><option>Palencia</option><option>Salamanca</option><option>Segovia</option><option>Soria</option><option selected>Valladolid</option><option>Zamora</option>
+        </select>
+      </label>
+      <label class="ancho">Mensaje<textarea name="mensaje" rows="5" placeholder="Cuéntanos en qué podemos ayudarte" required></textarea></label>
+    </div>
+    <label class="casilla"><input type="checkbox" name="privacidad" required><span>Acepto que CESM Valladolid use estos datos únicamente para responder a mi consulta.</span></label>
+    <p class="form-error" id="form-error" role="alert"></p>
+    <button type="submit" class="btn-oro btn-enviar">Enviar mensaje</button>
+    <p class="form-nota">Al enviar se abrirá tu programa de correo con el mensaje ya preparado para <b>cesmvalladolid@cesmcyl.es</b>.</p>
+    <p class="form-ok" id="form-ok" role="status"></p>
+  </form>
+</section>
