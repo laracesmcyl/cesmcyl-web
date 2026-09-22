@@ -1,0 +1,12 @@
+{
+  "titulo": "Quiénes somos",
+  "intro": "**CESM Valladolid es un sindicato médico** confederado a nivel autonómico en CESM Castilla y León (CESMCYL) y a nivel nacional en CESM.",
+  "lema": "Unión, negociación, defensa, trabajo y movilización.",
+  "objetivos": [
+    { "texto": "**Representar** a la profesión médica ante las administraciones y organismos sanitarios." },
+    { "texto": "**Defender** los derechos profesionales, laborales y retributivos, individual y colectivamente." },
+    { "texto": "**Negociar** mejoras en las condiciones de trabajo en las mesas de negociación." },
+    { "texto": "**Impulsar** las movilizaciones necesarias cuando el diálogo no sea suficiente." },
+    { "texto": "**Mantener** presencia activa en los centros sanitarios, dando respuesta a los profesionales." }
+  ]
+}
