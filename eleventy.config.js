@@ -236,6 +236,41 @@ module.exports = function (eleventyConfig) {
     return (propias || []).concat((subaps || []).map((s) => s.completo));
   });
 
+  // Filtro "grupo": de una categoría «Grupo / Nombre» devuelve solo el grupo.
+  eleventyConfig.addFilter("grupo", function (nombre) {
+    const t = String(nombre || "");
+    return t.indexOf(" / ") !== -1 ? t.split(" / ")[0] : t;
+  });
+
+  // Filtro "corto": de «Grupo / Nombre» deja solo el Nombre.
+  eleventyConfig.addFilter("corto", function (nombre) {
+    const t = String(nombre || "");
+    return t.indexOf(" / ") !== -1 ? t.split(" / ").slice(1).join(" / ") : t;
+  });
+
+  // Filtro "categoriasAgrupadas": las categorías de las noticias agrupadas por
+  // su grupo. Las que no tienen grupo salen sueltas; las que sí, con su lista
+  // de subapartados para el desplegable de la portada.
+  eleventyConfig.addFilter("categoriasAgrupadas", function (array) {
+    const grupos = [];
+    (array || []).forEach((n) => {
+      const c = categoriaDe(n.data);
+      if (!c || c === "Noticias") return;
+      const tieneGrupo = c.indexOf(" / ") !== -1;
+      const nombre = tieneGrupo ? c.split(" / ")[0] : c;
+      const corto = tieneGrupo ? c.split(" / ").slice(1).join(" / ") : "";
+      let g = grupos.find((x) => x.nombre === nombre);
+      if (!g) {
+        g = { nombre: nombre, subs: [] };
+        grupos.push(g);
+      }
+      if (corto && !g.subs.find((s) => s.corto === corto)) {
+        g.subs.push({ corto: corto, completo: c });
+      }
+    });
+    return grupos;
+  });
+
   return {
     dir: {
       input: "src",
