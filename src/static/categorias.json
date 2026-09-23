@@ -13,12 +13,6 @@
       "nombre": "Huelga"
     },
     {
-      "nombre": "MIR 2026"
-    },
-    {
-      "nombre": "Electoral 2026"
-    },
-    {
       "nombre": "Carrera profesional"
     },
     {
@@ -29,6 +23,9 @@
     },
     {
       "nombre": "Novedades Normativas / CESM"
+    },
+    {
+      "nombre": "Novedades Normativas / MIR"
     },
     {
       "nombre": "Novedades Normativas / CESMCYL"
