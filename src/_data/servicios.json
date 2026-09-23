@@ -1,0 +1,11 @@
+{
+  "titulo": "Servicios",
+  "intro": "Todo lo que CESM Valladolid pone a tu disposición como afiliado, desde el primer día.",
+  "canal": {
+    "mostrar": true,
+    "titulo": "Canal de denuncias",
+    "texto": "Comunica de forma confidencial irregularidades o situaciones de acoso relacionadas con CESM Valladolid.",
+    "destino": "/canal-de-denuncias/",
+    "texto_boton": "Acceder"
+  }
+}

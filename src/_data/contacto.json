@@ -1,0 +1,17 @@
+{
+  "titulo": "Contacto",
+  "intro": "Estamos aquí para ayudarte. Llámanos, escríbenos o déjanos un mensaje y te responderemos lo antes posible.",
+  "telefono": "983 218 524",
+  "telefono_enlace": "+34983218524",
+  "email": "cesmvalladolid@cesmcyl.es",
+  "direccion": "C/ Angustias 34, 1.º izq.\n47003 Valladolid",
+  "horario": "Lunes a viernes, de 9:00 a 14:00 y de 16:00 a 19:00",
+  "web_cesmcyl": "https://www.cesmcyl.org",
+  "redes": {
+    "instagram": "https://www.instagram.com/cesmcyl/?hl=es",
+    "facebook": "https://www.facebook.com/cesmcyl/",
+    "tiktok": "https://www.tiktok.com/@cesmcyl",
+    "x": "https://x.com/CESM_CYL",
+    "youtube": "https://www.youtube.com/"
+  }
+}
