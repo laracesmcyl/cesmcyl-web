@@ -242,6 +242,17 @@ module.exports = function (eleventyConfig) {
     return t.indexOf(" / ") !== -1 ? t.split(" / ")[0] : t;
   });
 
+  // Filtro "deGrupo": todas las noticias de un grupo, incluidas las de sus
+  // subapartados («Huelga» recoge también «Huelga / Estatuto Marco»).
+  eleventyConfig.addFilter("deGrupo", function (array, nombre) {
+    const g = String(nombre || "").trim().toLowerCase();
+    if (!g) return [];
+    return (array || []).filter((n) => {
+      const c = categoriaDe(n.data).toLowerCase();
+      return c === g || c.indexOf(g + " / ") === 0;
+    });
+  });
+
   // Filtro "corto": de «Grupo / Nombre» deja solo el Nombre.
   eleventyConfig.addFilter("corto", function (nombre) {
     const t = String(nombre || "");
@@ -251,7 +262,7 @@ module.exports = function (eleventyConfig) {
   // Filtro "categoriasAgrupadas": las categorías de las noticias agrupadas por
   // su grupo. Las que no tienen grupo salen sueltas; las que sí, con su lista
   // de subapartados para el desplegable de la portada.
-  eleventyConfig.addFilter("categoriasAgrupadas", function (array) {
+  eleventyConfig.addFilter("categoriasAgrupadas", function (array, lista) {
     const grupos = [];
     (array || []).forEach((n) => {
       const c = categoriaDe(n.data);
@@ -267,6 +278,19 @@ module.exports = function (eleventyConfig) {
       if (corto && !g.subs.find((s) => s.corto === corto)) {
         g.subs.push({ corto: corto, completo: c });
       }
+    });
+    // Añadimos los subapartados que existen en la lista de categorías aunque
+    // todavía no tengan ninguna noticia, para que la pestaña esté disponible.
+    (lista || []).forEach((c) => {
+      if (String(c).indexOf(" / ") === -1) return;
+      const nombre = String(c).split(" / ")[0];
+      const corto = String(c).split(" / ").slice(1).join(" / ");
+      const g = grupos.find((x) => x.nombre === nombre);
+      if (g && !g.subs.find((s) => s.corto === corto)) g.subs.push({ corto: corto, completo: c });
+    });
+    // Cada grupo ordena sus subapartados como estén en la lista de categorías.
+    grupos.forEach((g) => {
+      g.subs.sort((a, b) => (lista || []).indexOf(a.completo) - (lista || []).indexOf(b.completo));
     });
     return grupos;
   });
