@@ -1,9 +1,6 @@
 {
   "categorias": [
     {
-      "nombre": "OPE"
-    },
-    {
       "nombre": "Bolsa"
     },
     {
@@ -13,7 +10,7 @@
       "nombre": "Estatuto Marco"
     },
     {
-      "nombre": "Fidelización"
+      "nombre": "Huelga"
     },
     {
       "nombre": "MIR 2026"
@@ -22,19 +19,46 @@
       "nombre": "Electoral 2026"
     },
     {
-      "nombre": "Estabilización"
+      "nombre": "Carrera profesional"
     },
     {
-      "nombre": "Tutores"
+      "nombre": "Sentencias"
     },
     {
-      "nombre": "Inspección Sanitaria"
+      "nombre": "Formación"
     },
     {
-      "nombre": "Concurso de traslados"
+      "nombre": "Novedades Normativas / CESM"
     },
     {
-      "nombre": "Novedades normativas estatales"
+      "nombre": "Novedades Normativas / CESMCYL"
+    },
+    {
+      "nombre": "Novedades Normativas / CESM Valladolid"
+    },
+    {
+      "nombre": "Novedades Normativas / Estatales"
+    },
+    {
+      "nombre": "Novedades Normativas / Autonómicas"
+    },
+    {
+      "nombre": "OPEs y Concursos de Traslados / OPEs"
+    },
+    {
+      "nombre": "OPEs y Concursos de Traslados / Concursos de Traslados"
+    },
+    {
+      "nombre": "OPEs y Concursos de Traslados / Tutores"
+    },
+    {
+      "nombre": "OPEs y Concursos de Traslados / Fidelización"
+    },
+    {
+      "nombre": "OPEs y Concursos de Traslados / Estabilización"
+    },
+    {
+      "nombre": "OPEs y Concursos de Traslados / Inspección Sanitaria"
     }
   ]
 }
