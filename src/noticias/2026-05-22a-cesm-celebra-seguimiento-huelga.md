@@ -1,7 +1,7 @@
 ---
 title: "CESM celebra el seguimiento de la semana de huelga de mayo y confía en que Sanidad retome las negociaciones"
 date: "2026-05-22"
-category: "CESM"
+category: "Novedades Normativas / CESM"
 pinned: false
 ---
 CESM celebra el seguimiento de la semana de huelga de mayo y confía en que Sanidad retome las negociaciones.

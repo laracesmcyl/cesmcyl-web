@@ -1,7 +1,7 @@
 ---
 title: "Esta es la propuesta de acuerdo del Comité de Huelga al Ministerio de Sanidad"
 date: "2026-03-24"
-category: "Estatuto Marco"
+category: "Huelga / Estatuto Marco"
 pinned: false
 ---
 Esta es la propuesta de acuerdo del Comité de Huelga al Ministerio de Sanidad.

@@ -1,7 +1,7 @@
 ---
 title: "El Comité de Huelga escala el conflicto por el Estatuto Marco y convocará huelga indefinida tras el verano"
 date: "2026-06-15"
-category: "Estatuto Marco"
+category: "Huelga / Estatuto Marco"
 pinned: false
 ---
 El Comité de Huelga anuncia que escalará el conflicto por el Estatuto Marco y convocará una huelga indefinida tras el verano.

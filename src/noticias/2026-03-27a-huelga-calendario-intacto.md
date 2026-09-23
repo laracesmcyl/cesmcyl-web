@@ -1,7 +1,7 @@
 ---
 title: "El Comité de Huelga recuerda que el calendario de movilizaciones se mantiene intacto"
 date: "2026-03-27"
-category: "Estatuto Marco"
+category: "Huelga / Estatuto Marco"
 pinned: false
 ---
 El Comité de Huelga recuerda que el calendario de movilizaciones convocadas se mantiene intacto.

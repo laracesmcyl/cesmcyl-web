@@ -1,7 +1,7 @@
 ---
 title: "El Comité de Huelga y Sanidad reabren las negociaciones"
 date: "2026-03-27"
-category: "Estatuto Marco"
+category: "Huelga / Estatuto Marco"
 pinned: false
 ---
 El Comité de Huelga y Sanidad reabren las negociaciones en un clima de diálogo en el que se apela a la voluntad de todas las partes.

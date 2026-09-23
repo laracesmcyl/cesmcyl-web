@@ -1,7 +1,7 @@
 ---
 title: "CESM exige la retirada inmediata del Estatuto Marco y reclama la negociación de un Estatuto Propio para la Profesión Médica"
 date: "2026-06-26"
-category: "Estatuto Marco"
+category: "Huelga / Estatuto Marco"
 pinned: false
 image: "https://www.cesmcyl.org/cesm-exige-la-retirada-inmediata-del-estatuto-marco-y-reclama-la-negociacion-de-un-estatuto-propio-para-la-profesion-medica/img-20260615-wa0033/"
 ---

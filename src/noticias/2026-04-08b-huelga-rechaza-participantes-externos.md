@@ -1,7 +1,7 @@
 ---
 title: "El Comité de Huelga rechaza la decisión unilateral del ministerio de imponer participantes externos no consensuados en el proceso de negociación"
 date: "2026-04-08"
-category: "Estatuto Marco"
+category: "Huelga / Estatuto Marco"
 pinned: false
 ---
 El Comité de Huelga rechaza la decisión unilateral del ministerio de imponer participantes externos no consensuados en el proceso de negociación.
