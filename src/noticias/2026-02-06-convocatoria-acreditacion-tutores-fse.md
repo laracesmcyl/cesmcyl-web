@@ -1,7 +1,7 @@
 ---
 title: "Convocatoria procedimiento acreditación y reacreditación de tutores de FSE"
 date: "2026-02-06"
-category: "Tutores"
+category: "OPEs y Concursos de Traslados / Tutores"
 pinned: false
 ---
 Hoy, 6 de febrero, se ha publicado en BOCYL: RESOLUCIÓN de 30 de enero de 2026, de la Directora Gerente de la Gerencia Regional de Salud de Castilla y León, por la que se convoca el procedimiento de acreditación y reacreditación de tutores de formación sanitaria especializada.

@@ -1,7 +1,7 @@
 ---
 title: "CESM realiza sus aportaciones ante la consulta previa a la reforma de la LOPS"
 date: "2026-04-17"
-category: "Novedades normativas estatales"
+category: "Novedades Normativas / Estatales"
 pinned: false
 ---
 CESM ha enviado sus aportaciones y modificaciones ante la fase de consulta pública previa a la reforma de la Ley de Ordenación de las Profesiones Sanitarias (LOPS).
