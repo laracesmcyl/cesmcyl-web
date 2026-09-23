@@ -190,7 +190,7 @@
     var textos = notas.map(function (n) { return normalizar(n.textContent); });
     var pintar = function (desde) {
       var visibles = notas.filter(function (n, i) {
-        return (categoria === 'todas' || n.dataset.cat === categoria) && (!termino || textos[i].indexOf(termino) !== -1);
+        return (categoria === 'todas' || n.dataset.cat === categoria || n.dataset.grupo === categoria) && (!termino || textos[i].indexOf(termino) !== -1);
       });
       notas.forEach(function (n) { n.classList.add('oculta'); n.classList.remove('aparece'); });
       visibles.slice(0, mostradas).forEach(function (n, i) {
@@ -203,12 +203,30 @@
       vacio.hidden = visibles.length > 0;
     };
     btnMas.addEventListener('click', function () { var antes = mostradas; mostradas += POR_PAGINA; pintar(antes); });
-    chips.forEach(function (c) {
-      c.addEventListener('click', function () {
-        chips.forEach(function (x) { x.classList.remove('activo'); });
-        c.classList.add('activo'); categoria = c.dataset.cat; mostradas = POR_PAGINA; pintar();
+    var todosLosBotones = document.querySelectorAll('.chip, .chip-sub');
+    var cerrarMenus = function (menos) {
+      document.querySelectorAll('.chip-grupo.abierto').forEach(function (g) {
+        if (g !== menos) { g.classList.remove('abierto'); g.querySelector('.chip-con-menu').setAttribute('aria-expanded', 'false'); }
+      });
+    };
+    todosLosBotones.forEach(function (c) {
+      c.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        var grupo = c.closest('.chip-grupo');
+        if (c.classList.contains('chip-con-menu')) {
+          var abierto = grupo.classList.toggle('abierto');
+          c.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+          cerrarMenus(abierto ? grupo : null);
+        } else {
+          cerrarMenus(null);
+        }
+        todosLosBotones.forEach(function (x) { x.classList.remove('activo'); });
+        c.classList.add('activo');
+        if (grupo && c.classList.contains('chip-sub')) grupo.querySelector('.chip-con-menu').classList.add('activo');
+        categoria = c.dataset.cat; mostradas = POR_PAGINA; pintar();
       });
     });
+    document.addEventListener('click', function () { cerrarMenus(null); });
     buscador.addEventListener('input', function () { termino = normalizar(buscador.value.trim()); mostradas = POR_PAGINA; pintar(); });
     pintar();
   }
