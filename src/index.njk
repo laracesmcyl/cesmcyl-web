@@ -2,6 +2,7 @@
 layout: base.njk
 title: "CESM Valladolid · Sindicato médico de Valladolid"
 ---
+{%- import "iconos-servicio.njk" as ico -%}
 {%- set flecha = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' -%}
 {%- set externo = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>' -%}
 
@@ -11,16 +12,16 @@ title: "CESM Valladolid · Sindicato médico de Valladolid"
   <div class="hero-velo" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-texto">
-      <p class="hero-firma entra" style="--d:.1s"><svg class="pulso" viewBox="0 0 74 22" aria-hidden="true"><path d="M1 13h22l4-8 5 15 5-19 4 12 3-2h29"/></svg>Sindicato médico de Valladolid</p>
+      <p class="hero-firma entra" style="--d:.1s"><svg class="pulso" viewBox="0 0 74 22" aria-hidden="true"><path d="M1 13h22l4-8 5 15 5-19 4 12 3-2h29"/></svg>{{ inicio.firma }}</p>
       <h1 class="hero-titulo">
-        <span class="linea"><span style="--d:.2s">Defendemos los derechos</span></span>
-        <span class="linea"><span style="--d:.34s">de los <em>médicos</em></span></span>
-        <span class="linea"><span style="--d:.48s"><em>de Valladolid</em></span></span>
+        <span class="linea"><span style="--d:.2s">{{ inicio.titulo_linea1 }}</span></span>
+        <span class="linea"><span style="--d:.34s">{{ inicio.titulo_linea2 }}<em>{{ inicio.titulo_destacado2 }}</em></span></span>
+        <span class="linea"><span style="--d:.48s"><em>{{ inicio.titulo_destacado3 }}</em></span></span>
       </h1>
-      <p class="hero-lead entra" style="--d:.8s">Integrados en CESM Castilla y León y en CESM a nivel nacional. Trabajamos para proteger tus derechos, mantenerte informado y darte respaldo cuando lo necesites.</p>
+      <p class="hero-lead entra" style="--d:.8s">{{ inicio.lead }}</p>
       <div class="hero-acciones entra" style="--d:.95s">
-        <a href="/afiliate/" class="btn-oro">Afíliate ahora</a>
-        <a href="#quienes" class="enlace-blanco">Conócenos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+        <a href="{{ inicio.boton_principal.destino }}" class="btn-oro">{{ inicio.boton_principal.texto }}</a>
+        <a href="{{ inicio.boton_secundario.destino }}" class="enlace-blanco">{{ inicio.boton_secundario.texto }} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
       </div>
     </div>
 
@@ -28,23 +29,53 @@ title: "CESM Valladolid · Sindicato médico de Valladolid"
     <aside class="tablon" aria-label="Tablón">
       <h2 class="tablon-cab entra" style="--d:.6s">Tablón <a href="#noticias">Ver todas las noticias</a></h2>
 
-      {%- for noticia in collections.noticias | reverse -%}
-      {%- if noticia.data.pinned %}
-      <a href="{{ noticia.data.url or ('/noticias/' + noticia.fileSlug + '/') }}" class="fijo entra" style="--d:.75s"{% if noticia.data.url %} target="_blank" rel="noopener"{% endif %}>
-        <span class="fijo-cab">
-          <span class="tag">{{ noticia.data.category }}</span>
-          <svg class="chincheta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-label="Fijado"><path d="M9 4v6l-2 4h10l-2-4V4M12 14v6M8 4h8"/></svg>
-        </span>
-        <span class="fijo-titulo">{{ noticia.data.title }}</span>
-        <span class="fijo-desc">{{ noticia.data.description or (noticia.templateContent | excerpt(90)) }}</span>
-        {%- if noticia.data.cta %}
-        <span class="descarga"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg>{{ noticia.data.cta }}</span>
+      {%- set grupos = collections.tablon | porCategoria %}
+      {%- if grupos | length %}
+      <div class="tablon-destacados entra" style="--d:.72s">
+        <h3 class="tablon-sub">Últimos documentos</h3>
+        {%- if grupos | length > 1 %}
+        <div class="pestanas" role="tablist" aria-label="Temas del tablón">
+          {%- for g in grupos %}
+          <button type="button" class="pestana{% if loop.first %} activa{% endif %}" role="tab" data-grupo="{{ g.nombre | slugify }}" aria-selected="{{ 'true' if loop.first else 'false' }}">{{ g.nombre }}<span class="cuenta">{{ g.elementos | length }}</span></button>
+          {%- endfor %}
+        </div>
         {%- endif %}
-      </a>
-      {%- endif -%}
-      {%- endfor %}
+        {%- for g in grupos %}
+        <div class="grupo-fijos{% if loop.first %} visible{% endif %}{% if g.elementos | length > 1 %} apilado{% endif %}" data-grupo="{{ g.nombre | slugify }}" role="tabpanel">
+          {%- for item in g.elementos %}
+          {%- set destino = item.data.archivo or item.data.enlace %}
+          {%- if destino %}
+          <a href="{{ destino }}" class="fijo"{% if item.data.enlace and not item.data.archivo %} target="_blank" rel="noopener"{% else %} download{% endif %}>
+            <span class="fijo-cab">
+              {%- set etiqueta = item.data | cat %}
+              {% if etiqueta %}<span class="tag">{{ etiqueta }}</span>{% else %}<span></span>{% endif %}
+              <svg class="chincheta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-label="Fijado"><path d="M9 4v6l-2 4h10l-2-4V4M12 14v6M8 4h8"/></svg>
+            </span>
+            <span class="fijo-titulo">{{ item.data.title }}</span>
+            {%- if item.data.descripcion %}<span class="fijo-desc">{{ item.data.descripcion }}</span>{% endif %}
+            <span class="descarga">
+              {%- if item.data.archivo %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg>
+              {%- else %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+              {%- endif %}
+              {{ item.data.texto_boton or ("Descargar" if item.data.archivo else "Ver más") }}
+            </span>
+          </a>
+          {%- endif %}
+          {%- endfor %}
+          {%- if g.elementos | length > 1 %}
+          <button type="button" class="abrir-pila" aria-expanded="false">
+            <span class="abrir-texto">Ver los {{ g.elementos | length }} documentos</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          {%- endif %}
+        </div>
+        {%- endfor %}
+      </div>
+      {%- endif %}
 
-      {%- set noticiasCarrusel = collections.noticias | reverse | sinFijar | limit(8) %}
+      {%- set noticiasCarrusel = collections.noticias | reverse | limit(8) %}
       <div class="tn-cab entra" style="--d:.95s">
         <span>Últimas noticias</span>
         <div class="flechas">
@@ -56,13 +87,14 @@ title: "CESM Valladolid · Sindicato médico de Valladolid"
       <div class="tn-marco entra" style="--d:1.05s" id="carrusel">
         {%- for noticia in noticiasCarrusel %}
         <a href="/noticias/{{ noticia.fileSlug }}/" class="tn{% if loop.first %} visible{% endif %}">
-          <span class="tn-meta"><b>{{ noticia.data.category }}</b><span>{{ noticia.data.date | fecha }}</span></span>
+          <span class="tn-meta"><b>{% if (noticia.data | cat) != "Noticias" %}{{ noticia.data | cat }}{% endif %}</b><span>{{ noticia.data.date | fecha }}</span></span>
           <span class="tn-titulo">{{ noticia.data.title }}</span>
           <span class="tn-desc">{{ noticia.data.description or (noticia.templateContent | excerpt(150)) }}</span>
         </a>
         {%- endfor %}
         <span class="progreso" id="carrusel-progreso"></span>
       </div>
+
     </aside>
   </div>
 </section>
@@ -82,13 +114,15 @@ title: "CESM Valladolid · Sindicato médico de Valladolid"
   <div class="chips" role="group" aria-label="Filtrar noticias por tema">
     <button type="button" class="chip activo" data-cat="todas">Todas</button>
     {%- for cat in collections.noticias | reverse | categorias %}
+    {%- if cat != "Noticias" %}
     <button type="button" class="chip" data-cat="{{ cat | slugify }}">{{ cat }}</button>
+    {%- endif %}
     {%- endfor %}
   </div>
   <div class="notas" id="notas">
     {%- for noticia in collections.noticias | reverse %}
-    <article class="nota" data-cat="{{ noticia.data.category | slugify }}">
-      <div class="nota-meta"><span class="nota-tag">{{ noticia.data.category }}</span><time datetime="{{ noticia.data.date }}">{{ noticia.data.date | fecha }}</time></div>
+    <article class="nota" data-cat="{{ noticia.data | cat | slugify }}">
+      <div class="nota-meta"><span class="nota-tag">{% if (noticia.data | cat) != "Noticias" %}{{ noticia.data | cat }}{% endif %}</span><time datetime="{{ noticia.data.date }}">{{ noticia.data.date | fecha }}</time></div>
       <h3><a href="/noticias/{{ noticia.fileSlug }}/">{{ noticia.data.title }}</a></h3>
       <p>{{ noticia.data.description or (noticia.templateContent | excerpt(170)) }}</p>
       <span class="nota-leer" aria-hidden="true">Leer más {{ flecha | safe }}</span>
@@ -103,77 +137,104 @@ title: "CESM Valladolid · Sindicato médico de Valladolid"
 <section class="quienes" id="quienes">
   <div class="quienes-inner">
     <div>
-      <h2 class="titulo-seccion">Quiénes somos</h2>
-      <p class="intro"><strong>CESM Valladolid es un sindicato médico</strong> confederado a nivel autonómico en CESM Castilla y León (CESMCYL) y a nivel nacional en CESM.</p>
-      <p class="lema">Unión, negociación, defensa, trabajo y movilización.</p>
+      <h2 class="titulo-seccion">{{ quienes.titulo }}</h2>
+      <p class="intro">{{ quienes.intro | md | safe }}</p>
+      {%- if quienes.lema %}<p class="lema">{{ quienes.lema }}</p>{% endif %}
     </div>
+    {%- if quienes.objetivos | length %}
     <div class="objetivos">
-      <h3>Nuestros objetivos</h3>
+      <h3>{{ quienes.titulo_objetivos or "Nuestros objetivos" }}</h3>
       <ol>
-        <li><span><strong>Representar</strong> a la profesión médica ante las administraciones y organismos sanitarios.</span></li>
-        <li><span><strong>Defender</strong> los derechos profesionales, laborales y retributivos, individual y colectivamente.</span></li>
-        <li><span><strong>Negociar</strong> mejoras en las condiciones de trabajo en las mesas de negociación.</span></li>
-        <li><span><strong>Impulsar</strong> las movilizaciones necesarias cuando el diálogo no sea suficiente.</span></li>
-        <li><span><strong>Mantener</strong> presencia activa en los centros sanitarios, dando respuesta a los profesionales.</span></li>
+        {%- for o in quienes.objetivos %}
+        <li><span>{{ o.texto | md | safe }}</span></li>
+        {%- endfor %}
       </ol>
     </div>
+    {%- endif %}
   </div>
 </section>
 
 <!-- ============ SERVICIOS ============ -->
 <section class="servicios" id="servicios">
   <div class="servicios-top">
-    <h2 class="titulo-seccion">Servicios</h2>
-    <p>Todo lo que CESM Valladolid pone a tu disposición como afiliado, desde el primer día.</p>
+    <h2 class="titulo-seccion">{{ servicios.titulo }}</h2>
+    <p>{{ servicios.intro }}</p>
   </div>
-  <div class="serv-grid">
-    <article class="serv serv-destacado">
-      <svg class="serv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M8 20h8M5 7h14M5 7l-2.5 6a3 3 0 0 0 5 0L5 7M19 7l-2.5 6a3 3 0 0 0 5 0L19 7"/></svg>
-      <h3>Asesoramiento jurídico</h3>
-      <p>Un equipo de abogados especializados te acompaña en consultas, escritos, reclamaciones y procedimientos judiciales, con tarifas reducidas según tu antigüedad como afiliado.</p>
-      <p class="serv-nota">La consulta es gratuita desde el primer día de afiliación.</p>
-      <a href="/asesoria-juridica/" class="btn-tarifas">Consultar tarifas {{ flecha | safe }}</a>
+  <div class="serv-grid-paginas">
+    {%- for serv in collections.servicios | principales %}
+    {%- set destino = serv.data.destino or serv.url %}
+    {%- set esPropiaSeccion = destino == "/#servicios" %}
+    {%- set hijas = collections.servicios | hijasDe(serv.fileSlug) %}
+    <article class="serv-tarjeta{% if hijas | length %} con-hijas{% endif %}{% if esPropiaSeccion %} serv-tarjeta-fija{% endif %}">
+      <div class="serv-tarjeta-cuerpo">
+        {{ ico.icono(serv.data.icono) }}
+        <h3>{% if esPropiaSeccion %}{{ serv.data.menu or serv.data.title }}{% else %}<a href="{{ destino }}" class="serv-tarjeta-principal">{{ serv.data.menu or serv.data.title }}</a>{% endif %}</h3>
+        {%- if serv.data.entradilla %}<p>{{ serv.data.entradilla }}</p>{% endif %}
+        {%- if esPropiaSeccion %}
+        <span class="serv-tarjeta-contacto">
+          <a href="tel:{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a>
+          <a href="mailto:{{ contacto.email }}">{{ contacto.email }}</a>
+        </span>
+        {%- else %}
+        <span class="serv-tarjeta-ir">Ver más {{ flecha | safe }}</span>
+        {%- endif %}
+      </div>
+      {%- if hijas | length %}
+      <div class="serv-tarjeta-sub">
+        <span class="serv-tarjeta-sub-titulo">Dentro encontrarás</span>
+        {%- for h in hijas %}
+        <a href="{{ h.data.destino or h.url }}">{{ h.data.menu or h.data.title }} {{ flecha | safe }}</a>
+        {%- endfor %}
+      </div>
+      {%- endif %}
     </article>
-    <article class="serv">
-      <svg class="serv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
-      <h3>Información</h3>
-      <p>Te mantenemos al día de todo lo que afecta a tu profesión: OPE, concursos de traslado, bolsas de empleo, normativa y novedades del sector en Castilla y León.</p>
-    </article>
-    <article class="serv">
-      <svg class="serv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5z"/><path d="M4 19a2 2 0 0 1 2-2h13"/></svg>
-      <h3>Formación</h3>
-      <p>Cursos, jornadas y programas de formación continuada pensados para acompañar tu carrera desde el MIR hasta la jubilación.</p>
-      <a href="https://www.cesmcyl.org/formacion-tiscyl-cesm/" target="_blank" rel="noopener" class="serv-enlace">Acceder al Campus TISCYL-CESM {{ externo | safe }}</a>
-    </article>
-    <article class="serv">
-      <svg class="serv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5 5-2z"/></svg>
-      <h3>Orientación laboral</h3>
-      <p>Te ayudamos a entender tus opciones en oposiciones, carrera profesional, movilidad y condiciones de trabajo dentro de SACYL.</p>
-    </article>
-    <article class="serv">
-      <svg class="serv-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 14.2A4.8 4.8 0 0 1 21 19"/></svg>
-      <h3>Acompañamiento</h3>
-      <p>Estamos contigo en cada paso, desde tu incorporación como médico residente hasta cualquier situación difícil en tu día a día profesional.</p>
-    </article>
+    {%- endfor %}
   </div>
-  <a href="/canal-de-denuncias/" class="canal-enlace">
-    <svg class="canal-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M9.5 12l2 2 3.5-4"/></svg>
-    <span class="canal-txt"><strong>Canal de denuncias</strong><span>Comunica de forma confidencial irregularidades o situaciones de acoso relacionadas con CESM Valladolid.</span></span>
-    <span class="canal-ir">Acceder {{ flecha | safe }}</span>
-  </a>
+
+</section>
+
+<!-- ============ NUESTRAS REDES ============ -->
+<section class="redes-sociales" id="redes">
+  <div class="redes-top">
+    <h2 class="titulo-seccion">Nuestras redes</h2>
+    <p class="sub-seccion">Lo último que hemos publicado. Síguenos para enterarte al momento.</p>
+    <div class="redes-botones">
+      <a href="{{ contacto.redes.instagram }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>Instagram</a>
+      <a href="{{ contacto.redes.facebook }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.87.24-1.5 1.53-1.5H16.5V4.3c-.28-.04-1.23-.12-2.33-.12-2.3 0-3.87 1.4-3.87 3.98V10.5H8v3h2.3V21h3.2z"/></svg>Facebook</a>
+      <a href="{{ contacto.redes.tiktok }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82c-.9-.98-1.4-2.26-1.4-3.58h-3.16v13.68c0 1.5-1.22 2.72-2.72 2.72s-2.72-1.22-2.72-2.72 1.22-2.72 2.72-2.72c.3 0 .59.05.86.14V9.94a5.9 5.9 0 00-.86-.06c-3.24 0-5.86 2.62-5.86 5.86S6.16 21.6 9.4 21.6s5.86-2.62 5.86-5.86V9.05a7.24 7.24 0 004.22 1.35V7.24c-1 0-1.94-.35-2.68-.94l-.2-.48z"/></svg>TikTok</a>
+      <a href="{{ contacto.redes.x }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.3 8.3L23.3 22H16.7l-5.2-6.8L5.5 22H2.4l7.8-8.9L1.7 2h6.8l4.7 6.2L18.9 2z"/></svg>X</a>
+      <a href="{{ contacto.redes.youtube }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3-5.2 3z"/></svg>YouTube</a>
+    </div>
+  </div>
+
+  {%- set publicaciones = collections.tablon | enRedes %}
+  {%- if publicaciones | length %}
+  <div class="redes-grid">
+    {%- for pub in publicaciones | limit(4) %}
+    <a href="{{ pub.data.enlace or pub.data.archivo }}" target="_blank" rel="noopener" class="pub">
+      <span class="pub-foto">
+        {%- if pub.data.imagen %}<img src="{{ pub.data.imagen }}" alt="" loading="lazy">{% endif %}
+        {% if pub.data | cat %}<span class="pub-red">{{ pub.data | cat }}</span>{% endif %}
+      </span>
+      <span class="pub-texto">{{ pub.data.title }}{% if pub.data.descripcion %} — {{ pub.data.descripcion }}{% endif %}</span>
+      <span class="pub-ir">{{ pub.data.texto_boton or "Ver publicación" }} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span>
+    </a>
+    {%- endfor %}
+  </div>
+  {%- endif %}
 </section>
 
 <!-- ============ CONTACTO ============ -->
 <section class="contacto" id="contacto">
   <div class="contacto-info">
-    <h2 class="titulo-seccion">Contacto</h2>
-    <p class="sub-seccion">Estamos aquí para ayudarte. Llámanos, escríbenos o déjanos un mensaje y te responderemos lo antes posible.</p>
+    <h2 class="titulo-seccion">{{ contacto.titulo }}</h2>
+    <p class="sub-seccion">{{ contacto.intro }}</p>
     <ul class="datos">
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><div><span>Teléfono</span><a href="tel:+34983218524">+34 983 218 524</a></div></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><div><span>Correo electrónico</span><a href="mailto:cesmvalladolid@cesmcyl.es">cesmvalladolid@cesmcyl.es</a></div></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><div><span>Sede</span><p>C/ Angustias 34, 1.º izq.<br>47003 Valladolid</p></div></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><span>Horario</span><p>Lunes a viernes, de 9:00 a 14:00 y de 16:00 a 19:00</p></div></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg><div><span>CESM Castilla y León</span><a href="https://www.cesmcyl.org" target="_blank" rel="noopener">www.cesmcyl.org</a></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><div><span>Teléfono</span><a href="tel:{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><div><span>Correo electrónico</span><a href="mailto:{{ contacto.email }}">{{ contacto.email }}</a></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><div><span>Sede</span><p>{{ contacto.direccion | nl2br | safe }}</p></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><span>Horario</span><p>{{ contacto.horario }}</p></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg><div><span>CESM Castilla y León</span><a href="{{ contacto.web_cesmcyl }}" target="_blank" rel="noopener">{{ contacto.web_cesmcyl | sinProtocolo }}</a></div></li>
     </ul>
   </div>
 

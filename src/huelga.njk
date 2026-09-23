@@ -2,20 +2,61 @@
 layout: base.njk
 title: "Información sobre la huelga · CESM Valladolid"
 seccion: noticias
+descripcion: "Convocatorias, servicios mínimos, documentos y noticias sobre las movilizaciones."
 ---
+{%- set destacadosHuelga = collections.tablon | enHuelga %}
+{%- set noticiasHuelga = collections.noticias | reverse | deCategoria("Huelga") %}
+
 <header class="pag-cab">
   <div class="pag-cab-inner">
     <a href="/" class="migas">Inicio</a>
     <h1>Información sobre la huelga</h1>
-    <p>Convocatorias, servicios mínimos y todo lo que necesitas saber sobre las movilizaciones por el Estatuto Marco.</p>
+    <p>Convocatorias, servicios mínimos y todo lo que necesitas saber sobre las movilizaciones.</p>
   </div>
 </header>
 
-<div class="pag" style="grid-template-columns:minmax(0,1fr)">
+<div class="pag">
   <div class="pag-texto">
     <div class="cuerpo" id="huelga-texto">
       <p>Cargando información…</p>
     </div>
+
+    {%- if noticiasHuelga | length %}
+    <section class="huelga-noticias">
+      <h2>Noticias sobre la huelga</h2>
+      <div class="notas notas-dos">
+        {%- for n in noticiasHuelga %}
+        <article class="nota">
+          <div class="nota-meta"><span class="nota-tag">{{ n.data | cat }}</span><time datetime="{{ n.data.date }}">{{ n.data.date | fecha }}</time></div>
+          <h3><a href="/noticias/{{ n.fileSlug }}/">{{ n.data.title }}</a></h3>
+          <p>{{ n.data.description or (n.templateContent | excerpt(150)) }}</p>
+          <span class="nota-leer" aria-hidden="true">Leer más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </article>
+        {%- endfor %}
+      </div>
+    </section>
+    {%- endif %}
   </div>
 
+  <aside class="pag-lateral">
+    {%- if destacadosHuelga | length %}
+    <div class="documentos">
+      <h2>Documentos y enlaces</h2>
+      {%- for item in destacadosHuelga %}
+      {%- set destino = item.data.archivo or item.data.enlace %}
+      {%- if destino %}
+      <a href="{{ destino }}" class="doc"{% if item.data.enlace and not item.data.archivo %} target="_blank" rel="noopener"{% else %} download{% endif %}>
+        {%- if item.data.archivo %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+        {%- else %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+        {%- endif %}
+        <span>{{ item.data.title }}{% if item.data.descripcion %}<small>{{ item.data.descripcion }}</small>{% endif %}</span>
+      </a>
+      {%- endif %}
+      {%- endfor %}
+    </div>
+    {%- endif %}
+
+  </aside>
 </div>
