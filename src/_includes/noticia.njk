@@ -6,7 +6,7 @@ seccion: noticias
 <header class="pag-cab articulo-cab">
   <div class="pag-cab-inner">
     <a href="/#noticias" class="migas">Noticias</a>
-    <div class="articulo-meta"><span class="tag">{{ category }}</span><time datetime="{{ date }}">{{ date | fecha }}</time></div>
+    <div class="articulo-meta">{% set catActual = { category: category, category_nueva: category_nueva } | cat %}{% if catActual and catActual != "Noticias" %}<span class="tag">{{ catActual }}</span>{% endif %}<time datetime="{{ date }}">{{ date | fecha }}</time></div>
     <h1>{{ title }}</h1>
   </div>
 </header>
@@ -33,7 +33,7 @@ seccion: noticias
     {%- for n in collections.noticias | reverse | limit(4) -%}
     {%- if n.fileSlug != page.fileSlug %}
     <a href="/noticias/{{ n.fileSlug }}/" class="relacionada">
-      <span class="nota-meta"><span class="nota-tag">{{ n.data.category }}</span><span>{{ n.data.date | fecha }}</span></span>
+      <span class="nota-meta"><span class="nota-tag">{% if (n.data | cat) != "Noticias" %}{{ n.data | cat }}{% endif %}</span><span>{{ n.data.date | fecha }}</span></span>
       <span class="relacionada-titulo">{{ n.data.title }}</span>
     </a>
     {%- endif -%}

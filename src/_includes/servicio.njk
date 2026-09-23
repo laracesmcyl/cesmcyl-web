@@ -1,0 +1,146 @@
+---
+layout: base.njk
+seccion: servicios
+---
+{%- import "iconos-servicio.njk" as ico -%}
+{%- macro tarjetaNoticia(n) %}
+<article class="nota">
+  <div class="nota-meta"><span class="nota-tag">{{ n.data | cat }}</span><time datetime="{{ n.data.date }}">{{ n.data.date | fecha }}</time></div>
+  <h3><a href="/noticias/{{ n.fileSlug }}/">{{ n.data.title }}</a></h3>
+  <p>{{ n.data.description or (n.templateContent | excerpt(150)) }}</p>
+  <span class="nota-leer" aria-hidden="true">Leer más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+</article>
+{%- endmacro %}
+{%- set hijas = collections.servicios | hijasDe(page.fileSlug) %}
+{%- set hermanas = collections.servicios | hermanasDe(padre, page.fileSlug) %}
+{%- set subaps = listaCategorias | subapartadosDe(subapartados) %}
+{%- set noticiasServicio = collections.noticias | reverse | deCategorias(categorias) | limit(6) %}
+
+<header class="pag-cab">
+  <div class="pag-cab-inner">
+    <a href="{% if padre %}{{ collections.servicios | urlDe(padre) }}{% else %}/#servicios{% endif %}" class="migas">{% if padre %}{{ collections.servicios | tituloDe(padre) }}{% else %}Servicios{% endif %}</a>
+    <h1>{{ title }}</h1>
+    {%- if entradilla %}<p>{{ entradilla }}</p>{% endif %}
+  </div>
+</header>
+
+{%- if hijas | length %}
+<nav class="serv-sub" aria-label="Apartados de {{ title }}">
+  {%- for h in hijas %}
+  <a href="{{ h.data.destino or h.url }}">
+    {{ ico.icono(h.data.icono, "serv-sub-ico") }}
+    <span><strong>{{ h.data.menu or h.data.title }}</strong>{% if h.data.entradilla %}<small>{{ h.data.entradilla }}</small>{% endif %}</span>
+    <svg class="serv-sub-flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </a>
+  {%- endfor %}
+</nav>
+{%- endif %}
+
+<div class="pag{% if not (bloques | length) %} pag-ancha{% endif %}">
+  <div class="pag-texto">
+    <div class="cuerpo">
+      {{ content | safe }}
+    </div>
+
+    {%- if subaps | length %}
+    {%- set todasSub = collections.noticias | reverse | deCategorias(categorias | conSubapartados(subaps)) %}
+    <section class="serv-noticias subap">
+      <h2>{{ subapartados }}</h2>
+      <div class="subap-pestanas" role="tablist" aria-label="Apartados de {{ subapartados }}">
+        <button type="button" class="subap-pestana activa" role="tab" aria-selected="true" data-subap="todas">Todas<span class="cuenta">{{ todasSub | length }}</span></button>
+        {%- for s in subaps %}
+        {%- set deEsta = collections.noticias | deCategoria(s.completo) %}
+        <button type="button" class="subap-pestana" role="tab" aria-selected="false" data-subap="{{ s.corto | slugify }}">{{ s.corto }}<span class="cuenta">{{ deEsta | length }}</span></button>
+        {%- endfor %}
+      </div>
+
+      <div class="subap-panel visible" data-subap="todas" role="tabpanel">
+        {%- if todasSub | length %}
+        <div class="notas notas-dos">
+          {%- for n in todasSub | limit(8) %}{{ tarjetaNoticia(n) }}{%- endfor %}
+        </div>
+        {%- else %}<p class="subap-vacio">Todavía no hay noticias en este apartado.</p>{%- endif %}
+      </div>
+      {%- for s in subaps %}
+      {%- set deEsta = collections.noticias | reverse | deCategoria(s.completo) %}
+      <div class="subap-panel" data-subap="{{ s.corto | slugify }}" role="tabpanel">
+        {%- if deEsta | length %}
+        <div class="notas notas-dos">
+          {%- for n in deEsta %}{{ tarjetaNoticia(n) }}{%- endfor %}
+        </div>
+        {%- else %}<p class="subap-vacio">Todavía no hay noticias en «{{ s.corto }}». Aparecerán aquí en cuanto publiques una con la categoría <strong>{{ s.completo }}</strong>.</p>{%- endif %}
+      </div>
+      {%- endfor %}
+      <a href="/#noticias" class="enlace-verde">Ver todas las noticias <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </section>
+
+    {%- elif noticiasServicio | length %}
+    <section class="serv-noticias">
+      <h2>Noticias relacionadas</h2>
+      <div class="notas notas-dos">
+        {%- for n in noticiasServicio %}
+        {{ tarjetaNoticia(n) }}
+        {%- endfor %}
+      </div>
+      <a href="/#noticias" class="enlace-verde">Ver todas las noticias <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </section>
+    {%- endif %}
+
+    {%- if hermanas | length %}
+    <section class="serv-hermanas">
+      <h2>También te puede interesar</h2>
+      <div class="serv-hermanas-lista">
+        {%- for h in hermanas %}
+        <a href="{{ h.data.destino or h.url }}">
+          {{ ico.icono(h.data.icono, "serv-sub-ico") }}
+          <span>{{ h.data.menu or h.data.title }}</span>
+        </a>
+        {%- endfor %}
+      </div>
+    </section>
+    {%- endif %}
+  </div>
+
+  {%- if bloques | length %}
+  <aside class="pag-lateral">
+    {%- for b in bloques %}
+    <div class="documentos">
+      <h2>{{ b.titulo }}</h2>
+      {%- for e in b.enlaces %}
+      {%- set destino = e.archivo or e.destino %}
+      {%- if destino %}
+      {%- set esExterno = "http" in destino and not e.archivo %}
+      <a href="{{ destino }}" class="doc"{% if esExterno %} target="_blank" rel="noopener"{% elif e.archivo %} download{% endif %}>
+        {%- if e.archivo %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+        {%- elif esExterno %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+        {%- else %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        {%- endif %}
+        <span>{{ e.texto }}{% if e.descripcion %}<small>{{ e.descripcion }}</small>{% endif %}</span>
+      </a>
+      {%- endif %}
+      {%- endfor %}
+    </div>
+    {%- endfor %}
+  </aside>
+  {%- endif %}
+</div>
+
+{%- if subaps | length %}
+<script>
+document.querySelectorAll('.subap').forEach(function (sec) {
+  var botones = sec.querySelectorAll('.subap-pestana');
+  botones.forEach(function (b) {
+    b.addEventListener('click', function () {
+      botones.forEach(function (x) { x.classList.remove('activa'); x.setAttribute('aria-selected', 'false'); });
+      b.classList.add('activa'); b.setAttribute('aria-selected', 'true');
+      sec.querySelectorAll('.subap-panel').forEach(function (p) {
+        p.classList.toggle('visible', p.dataset.subap === b.dataset.subap);
+      });
+    });
+  });
+});
+</script>
+{%- endif %}

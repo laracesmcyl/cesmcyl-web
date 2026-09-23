@@ -1,0 +1,39 @@
+---
+layout: base.njk
+---
+<header class="pag-cab">
+  <div class="pag-cab-inner">
+    {%- if migas %}<a href="{{ migas_destino or '/' }}" class="migas">{{ migas }}</a>{% endif %}
+    <h1>{{ title }}</h1>
+    {%- if entradilla %}<p>{{ entradilla }}</p>{% endif %}
+  </div>
+</header>
+
+<div class="pag"{% if not (documentos | length) %} style="grid-template-columns:minmax(0,1fr)"{% endif %}>
+  <div class="pag-texto">
+    <div class="cuerpo">
+      {{ content | safe }}
+    </div>
+  </div>
+
+  {%- if documentos | length %}
+  <aside class="pag-lateral">
+    <div class="documentos">
+      <h2>{{ titulo_documentos or "Documentos y enlaces" }}</h2>
+      {%- for d in documentos %}
+      {%- set destino = d.archivo or d.enlace %}
+      {%- if destino %}
+      <a href="{{ destino }}" class="doc"{% if d.enlace and not d.archivo %} target="_blank" rel="noopener"{% else %} download{% endif %}>
+        {%- if d.archivo %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+        {%- else %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+        {%- endif %}
+        <span>{{ d.texto or d.titulo }}{% if d.descripcion %}<small>{{ d.descripcion }}</small>{% endif %}</span>
+      </a>
+      {%- endif %}
+      {%- endfor %}
+    </div>
+  </aside>
+  {%- endif %}
+</div>
