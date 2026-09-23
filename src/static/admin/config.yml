@@ -2,15 +2,125 @@ backend:
   name: github
   repo: "laracesmcyl/cesmcyl-web"
   branch: main
-  # Worker de acceso (el que has creado en Cloudflare)
   base_url: "https://sveltia-cms-auth.laracesmcyl.workers.dev"
 
-# Aparece el editor de contenido enriquecido (negrita, cursiva, enlaces...)
-# en los campos que lo pidan explícitamente con widget "markdown".
-media_folder: "src/static/imagenes-noticias"
-public_folder: "/imagenes-noticias"
+media_folder: "src/static/imagenes"
+public_folder: "/imagenes"
 
 collections:
+  # =====================================================================
+  # PORTADA Y AJUSTES · los textos fijos de cada sección de la web
+  # =====================================================================
+  - name: "portada"
+    label: "Portada y ajustes"
+    files:
+      - name: "inicio"
+        label: "Titular y botones de la portada"
+        file: "src/_data/inicio.json"
+        fields:
+          - { label: "Línea pequeña de arriba", name: "firma", widget: "string" }
+          - { label: "Título · línea 1", name: "titulo_linea1", widget: "string" }
+          - { label: "Título · línea 2 (en blanco)", name: "titulo_linea2", widget: "string" }
+          - { label: "Título · línea 2 (en dorado)", name: "titulo_destacado2", widget: "string" }
+          - { label: "Título · línea 3 (en dorado)", name: "titulo_destacado3", widget: "string" }
+          - { label: "Texto", name: "lead", widget: "text" }
+          - label: "Botón principal"
+            name: "boton_principal"
+            widget: "object"
+            fields:
+              - { label: "Texto", name: "texto", widget: "string" }
+              - { label: "Destino", name: "destino", widget: "string" }
+          - label: "Botón secundario"
+            name: "boton_secundario"
+            widget: "object"
+            fields:
+              - { label: "Texto", name: "texto", widget: "string" }
+              - { label: "Destino", name: "destino", widget: "string" }
+
+  # --------------------------------------------------------- PÁGINA DE HUELGA
+      - name: "aviso-urgente"
+        label: "Franja de aviso de la portada"
+        file: "src/static/aviso-urgente.json"
+        fields:
+          - { label: "Mostrar el aviso", name: "activo", widget: "boolean", default: false }
+          - { label: "Mensaje del aviso", name: "texto", widget: "markdown", required: false }
+
+  # --------------------------------------------------------------- NOTICIAS
+      - name: "quienes"
+        label: "Sección «Quiénes somos»"
+        file: "src/_data/quienes.json"
+        fields:
+          - { label: "Título", name: "titulo", widget: "string" }
+          - { label: "Introducción", name: "intro", widget: "text", hint: "Puedes poner **negritas** con dos asteriscos a cada lado." }
+          - { label: "Lema", name: "lema", widget: "string", required: false }
+          - { label: "Título de la lista", name: "titulo_objetivos", widget: "string", required: false, default: "Nuestros objetivos" }
+          - label: "Objetivos"
+            name: "objetivos"
+            widget: "list"
+            label_singular: "Objetivo"
+            summary: "{{fields.texto}}"
+            fields:
+              - { label: "Texto", name: "texto", widget: "text" }
+
+  # --------------------------------------------------------------- SERVICIOS
+      - name: "servicios-portada"
+        label: "Servicios (título y franja de la portada)"
+        file: "src/_data/servicios.json"
+        fields:
+          - { label: "Título", name: "titulo", widget: "string" }
+          - { label: "Introducción", name: "intro", widget: "text" }
+          - label: "Franja del canal de denuncias"
+            name: "canal"
+            widget: "object"
+            fields:
+              - { label: "Mostrar la franja", name: "mostrar", widget: "boolean", default: true }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Texto", name: "texto", widget: "text" }
+              - { label: "Destino", name: "destino", widget: "string" }
+              - { label: "Texto del botón", name: "texto_boton", widget: "string", default: "Acceder" }
+      - name: "contacto"
+        label: "Datos de contacto y redes"
+        file: "src/_data/contacto.json"
+        fields:
+          - { label: "Título", name: "titulo", widget: "string" }
+          - { label: "Introducción", name: "intro", widget: "text" }
+          - { label: "Teléfono (como se ve)", name: "telefono", widget: "string" }
+          - { label: "Teléfono (para llamar)", name: "telefono_enlace", widget: "string", hint: "Con prefijo y sin espacios: +34983218524" }
+          - { label: "Correo electrónico", name: "email", widget: "string" }
+          - { label: "Dirección", name: "direccion", widget: "text" }
+          - { label: "Horario", name: "horario", widget: "string" }
+          - { label: "Web de CESM Castilla y León", name: "web_cesmcyl", widget: "string" }
+          - label: "Redes sociales"
+            name: "redes"
+            widget: "object"
+            fields:
+              - { label: "Instagram", name: "instagram", widget: "string", required: false }
+              - { label: "Facebook", name: "facebook", widget: "string", required: false }
+              - { label: "TikTok", name: "tiktok", widget: "string", required: false }
+              - { label: "X", name: "x", widget: "string", required: false }
+              - { label: "YouTube", name: "youtube", widget: "string", required: false }
+
+  # -------------------------------------------------------------------- INICIO
+      - name: "huelga-info"
+        label: "Texto de la página de huelga"
+        file: "src/static/huelga-info.json"
+        fields:
+          - { label: "Texto", name: "texto", widget: "markdown", required: false }
+
+  # ------------------------------------------------------------- CATEGORÍAS
+      - name: "categorias"
+        label: "Lista de categorías"
+        file: "src/static/categorias.json"
+        fields:
+          - label: "Categorías"
+            name: "categorias"
+            widget: "list"
+            label_singular: "Categoría"
+            summary: "{{fields.nombre}}"
+            hint: "Para crear un subapartado, escribe «Grupo / Nombre». Ejemplo: «Novedades Normativas / Autonómicas» o «OPEs y Concursos de Traslados / Tutores». Aparecerá solo como pestaña nueva en su página."
+            fields:
+              - { label: "Nombre", name: "nombre", widget: "string" }
+
   - name: "noticias"
     label: "Noticias"
     label_singular: "Noticia"
@@ -20,29 +130,14 @@ collections:
     extension: "md"
     format: "frontmatter"
     identifier_field: "title"
-    # Cada noticia se ve así en el listado: fecha · categoría · título
     summary: "{{date}}  ·  {{category}}  ·  {{title}}"
     sortable_fields: ["date", "title", "category"]
-    # Botones "Group by" y "Filter by" encima del listado
     view_groups:
       - label: "Categoría"
         field: category
       - label: "Año"
         field: date
         pattern: "\\d{4}"
-    view_filters:
-      - label: "Estatuto Marco"
-        field: category
-        pattern: "Estatuto Marco"
-      - label: "OPE"
-        field: category
-        pattern: "OPE"
-      - label: "Bolsa"
-        field: category
-        pattern: "Bolsa"
-      - label: "Fidelización"
-        field: category
-        pattern: "Fidelización"
     fields:
       - { label: "Título", name: "title", widget: "string" }
       - label: "Fecha"
@@ -54,49 +149,160 @@ collections:
         picker_utc: true
       - label: "Categoría"
         name: "category"
-        widget: "select"
+        widget: "relation"
+        collection: "categorias"
+        file: "categorias"
+        value_field: "categorias.*.nombre"
+        display_fields: ["categorias.*.nombre"]
+        search_fields: ["categorias.*.nombre"]
         required: false
-        options:
-          - "OPE"
-          - "Bolsa"
-          - "CESM"
-          - "Estatuto Marco"
-          - "Fidelización"
-          - "MIR 2026"
-          - "Electoral 2026"
-          - "Estabilización"
-          - "Tutores"
-          - "Inspección Sanitaria"
-          - "Concurso de traslados"
-          - "Novedades normativas estatales"
-          - "Otra categoría (escribir abajo)"
-      - label: "Otra categoría"
-        name: "category_nueva"
-        widget: "string"
-        required: false
-        hint: "Rellena esto SOLO si arriba has elegido «Otra categoría». Lo que escribas aquí manda sobre el desplegable y aparecerá como filtro nuevo en la web."
-      - { label: "Fijar en Destacado (Tablón)", name: "pinned", widget: "boolean", default: false }
+        hint: "Si eliges «Huelga», la noticia aparece además en la página de huelga."
       - { label: "Imagen (opcional)", name: "image", widget: "image", required: false }
-      - { label: "Descripción corta (solo si está Fijada)", name: "description", widget: "string", required: false }
-      - { label: "Enlace (solo si está Fijada)", name: "url", widget: "string", required: false }
-      - { label: "Texto del botón (solo si está Fijada)", name: "cta", widget: "string", required: false, default: "Ver más" }
+      - { label: "Resumen corto (opcional)", name: "description", widget: "string", required: false }
       - { label: "Cuerpo de la noticia", name: "body", widget: "markdown" }
 
-  - name: "aviso"
-    label: "Aviso urgente"
-    files:
-      - name: "aviso-urgente"
-        label: "Franja de aviso (portada)"
-        file: "src/static/aviso-urgente.json"
-        fields:
-          - { label: "Mostrar el aviso en la portada", name: "activo", widget: "boolean", default: false }
-          - { label: "Mensaje del aviso", name: "texto", widget: "markdown", required: false }
+  # ----------------------------------------------------------------- TABLÓN
 
-  - name: "huelga"
-    label: "Página de huelga"
-    files:
-      - name: "huelga-info"
-        label: "Contenido de /huelga/"
-        file: "src/static/huelga-info.json"
+  - name: "servicios"
+    label: "Servicios"
+    label_singular: "Página de servicio"
+    folder: "src/servicios"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    identifier_field: "title"
+    summary: "{{orden}}. {{title}}"
+    sortable_fields: ["orden", "title"]
+    media_folder: "/src/static/documentos"
+    public_folder: "/documentos"
+    fields:
+      - { label: "Título de la página", name: "title", widget: "string" }
+      - { label: "Nombre en el menú", name: "menu", widget: "string", required: false, hint: "Más corto que el título. Si lo dejas vacío, se usa el título." }
+      - { label: "Entradilla", name: "entradilla", widget: "text", required: false, hint: "La frase que sale bajo el título y en la tarjeta de la portada." }
+      - label: "Icono"
+        name: "icono"
+        widget: "select"
+        options: ["brujula", "documento", "maletin", "corazon", "libro", "balanza", "escudo", "personas", "info"]
+        default: "info"
+      - { label: "Orden en el menú", name: "orden", widget: "number", default: 1, value_type: "int", min: 1 }
+      - label: "¿Va dentro de otro servicio?"
+        name: "padre"
+        widget: "relation"
+        collection: "servicios"
+        value_field: "{{slug}}"
+        display_fields: ["title"]
+        search_fields: ["title"]
+        required: false
+        hint: "Déjalo vacío para que aparezca en el menú Servicios. Si eliges uno, esta página queda DENTRO de él y no sale en el menú."
+      - label: "Noticias que se muestran"
+        name: "categorias"
+        widget: "list"
+        required: false
+        field:
+          label: "Categoría"
+          name: "categoria"
+          widget: "relation"
+          collection: "categorias"
+          file: "categorias"
+          value_field: "categorias.*.nombre"
+          display_fields: ["categorias.*.nombre"]
+          search_fields: ["categorias.*.nombre"]
+        hint: "Las noticias de estas categorías aparecen solas en la página, de la más reciente a la más antigua."
+      - label: "Subapartados (pestañas)"
+        name: "subapartados"
+        widget: "string"
+        required: false
+        hint: "Escribe el nombre de un grupo de categorías (por ejemplo «Novedades Normativas» u «OPEs y Concursos de Traslados»). La página mostrará una pestaña por cada categoría «Grupo / Nombre» de la lista de categorías."
+      - label: "Bloques de enlaces y documentos"
+        name: "bloques"
+        widget: "list"
+        required: false
+        label_singular: "Bloque"
+        summary: "{{fields.titulo}}"
         fields:
-          - { label: "Texto de la página de huelga", name: "texto", widget: "markdown", required: false }
+          - { label: "Título del bloque", name: "titulo", widget: "string", hint: "Por ejemplo: Enlaces útiles, MIR, CESMCYL." }
+          - label: "Enlaces"
+            name: "enlaces"
+            widget: "list"
+            label_singular: "Enlace"
+            summary: "{{fields.texto}}"
+            fields:
+              - { label: "Texto", name: "texto", widget: "string" }
+              - { label: "Descripción (opcional)", name: "descripcion", widget: "string", required: false }
+              - { label: "Documento", name: "archivo", widget: "file", required: false }
+              - { label: "O destino", name: "destino", widget: "string", required: false, hint: "Una dirección de fuera (https://…) o una página de la web (/huelga/)." }
+      - { label: "Contenido", name: "body", widget: "markdown" }
+
+  - name: "tablon"
+    label: "Tablón (portada)"
+    label_singular: "Destacado"
+    folder: "src/tablon"
+    create: true
+    slug: "{{fields.orden}}-{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    identifier_field: "title"
+    summary: "{{orden}}. {{title}}  ·  {{category}}"
+    sortable_fields: ["orden", "title", "category"]
+    media_folder: "/src/static/documentos"
+    public_folder: "/documentos"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - label: "Categoría"
+        name: "category"
+        widget: "relation"
+        collection: "categorias"
+        file: "categorias"
+        value_field: "categorias.*.nombre"
+        display_fields: ["categorias.*.nombre"]
+        search_fields: ["categorias.*.nombre"]
+        required: false
+        hint: "Es la pastilla dorada de la tarjeta y agrupa las pestañas del tablón."
+      - { label: "Descripción corta (opcional)", name: "descripcion", widget: "string", required: false }
+      - label: "Documento para descargar"
+        name: "archivo"
+        widget: "file"
+        required: false
+        hint: "PDF, Word, Excel… Si subes un documento, manda este y se ignora el enlace."
+      - { label: "O enlace a otra web", name: "enlace", widget: "string", required: false }
+      - { label: "Texto del botón", name: "texto_boton", widget: "string", required: false, default: "Descargar" }
+      - { label: "Mostrar también en la página de huelga", name: "en_huelga", widget: "boolean", default: false }
+      - { label: "Mostrar también en «Nuestras redes»", name: "en_redes", widget: "boolean", default: false }
+      - { label: "Imagen (solo para «Nuestras redes»)", name: "imagen", widget: "image", required: false }
+      - { label: "Orden", name: "orden", widget: "number", default: 1, value_type: "int", min: 1, hint: "1 es el primero." }
+
+  # ----------------------------------------------------------------- PÁGINAS
+
+  - name: "paginas"
+    label: "Páginas"
+    label_singular: "Página"
+    folder: "src/paginas"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    identifier_field: "title"
+    summary: "{{title}}   /{{slug}}/"
+    media_folder: "/src/static/documentos"
+    public_folder: "/documentos"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Entradilla (el texto bajo el título)", name: "entradilla", widget: "text", required: false }
+      - { label: "Texto de la miga de pan", name: "migas", widget: "string", required: false, default: "Inicio", hint: "El enlace pequeño de vuelta que sale arriba." }
+      - { label: "A dónde vuelve la miga de pan", name: "migas_destino", widget: "string", required: false, default: "/" }
+      - { label: "Contenido", name: "body", widget: "markdown" }
+      - { label: "Título de la columna de documentos", name: "titulo_documentos", widget: "string", required: false, default: "Documentos y enlaces" }
+      - label: "Documentos y enlaces de la página"
+        name: "documentos"
+        widget: "list"
+        required: false
+        label_singular: "Documento o enlace"
+        summary: "{{fields.texto}}"
+        fields:
+          - { label: "Texto", name: "texto", widget: "string" }
+          - { label: "Descripción (opcional)", name: "descripcion", widget: "string", required: false }
+          - { label: "Documento", name: "archivo", widget: "file", required: false }
+          - { label: "O enlace", name: "enlace", widget: "string", required: false }
+
+  # ----------------------------------------------------------- QUIÉNES SOMOS
