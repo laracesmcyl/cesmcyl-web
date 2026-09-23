@@ -36,7 +36,7 @@ title: "CESM Valladolid · Sindicato médico de Valladolid"
         {%- if grupos | length > 1 %}
         <div class="pestanas" role="tablist" aria-label="Temas del tablón">
           {%- for g in grupos %}
-          <button type="button" class="pestana{% if loop.first %} activa{% endif %}" role="tab" data-grupo="{{ g.nombre | slugify }}" aria-selected="{{ 'true' if loop.first else 'false' }}">{{ g.nombre }}<span class="cuenta">{{ g.elementos | length }}</span></button>
+          <button type="button" class="pestana{% if loop.first %} activa{% endif %}" role="tab" data-grupo="{{ g.nombre | slugify }}" aria-selected="{{ 'true' if loop.first else 'false' }}">{{ g.nombre | corto }}<span class="cuenta">{{ g.elementos | length }}</span></button>
           {%- endfor %}
         </div>
         {%- endif %}
@@ -113,15 +113,24 @@ title: "CESM Valladolid · Sindicato médico de Valladolid"
   </div>
   <div class="chips" role="group" aria-label="Filtrar noticias por tema">
     <button type="button" class="chip activo" data-cat="todas">Todas</button>
-    {%- for cat in collections.noticias | reverse | categorias %}
-    {%- if cat != "Noticias" %}
-    <button type="button" class="chip" data-cat="{{ cat | slugify }}">{{ cat }}</button>
+    {%- for g in collections.noticias | reverse | categoriasAgrupadas %}
+    {%- if g.subs | length %}
+    <div class="chip-grupo">
+      <button type="button" class="chip chip-con-menu" data-cat="{{ g.nombre | slugify }}" aria-expanded="false">{{ g.nombre }}<svg class="chip-flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="chip-menu">
+        {%- for sub in g.subs %}
+        <button type="button" class="chip-sub" data-cat="{{ sub.completo | slugify }}">{{ sub.corto }}</button>
+        {%- endfor %}
+      </div>
+    </div>
+    {%- else %}
+    <button type="button" class="chip" data-cat="{{ g.nombre | slugify }}">{{ g.nombre }}</button>
     {%- endif %}
     {%- endfor %}
   </div>
   <div class="notas" id="notas">
     {%- for noticia in collections.noticias | reverse %}
-    <article class="nota" data-cat="{{ noticia.data | cat | slugify }}">
+    <article class="nota" data-cat="{{ noticia.data | cat | slugify }}" data-grupo="{{ noticia.data | cat | grupo | slugify }}">
       <div class="nota-meta"><span class="nota-tag">{% if (noticia.data | cat) != "Noticias" %}{{ noticia.data | cat }}{% endif %}</span><time datetime="{{ noticia.data.date }}">{{ noticia.data.date | fecha }}</time></div>
       <h3><a href="/noticias/{{ noticia.fileSlug }}/">{{ noticia.data.title }}</a></h3>
       <p>{{ noticia.data.description or (noticia.templateContent | excerpt(170)) }}</p>
@@ -140,6 +149,10 @@ title: "CESM Valladolid · Sindicato médico de Valladolid"
       <h2 class="titulo-seccion">{{ quienes.titulo }}</h2>
       <p class="intro">{{ quienes.intro | md | safe }}</p>
       {%- if quienes.lema %}<p class="lema">{{ quienes.lema }}</p>{% endif %}
+      <div class="quienes-acciones">
+        <a href="/afiliate/" class="btn-verde">Afíliate</a>
+        <a href="/#contacto" class="enlace-verde">Contacta con nosotros {{ flecha | safe }}</a>
+      </div>
     </div>
     {%- if quienes.objetivos | length %}
     <div class="objetivos">
