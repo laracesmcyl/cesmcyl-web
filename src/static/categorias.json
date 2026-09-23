@@ -1,19 +1,16 @@
 {
   "categorias": [
     {
-      "nombre": "Bolsa"
+      "nombre": "Bolsas de Empleo"
     },
     {
-      "nombre": "CESM"
-    },
-    {
-      "nombre": "Estatuto Marco"
+      "nombre": "Huelga / Estatuto Marco"
     },
     {
       "nombre": "Huelga"
     },
     {
-      "nombre": "Carrera profesional"
+      "nombre": "Carrera Profesional"
     },
     {
       "nombre": "Sentencias"
