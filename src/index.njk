@@ -113,7 +113,7 @@ title: "CESM Valladolid · Sindicato médico de Valladolid"
   </div>
   <div class="chips" role="group" aria-label="Filtrar noticias por tema">
     <button type="button" class="chip activo" data-cat="todas">Todas</button>
-    {%- for g in collections.noticias | reverse | categoriasAgrupadas %}
+    {%- for g in collections.noticias | reverse | categoriasAgrupadas(listaCategorias) %}
     {%- if g.subs | length %}
     <div class="chip-grupo">
       <button type="button" class="chip chip-con-menu" data-cat="{{ g.nombre | slugify }}" aria-expanded="false">{{ g.nombre }}<svg class="chip-flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>

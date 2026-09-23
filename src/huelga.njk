@@ -5,7 +5,7 @@ seccion: noticias
 descripcion: "Convocatorias, servicios mínimos, documentos y noticias sobre las movilizaciones."
 ---
 {%- set destacadosHuelga = collections.tablon | enHuelga %}
-{%- set noticiasHuelga = collections.noticias | reverse | deCategoria("Huelga") %}
+{%- set noticiasHuelga = collections.noticias | reverse | deGrupo("Huelga") %}
 
 <header class="pag-cab">
   <div class="pag-cab-inner">
