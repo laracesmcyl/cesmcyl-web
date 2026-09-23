@@ -11,6 +11,6 @@ bloques:
       - texto: "Carrera profesional en SACYL"
         destino: "https://www.saludcastillayleon.es/profesionales/es/recursos-humanos/carrera-profesional"
 categorias:
-  - "Carrera profesional"
+  - "Carrera Profesional"
 ---
 Información sobre los grados de carrera profesional, las convocatorias de acceso y los requisitos para solicitarlos.

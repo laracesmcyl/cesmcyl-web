@@ -13,6 +13,6 @@ bloques:
       - texto: "Consulta tu posición en la bolsa"
         destino: "https://www.saludcastillayleon.es/profesionales/es/procesos_selectivos/nuevo-procedimiento-bolsas-empleo/convocatorias-abiertas"
 categorias:
-  - "Bolsa"
+  - "Bolsas de Empleo"
 ---
 Consulta los plazos de inscripción y de presentación de documentación, los baremos y los listados de cada bolsa.

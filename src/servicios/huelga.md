@@ -12,6 +12,6 @@ bloques:
         destino: "/huelga/"
 categorias:
   - "Huelga"
-  - "Estatuto Marco"
+  - "Huelga / Estatuto Marco"
 ---
 Aquí encontrarás las convocatorias en vigor, los servicios mínimos publicados y las respuestas a las dudas más frecuentes.
