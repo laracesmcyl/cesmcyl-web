@@ -151,6 +151,31 @@
     reiniciar();
   }
 
+  /* ---------- Tablón: pestañas por tema ---------- */
+  var pestanas = document.querySelectorAll('.pestana');
+  if (pestanas.length) {
+    pestanas.forEach(function (p) {
+      p.addEventListener('click', function () {
+        pestanas.forEach(function (x) { x.classList.remove('activa'); x.setAttribute('aria-selected', 'false'); });
+        p.classList.add('activa'); p.setAttribute('aria-selected', 'true');
+        document.querySelectorAll('.grupo-fijos').forEach(function (g) {
+          g.classList.toggle('visible', g.dataset.grupo === p.dataset.grupo);
+        });
+      });
+    });
+  }
+
+  /* ---------- Tablón: desplegar el montón de documentos ---------- */
+  document.querySelectorAll('.abrir-pila').forEach(function (boton) {
+    boton.addEventListener('click', function () {
+      var pila = boton.closest('.grupo-fijos');
+      var abierto = pila.classList.toggle('abierto');
+      boton.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+      var total = pila.querySelectorAll('.fijo').length;
+      boton.querySelector('.abrir-texto').textContent = abierto ? 'Ver menos' : 'Ver los ' + total + ' documentos';
+    });
+  });
+
   /* ---------- Sección de noticias: filtros, buscador y "ver más" ---------- */
   var notasCont = document.getElementById('notas');
   if (notasCont) {
