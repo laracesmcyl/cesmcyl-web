@@ -154,6 +154,11 @@ title: "CESM Valladolid · Sindicato médico de Valladolid"
       <h2 class="titulo-seccion">{{ quienes.titulo }}</h2>
       <p class="intro">{{ quienes.intro | md | safe }}</p>
       {%- if quienes.lema %}<p class="lema">{{ quienes.lema }}</p>{% endif %}
+      <div class="acciones-seccion">
+        <a href="/afiliate/" class="btn-oro">Afíliate</a>
+        <a href="/#contacto" class="enlace-verde">Contacta con nosotros {{ flecha | safe }}</a>
+        {% include "redes.njk" %}
+      </div>
     </div>
     {%- if quienes.objetivos | length %}
     <div class="objetivos">
@@ -165,11 +170,6 @@ title: "CESM Valladolid · Sindicato médico de Valladolid"
       </ol>
     </div>
     {%- endif %}
-  </div>
-  <div class="acciones-seccion">
-    <a href="/afiliate/" class="btn-oro">Afíliate</a>
-    <a href="/#contacto" class="enlace-verde">Contacta con nosotros {{ flecha | safe }}</a>
-    {% include "redes.njk" %}
   </div>
 </section>
 
