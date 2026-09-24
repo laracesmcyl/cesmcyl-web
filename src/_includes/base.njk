@@ -95,6 +95,7 @@
       <a href="tel:{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a>
       <a href="mailto:{{ contacto.email }}">{{ contacto.email }}</a>
       <p>{{ contacto.direccion | nl2br | safe }}</p>
+      {% include "redes.njk" %}
     </div>
   </div>
 
