@@ -711,10 +711,12 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 .quienes .acciones-seccion{margin-top:2.8rem}
 
 /* Bloque de redes dentro de las secciones */
-.bloque-redes{margin-left:auto;display:flex;align-items:center}
+.bloque-redes{flex-basis:100%;display:flex;align-items:center;margin-top:.2rem}
 .bloque-redes-titulo{font-size:.8rem;font-weight:700;color:#7a867c}
 .bloque-redes .pie-redes{display:flex;gap:.5rem}
 .servicios .bloque-redes-titulo{color:rgba(255,255,255,.65)}
 .servicios .bloque-redes .pie-redes a{border-color:rgba(255,255,255,.25);color:#fff}
 .servicios .bloque-redes .pie-redes a:hover{background:rgba(255,255,255,.12)}
-@media (max-width:760px){.bloque-redes{margin:.6rem 0 0}}
+
+
+.quienes .acciones-seccion{margin-top:2.1rem;gap:1rem 1.4rem}
