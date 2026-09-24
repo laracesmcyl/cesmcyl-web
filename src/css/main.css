@@ -685,7 +685,8 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 /* Botón verde y acciones de Quiénes somos */
 .btn-verde{display:inline-block;background:var(--verde);color:#fff;font-weight:900;font-size:1rem;padding:.95rem 2rem;border-radius:6px;border:0;cursor:pointer;transition:background .2s,transform .2s}
 .btn-verde:hover{background:var(--verde-hondo);transform:translateY(-1px);color:#fff}
-.quienes-acciones{display:flex;flex-wrap:wrap;align-items:center;gap:1.2rem;margin-top:1.6rem}
+.acciones-seccion{display:flex;flex-wrap:wrap;align-items:center;gap:1.2rem;margin-top:1.8rem}
+.acciones-seccion .btn-oro{padding:.9rem 1.9rem;font-size:.98rem}
 
 /* Conoce nuestras redes, dentro de Contacto */
 .contacto-redes{margin-top:2rem}
@@ -697,3 +698,25 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 .contacto-publicaciones .redes-grid{margin-top:0}
 @media (max-width:900px){.contacto-publicaciones .redes-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:600px){.contacto-publicaciones .redes-grid{grid-template-columns:1fr}}
+
+/* Redes centradas al final de cada página */
+.pie-redes-centro{display:flex;flex-direction:column;align-items:center;gap:.9rem;padding:2.4rem var(--lado) 2.6rem;border-top:1px solid var(--linea);margin:0}
+.pie-redes-centro .pie-redes-titulo{font-size:.82rem;font-weight:700;letter-spacing:.04em;color:#7a867c;text-transform:none}
+.pie-redes-centro .pie-redes{display:flex;justify-content:center;gap:.6rem}
+.pie-acciones{margin-top:1.6rem}
+.pie-acciones .btn-oro{padding:.8rem 1.7rem;font-size:.94rem}
+@media (max-width:760px){.pie-redes-centro{padding-top:2rem}.pie-acciones{justify-content:flex-start}}
+.servicios .acciones-seccion{margin-top:2.6rem}
+.noticias .acciones-seccion,.quienes .acciones-seccion{margin-top:2.6rem}
+.quienes .acciones-seccion{margin-top:2.8rem}
+
+/* Bloque de redes dentro de las secciones */
+.bloque-redes{margin-left:auto;display:flex;align-items:center}
+.bloque-redes-titulo{font-size:.8rem;font-weight:700;color:#7a867c}
+.bloque-redes .pie-redes{display:flex;gap:.5rem}
+.servicios .bloque-redes-titulo{color:rgba(255,255,255,.65)}
+.servicios .bloque-redes .pie-redes a{border-color:rgba(255,255,255,.25);color:#fff}
+.servicios .bloque-redes .pie-redes a:hover{background:rgba(255,255,255,.12)}
+@media (max-width:760px){.bloque-redes{margin:.6rem 0 0}}
+.quienes .acciones-seccion{margin-top:2.2rem;gap:1.1rem 1.4rem}
+.quienes .bloque-redes{margin-left:0;flex-basis:100%;margin-top:.4rem}
