@@ -51,12 +51,28 @@
         <a href="/#servicios" data-seccion="servicios"{% if seccion == "servicios" %} class="activo"{% endif %}>Servicios<span class="flechita" aria-hidden="true"></span></a>
         <ul class="submenu">
           {%- for serv in collections.servicios | principales %}
-          <li><a href="{{ serv.data.destino or serv.url }}">{{ serv.data.menu or serv.data.title }}</a></li>
+          {%- set hijasMenu = collections.servicios | hijasDe(serv.fileSlug) %}
+          <li><a href="{{ serv.data.destino or serv.url }}">{{ serv.data.menu or serv.data.title }}</a>
+            {%- if hijasMenu | length %}
+            <ul class="submenu-hijas">
+              {%- for h in hijasMenu %}
+              <li><a href="{{ h.data.destino or h.url }}">{{ h.data.menu or h.data.title }}</a></li>
+              {%- endfor %}
+            </ul>
+            {%- endif %}
+          </li>
           {%- endfor %}
         </ul>
       </li>
       <li><a href="/#contacto" data-seccion="contacto">Contacto</a></li>
       <li><a href="/afiliate/" class="btn-afiliate">Afíliate</a></li>
+      <li class="solo-movil"><a href="https://www.cesmcyl.org/formacion-tiscyl-cesm/" target="_blank" rel="noopener">Campus TISCYL-CESM</a></li>
+      <li class="solo-movil"><a href="/admin/">Acceso admin</a></li>
+      <li class="solo-movil menu-contacto">
+        <a href="tel:{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a>
+        <a href="mailto:{{ contacto.email }}">{{ contacto.email }}</a>
+        {% include "redes.njk" %}
+      </li>
     </ul>
   </nav>
 
