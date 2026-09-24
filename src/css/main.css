@@ -725,3 +725,7 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 .bloque-redes .pie-redes a{width:31px;height:31px}
 .bloque-redes .pie-redes svg{width:15px;height:15px}
 .acciones-seccion{gap:.9rem 1.3rem}
+.pie-col .bloque-redes{margin-top:.6rem}
+.pie-col .bloque-redes .pie-redes{gap:.35rem}
+.pie-col .bloque-redes .pie-redes a{width:26px;height:26px}
+.pie-col .bloque-redes .pie-redes svg{width:13px;height:13px}
