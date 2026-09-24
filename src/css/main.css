@@ -720,3 +720,8 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 
 
 .quienes .acciones-seccion{margin-top:2.1rem;gap:1rem 1.4rem}
+.bloque-redes{margin-top:0}
+.bloque-redes .pie-redes{margin-top:0;gap:.4rem}
+.bloque-redes .pie-redes a{width:31px;height:31px}
+.bloque-redes .pie-redes svg{width:15px;height:15px}
+.acciones-seccion{gap:.9rem 1.3rem}
