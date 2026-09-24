@@ -782,3 +782,6 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
   .pag-lateral .documentos h2{display:none}
   .pag-lateral .documentos+.documentos .doc:first-child{border-top:1px solid rgba(12,51,22,.1)}
 }
+.pie-legal{display:flex;flex-wrap:wrap;gap:.4rem .9rem;align-items:center}
+.pie-legal a+a::before{content:"|";margin-right:.9rem;color:rgba(255,255,255,.35)}
+@media (max-width:760px){.pie-barra{flex-direction:column;align-items:flex-start;gap:.6rem}}
