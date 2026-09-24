@@ -37,10 +37,40 @@ seccion: servicios
 {%- endif %}
 
 <div class="pag{% if not (bloques | length) %} pag-ancha{% endif %}">
-  <div class="pag-texto">
-    <div class="cuerpo">
-      {{ content | safe }}
+  <div class="cuerpo cuerpo-top">
+    {{ content | safe }}
+  </div>
+
+  {%- if bloques | length %}
+  <aside class="pag-lateral">
+    {%- set yaTitulado = false %}
+    {%- for b in bloques %}{% if b.titulo == "Enlaces útiles" %}{% set yaTitulado = true %}{% endif %}{% endfor %}
+    {%- if not yaTitulado %}<h2 class="lateral-titulo">Enlaces útiles</h2>{% endif %}
+    {%- for b in bloques %}
+    <div class="documentos">
+      <h2>{{ b.titulo }}</h2>
+      {%- for e in b.enlaces %}
+      {%- set destino = e.archivo or e.destino %}
+      {%- if destino %}
+      {%- set esExterno = "http" in destino and not e.archivo %}
+      <a href="{{ destino }}" class="doc"{% if esExterno %} target="_blank" rel="noopener"{% elif e.archivo %} download{% endif %}>
+        {%- if e.archivo %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+        {%- elif esExterno %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+        {%- else %}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        {%- endif %}
+        <span>{{ e.texto }}{% if e.descripcion %}<small>{{ e.descripcion }}</small>{% endif %}</span>
+      </a>
+      {%- endif %}
+      {%- endfor %}
     </div>
+    {%- endfor %}
+  </aside>
+  {%- endif %}
+
+  <div class="pag-texto">
 
     {%- if subaps | length %}
     {%- set todasSub = collections.noticias | reverse | deCategorias(categorias | conSubapartados(subaps)) %}
@@ -101,31 +131,6 @@ seccion: servicios
     {%- endif %}
   </div>
 
-  {%- if bloques | length %}
-  <aside class="pag-lateral">
-    {%- for b in bloques %}
-    <div class="documentos">
-      <h2>{{ b.titulo }}</h2>
-      {%- for e in b.enlaces %}
-      {%- set destino = e.archivo or e.destino %}
-      {%- if destino %}
-      {%- set esExterno = "http" in destino and not e.archivo %}
-      <a href="{{ destino }}" class="doc"{% if esExterno %} target="_blank" rel="noopener"{% elif e.archivo %} download{% endif %}>
-        {%- if e.archivo %}
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
-        {%- elif esExterno %}
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
-        {%- else %}
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        {%- endif %}
-        <span>{{ e.texto }}{% if e.descripcion %}<small>{{ e.descripcion }}</small>{% endif %}</span>
-      </a>
-      {%- endif %}
-      {%- endfor %}
-    </div>
-    {%- endfor %}
-  </aside>
-  {%- endif %}
 </div>
 
 {%- if subaps | length %}
