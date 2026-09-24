@@ -718,5 +718,3 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 .servicios .bloque-redes .pie-redes a{border-color:rgba(255,255,255,.25);color:#fff}
 .servicios .bloque-redes .pie-redes a:hover{background:rgba(255,255,255,.12)}
 @media (max-width:760px){.bloque-redes{margin:.6rem 0 0}}
-.quienes .acciones-seccion{margin-top:2.2rem;gap:1.1rem 1.4rem}
-.quienes .bloque-redes{margin-left:0;flex-basis:100%;margin-top:.4rem}
