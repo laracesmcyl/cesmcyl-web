@@ -766,22 +766,19 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
   .pag{row-gap:0}
 }
 @media (max-width:1100px){
-  .pag-lateral{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.9rem;align-items:start}
-  .pag-lateral .lateral-titulo{grid-column:1/-1;margin-bottom:.2rem}
-  .pag .documentos{margin-bottom:0;padding:1rem 1.1rem .35rem}
+  .lateral-caja{padding:1.1rem 1.2rem .45rem}
   .documentos h2{font-size:.95rem;margin-bottom:.2rem}
   .doc{padding:.6rem 0;gap:.6rem}
   .doc svg{width:19px;height:19px}
   .doc span{font-size:.92rem}
   .cuerpo-top{margin-bottom:1.6rem}
 }
-@media (max-width:1100px){
-  .pag-lateral{display:block;border:1px solid rgba(12,51,22,.14);border-radius:12px;padding:1.1rem 1.25rem .5rem}
-  .pag-lateral .lateral-titulo{font-size:1.05rem;margin-bottom:.3rem}
-  .pag .documentos{border:0;border-radius:0;padding:0;margin:0}
-  .pag-lateral .documentos h2{display:none}
-  .pag-lateral .documentos+.documentos .doc:first-child{border-top:1px solid rgba(12,51,22,.1)}
-}
+/* La columna de enlaces es un único recuadro encabezado por "Enlaces" */
+.lateral-caja{display:block;border:1px solid rgba(12,51,22,.14);border-radius:12px;padding:1.2rem 1.35rem .55rem}
+.lateral-caja .lateral-titulo{font-size:1.05rem;margin-bottom:.3rem}
+.lateral-caja .documentos{border:0;border-radius:0;padding:0;margin:0}
+.lateral-caja .documentos h2{display:none}
+.lateral-caja .documentos+.documentos .doc:first-child{border-top:1px solid rgba(12,51,22,.1)}
 .pie-legal{display:flex;flex-wrap:wrap;gap:.4rem .9rem;align-items:center}
 .pie-legal a+a::before{content:"|";margin-right:.9rem;color:rgba(255,255,255,.35)}
 @media (max-width:760px){.pie-barra{flex-direction:column;align-items:flex-start;gap:.6rem}}
