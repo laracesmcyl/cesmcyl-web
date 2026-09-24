@@ -60,7 +60,7 @@ body.midiendo #cabecera,body.midiendo #cabecera *{transition:none!important}
 .flechita{display:inline-block;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-3px);margin-left:.5rem;opacity:.5}
 .btn-afiliate{background:var(--verde);color:#fff!important;padding:.62rem 1.3rem!important;border-radius:6px;transition:background .2s}
 .btn-afiliate:hover{background:var(--verde-medio)}
-.submenu{position:absolute;top:100%;left:-1rem;min-width:260px;list-style:none;background:#fff;border:1px solid var(--linea);border-radius:10px;box-shadow:0 12px 30px rgba(7,31,13,.12);padding:.5rem;margin-top:.8rem;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s,transform .2s,visibility .2s}
+.submenu{position:absolute;top:100%;left:-1rem;min-width:300px;list-style:none;background:#fff;border:1px solid var(--linea);border-radius:10px;box-shadow:0 12px 30px rgba(7,31,13,.12);padding:.5rem;margin-top:.8rem;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s,transform .2s,visibility .2s}
 .submenu::before{content:"";position:absolute;left:0;right:0;top:-.9rem;height:.9rem}
 .desplegable:hover .submenu,.desplegable:focus-within .submenu{opacity:1;visibility:visible;transform:none}
 .submenu a{display:block;padding:.6rem .8rem;border-radius:7px;font-size:.94rem;font-weight:700;color:var(--tinta)}
@@ -686,6 +686,7 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 .btn-verde{display:inline-block;background:var(--verde);color:#fff;font-weight:900;font-size:1rem;padding:.95rem 2rem;border-radius:6px;border:0;cursor:pointer;transition:background .2s,transform .2s}
 .btn-verde:hover{background:var(--verde-hondo);transform:translateY(-1px);color:#fff}
 .acciones-seccion{display:flex;flex-wrap:wrap;align-items:center;gap:1.2rem;margin-top:1.8rem}
+.acciones-col{display:flex;flex-direction:column;align-items:flex-start;gap:.55rem}
 .acciones-seccion .btn-oro{padding:.9rem 1.9rem;font-size:.98rem}
 
 /* Conoce nuestras redes, dentro de Contacto */
@@ -711,7 +712,7 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 .quienes .acciones-seccion{margin-top:2.8rem}
 
 /* Bloque de redes dentro de las secciones */
-.bloque-redes{flex-basis:100%;display:flex;align-items:center;margin-top:.2rem}
+.bloque-redes{display:flex;align-items:center}
 .bloque-redes-titulo{font-size:.8rem;font-weight:700;color:#7a867c}
 .bloque-redes .pie-redes{display:flex;gap:.5rem}
 .servicios .bloque-redes-titulo{color:rgba(255,255,255,.65)}
@@ -720,7 +721,6 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 
 
 .quienes .acciones-seccion{margin-top:2.1rem;gap:1rem 1.4rem}
-.bloque-redes{margin-top:0}
 .bloque-redes .pie-redes{margin-top:0;gap:.4rem}
 .bloque-redes .pie-redes a{width:31px;height:31px}
 .bloque-redes .pie-redes svg{width:15px;height:15px}
@@ -729,3 +729,24 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 .pie-col .bloque-redes .pie-redes{gap:.35rem}
 .pie-col .bloque-redes .pie-redes a{width:26px;height:26px}
 .pie-col .bloque-redes .pie-redes svg{width:13px;height:13px}
+
+/* Menú: elementos que solo se ven en móvil */
+.solo-movil{display:none}
+.submenu-hijas{list-style:none;margin:.1rem 0 .4rem;padding:0 0 0 .9rem;border-left:1px solid var(--linea)}
+.submenu-hijas a{font-size:.88rem;font-weight:400;color:#56675b;padding:.32rem .7rem;display:block;border-radius:6px}
+.submenu-hijas a:hover{background:#f2f6f1;color:var(--verde)}
+@media (max-width:1100px){
+  .solo-movil{display:block}
+  .menu .solo-movil>a{display:flex;padding:.9rem 0;font-size:.98rem;color:var(--verde-medio);border-bottom:1px solid var(--linea)}
+  .menu .menu-contacto{display:flex;flex-direction:column;gap:.1rem;padding-top:.6rem}
+  .menu .menu-contacto>a{border-bottom:0;padding:.35rem 0;font-weight:700;color:var(--verde)}
+  .menu .menu-contacto .bloque-redes{margin-top:.6rem}
+  .submenu-hijas{display:block}
+  .submenu-hijas a{font-size:.92rem;color:#56675b;padding:.4rem 0;display:block}
+  .submenu-hijas a::before{content:"– ";color:var(--oro)}
+}
+
+/* Afíliate + contacto + redes: las redes debajo del enlace */
+.acciones-seccion{align-items:center}
+.acciones-col{display:flex;flex-direction:column;align-items:flex-start;gap:.55rem}
+.acciones-col .bloque-redes{flex-basis:auto;margin:0}
