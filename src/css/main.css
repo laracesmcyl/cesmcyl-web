@@ -18,7 +18,7 @@ button{font-family:inherit}
 :focus-visible{outline:2px solid var(--oro);outline-offset:3px}
 
 /* ---------- Botones y enlaces comunes ---------- */
-.btn-oro{display:inline-block;background:var(--oro);color:var(--verde-hondo);font-weight:900;font-size:1rem;padding:1rem 2rem;border-radius:6px;border:0;cursor:pointer;transition:background .2s,transform .2s}
+.btn-oro{display:inline-block;background:var(--oro);color:var(--verde-hondo);font-weight:900;font-size:1rem;padding:1rem 2rem;border-radius:var(--radio-boton,6px);border:0;cursor:pointer;transition:background .2s,transform .2s}
 .btn-oro:hover{background:var(--oro-claro);transform:translateY(-2px)}
 .btn-icono{display:inline-flex;align-items:center;gap:.55rem;font-size:.95rem;padding:.85rem 1.4rem}
 .btn-icono svg{width:17px;height:17px}
@@ -72,7 +72,7 @@ body.midiendo #cabecera,body.midiendo #cabecera *{transition:none!important}
 .hamburguesa.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
 /* Aviso urgente */
-.aviso{background:var(--oro);color:var(--verde-hondo);display:flex;align-items:center;gap:1.2rem;padding:0 var(--lado);min-height:50px;font-size:.92rem;transition:min-height .35s ease,font-size .35s ease}
+.aviso{background:var(--aviso-fondo,var(--oro));color:var(--aviso-texto,var(--verde-hondo));display:flex;align-items:center;gap:1.2rem;padding:0 var(--lado);min-height:50px;font-size:var(--aviso-tamano,.92rem);transition:min-height .35s ease,font-size .35s ease}
 .compacta .aviso{min-height:40px;font-size:.84rem}
 .aviso.vacio,.compacta .aviso.vacio{min-height:5px;height:5px;padding:0}
 .aviso-etiqueta{display:inline-flex;align-items:center;gap:.5rem;background:var(--verde-hondo);color:#fff;font-size:.74rem;font-weight:700;padding:.28rem .7rem;border-radius:4px;flex-shrink:0}
@@ -220,7 +220,7 @@ body.midiendo #cabecera,body.midiendo #cabecera *{transition:none!important}
 .nota:hover .nota-leer svg{transform:translateX(4px)}
 .notas-vacio{font-size:1.05rem;color:var(--gris);padding:2rem 0;border-top:1px solid var(--linea)}
 .notas-pie{display:flex;justify-content:center;margin-top:1.5rem}
-.btn-mas{font:700 .95rem var(--sans);color:var(--verde);background:transparent;border:1.5px solid var(--verde);border-radius:6px;padding:.85rem 1.8rem;cursor:pointer;transition:background .2s,color .2s}
+.btn-mas{font:700 .95rem var(--sans);color:var(--verde);background:transparent;border:1.5px solid var(--verde);border-radius:var(--radio-boton,6px);padding:.85rem 1.8rem;cursor:pointer;transition:background .2s,color .2s}
 .btn-mas:hover{background:var(--verde);color:#fff}
 .btn-mas[hidden]{display:none}
 
@@ -268,7 +268,7 @@ body.midiendo #cabecera,body.midiendo #cabecera *{transition:none!important}
 /* Tarjetas de servicios de la portada. Al pasar el ratón (o tocar en móvil)
    el texto se atenúa y aparecen los apartados que hay dentro. */
 .serv-grid-paginas{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;align-items:stretch}
-.serv-tarjeta{position:relative;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.16);border-radius:12px;overflow:hidden;transition:border-color .25s,background .25s,transform .25s}
+.serv-tarjeta{position:relative;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.16);border-radius:var(--radio,14px);overflow:hidden;transition:border-color .25s,background .25s,transform .25s}
 .serv-tarjeta:hover{background:rgba(255,255,255,.05);border-color:rgba(233,169,74,.5);transform:translateY(-3px)}
 .serv-tarjeta-fija:hover{background:transparent;border-color:rgba(255,255,255,.16);transform:none}
 .serv-tarjeta-cuerpo{display:flex;flex-direction:column;flex:1;padding:1.8rem 1.6rem 1.5rem;transition:opacity .3s ease}
@@ -448,7 +448,7 @@ body.midiendo #cabecera,body.midiendo #cabecera *{transition:none!important}
 .tarjeta-accion p{font-size:.98rem;line-height:1.65;color:rgba(255,255,255,.78)}
 .btn-bloque{display:flex;justify-content:center;align-items:center;gap:.55rem;margin-top:1.4rem}
 .btn-bloque svg{width:17px;height:17px}
-.documentos{border:1px solid rgba(12,51,22,.14);border-radius:12px;padding:1.4rem 1.5rem .6rem}
+.documentos{border:1px solid rgba(12,51,22,.14);border-radius:var(--radio,14px);padding:1.4rem 1.5rem .6rem}
 .documentos h2{font-size:1.05rem;font-weight:900;color:var(--verde);margin-bottom:.4rem}
 .doc{display:flex;gap:.85rem;align-items:flex-start;padding:.95rem 0;border-top:1px solid rgba(12,51,22,.1)}
 .documentos h2+.doc,.documentos h2+.relacionada{border-top:none}
@@ -685,7 +685,7 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 .chip-sub.activo{background:var(--verde);color:#fff}
 
 /* Botón verde y acciones de Quiénes somos */
-.btn-verde{display:inline-block;background:var(--verde);color:#fff;font-weight:900;font-size:1rem;padding:.95rem 2rem;border-radius:6px;border:0;cursor:pointer;transition:background .2s,transform .2s}
+.btn-verde{display:inline-block;background:var(--verde);color:#fff;font-weight:900;font-size:1rem;padding:.95rem 2rem;border-radius:var(--radio-boton,6px);border:0;cursor:pointer;transition:background .2s,transform .2s}
 .btn-verde:hover{background:var(--verde-hondo);transform:translateY(-1px);color:#fff}
 .acciones-seccion{display:flex;flex-wrap:wrap;align-items:center;gap:1.2rem;margin-top:1.8rem}
 .acciones-col{display:flex;flex-direction:column;align-items:flex-start;gap:.55rem}
@@ -774,7 +774,7 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
   .cuerpo-top{margin-bottom:1.6rem}
 }
 /* La columna de enlaces es un único recuadro encabezado por "Enlaces" */
-.lateral-caja{display:block;border:1px solid rgba(12,51,22,.14);border-radius:12px;padding:1.2rem 1.35rem .55rem}
+.lateral-caja{display:block;border:1px solid rgba(12,51,22,.14);border-radius:var(--radio,14px);padding:1.2rem 1.35rem .55rem}
 .lateral-caja .lateral-titulo{font-size:1.05rem;margin-bottom:.3rem}
 .lateral-caja .documentos{border:0;border-radius:0;padding:0;margin:0}
 .lateral-caja .documentos h2{display:none}
@@ -782,3 +782,16 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 .pie-legal{display:flex;flex-wrap:wrap;gap:.4rem .9rem;align-items:center}
 .pie-legal a+a::before{content:"|";margin-right:.9rem;color:rgba(255,255,255,.35)}
 @media (max-width:760px){.pie-barra{flex-direction:column;align-items:flex-start;gap:.6rem}}
+.doc-extra{display:none}
+.enlaces-abiertos .doc-extra{display:flex}
+.mas-enlaces{display:block;width:100%;margin:.4rem 0 .6rem;font:700 .88rem var(--sans);color:var(--verde);background:transparent;border:1px solid var(--linea);border-radius:8px;padding:.55rem .8rem;cursor:pointer;transition:background .2s,border-color .2s}
+.mas-enlaces:hover{background:#f2f6f1;border-color:var(--verde-medio)}
+
+/* Alineación del aviso y del texto dentro de noticias y páginas */
+.aviso.aviso-centro .aviso-texto{text-align:center}
+.aviso.aviso-derecha .aviso-texto{text-align:right}
+.cuerpo .centrado,.cuerpo [style*="text-align:center"],.cuerpo [style*="text-align: center"]{text-align:center}
+.cuerpo .derecha{text-align:right}
+.cuerpo .grande{font-size:1.25em}
+.cuerpo .pequeno{font-size:.88em}
+.cuerpo .destacado{background:#f5f8f4;border-left:3px solid var(--oro);padding:.9rem 1.1rem;border-radius:0 8px 8px 0;margin:1.2rem 0}
