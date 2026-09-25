@@ -110,6 +110,7 @@
       .then(function (datos) {
         var activo = datos && datos.activo && datos.texto;
         document.getElementById('ticker-text').innerHTML = activo ? markdownAHtml(datos.texto).replace(/^<p>|<\/p>$/g, '') : '';
+        if (activo && datos.alineacion) ticker.classList.add('aviso-' + datos.alineacion);
         document.getElementById('ticker-label').style.display = activo ? '' : 'none';
         document.getElementById('ticker-flecha').style.display = activo ? '' : 'none';
         ticker.classList.toggle('vacio', !activo);
