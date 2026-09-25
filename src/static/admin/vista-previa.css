@@ -1,0 +1,180 @@
+/* Estilos de la vista previa del panel.
+   Se cargan dentro del marco de la vista previa, junto con el CSS de la web,
+   para que lo que ves mientras editas se parezca a la página publicada. */
+
+body{
+  margin:0;
+  background:#fff;
+  color:var(--tinta,#16241a);
+  font-family:var(--sans,"Lato","Carlito",system-ui,sans-serif);
+  line-height:1.6;
+}
+
+.vp{padding:0 0 2.5rem}
+
+.vp-cab{
+  background:var(--verde,#0c3316);
+  color:#fff;
+  padding:2.2rem 2rem 2rem;
+}
+.vp-cab h1{
+  font-size:2rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+  line-height:1.15;
+  margin:.2rem 0 .6rem;
+}
+.vp-migas{
+  display:inline-block;
+  font-size:.8rem;
+  font-weight:700;
+  color:var(--oro,#e9a94a);
+  margin-bottom:.3rem;
+}
+.vp-entradilla{
+  font-size:1.02rem;
+  color:rgba(255,255,255,.82);
+  max-width:40rem;
+  margin:0;
+}
+.vp-fecha{
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+  font-size:.85rem;
+  color:rgba(255,255,255,.75);
+  margin:0;
+}
+.vp-tag{
+  display:inline-block;
+  font-size:.74rem;
+  font-weight:700;
+  color:var(--verde-hondo,#071f0d);
+  background:var(--oro,#e9a94a);
+  border-radius:999px;
+  padding:.2rem .6rem;
+}
+
+.vp-cuerpo{
+  padding:2rem;
+  font-size:1.05rem;
+  color:#26352b;
+  max-width:44rem;
+}
+.vp-cuerpo h2{font-size:1.5rem;font-weight:900;color:var(--verde,#0c3316);margin:1.6rem 0 .7rem}
+.vp-cuerpo h3{font-size:1.2rem;font-weight:900;color:var(--verde,#0c3316);margin:1.4rem 0 .6rem}
+.vp-cuerpo p{margin:0 0 .9rem}
+.vp-cuerpo ul,.vp-cuerpo ol{margin:0 0 1rem 1.2rem}
+.vp-cuerpo li{margin-bottom:.35rem}
+.vp-cuerpo a{color:var(--verde-medio,#3a6741);text-decoration:underline}
+.vp-cuerpo img{max-width:100%;border-radius:10px}
+
+/* Documento del tablón: se ve sobre el fondo verde, como en la portada */
+.vp-oscuro{background:var(--verde-hondo,#071f0d);padding:2rem}
+.vp-fijo{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:var(--radio,14px);
+  padding:1.3rem 1.4rem;
+  color:#fff;
+  max-width:30rem;
+}
+.vp-fijo h3{font-size:1.1rem;font-weight:900;margin:.6rem 0 .4rem}
+.vp-fijo p{font-size:.92rem;color:rgba(255,255,255,.75);margin:0 0 1rem}
+.vp-tag-oro{background:var(--oro,#e9a94a);color:var(--verde-hondo,#071f0d)}
+.vp-boton{
+  display:inline-block;
+  font-size:.86rem;
+  font-weight:700;
+  color:var(--oro,#e9a94a);
+}
+
+/* --------- Portada --------- */
+.vp-hero{background:var(--verde-hondo,#071f0d);color:#fff;padding:2.4rem 2rem}
+.vp-firma{font-size:.85rem;color:var(--oro,#e9a94a);font-weight:700;margin:0 0 .6rem}
+.vp-titular{font-size:2.4rem;font-weight:900;line-height:1.1;letter-spacing:-.02em;margin:0 0 1rem}
+.vp-titular em{font-style:normal;color:var(--oro,#e9a94a)}
+.vp-lead{color:rgba(255,255,255,.8);max-width:34rem;margin:0 0 1.4rem}
+.vp-acciones{display:flex;align-items:center;gap:1.2rem;margin:0}
+.vp-btn{display:inline-block;background:var(--oro,#e9a94a);color:var(--verde-hondo,#071f0d);font-weight:900;padding:.75rem 1.6rem;border-radius:var(--radio-boton,6px)}
+.vp-btn-linea{background:transparent;border:1.5px solid var(--verde,#0c3316);color:var(--verde,#0c3316)}
+.vp-enlace{font-weight:700;color:#fff}
+.vp-tablon{margin-top:2rem;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,.18);display:flex;flex-direction:column;gap:.35rem}
+.vp-tablon-tit{font-weight:900}
+.vp-tablon-sub{font-size:.88rem;color:rgba(255,255,255,.7)}
+
+.vp-claro{background:var(--papel,#f1f5ef);padding:2.2rem 2rem}
+.vp-seccion{font-size:2rem;font-weight:900;color:var(--verde,#0c3316);letter-spacing:-.02em;margin:0 0 .6rem}
+.vp-intro{color:#56675b;max-width:38rem;margin:0 0 1rem}
+.vp-lema{color:var(--verde-medio,#3a6741);font-weight:900;font-size:1.1rem;margin:0 0 1.2rem}
+.vp-objetivos-tit{font-size:.9rem;font-weight:700;color:#7a867c;margin:1.4rem 0 .6rem}
+.vp-objetivos{margin:0;padding-left:1.1rem}
+.vp-objetivos li{margin-bottom:.6rem;color:#26352b}
+.vp-blanco{color:#fff}
+.vp-oscuro .vp-intro{color:rgba(255,255,255,.75)}
+
+.vp-aviso{background:var(--aviso-fondo,var(--oro,#e9a94a));color:var(--aviso-texto,var(--verde-hondo,#071f0d));display:flex;align-items:center;gap:1rem;padding:.9rem 1.4rem;font-size:var(--aviso-tamano,.92rem)}
+.vp-aviso-etiqueta{background:var(--verde-hondo,#071f0d);color:#fff;font-size:.72rem;font-weight:700;border-radius:6px;padding:.25rem .6rem;flex-shrink:0}
+.vp-aviso-texto{flex:1}
+.vp-aviso-texto p{display:inline;margin:0}
+.vp-aviso-centro .vp-aviso-texto{text-align:center}
+.vp-aviso-derecha .vp-aviso-texto{text-align:right}
+
+/* --------- Pie --------- */
+.vp-pie{background:#fff;padding:1.6rem 1.4rem}
+.vp-pie-cols{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:1.4rem}
+.vp-pie-logo{font-weight:900;color:var(--verde,#0c3316)}
+.vp-pie-desc{font-size:.86rem;color:#56675b;margin:.5rem 0 0}
+.vp-pie h4{font-size:.92rem;font-weight:900;color:var(--verde,#0c3316);margin:0 0 .5rem}
+.vp-pie-enlace{display:block;font-size:.86rem;color:#56675b;margin-bottom:.3rem}
+.vp-pie-nota{font-size:.8rem;color:#9aa69c;font-style:italic}
+.vp-pie-barra{margin-top:1.4rem;background:var(--verde-hondo,#071f0d);color:rgba(255,255,255,.7);font-size:.78rem;padding:.7rem 1rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem;border-radius:6px}
+.vp-pie-legal span{margin-left:.9rem}
+
+/* --------- Tarifas --------- */
+.vp-tabla-marco{overflow-x:auto;padding:1.4rem}
+.vp-tabla{width:100%;border-collapse:collapse;font-size:.82rem}
+.vp-tabla th,.vp-tabla td{padding:.5rem .6rem;text-align:right;border-bottom:1px solid rgba(12,51,22,.1)}
+.vp-tabla thead th{background:var(--verde,#0c3316);color:#fff;font-weight:700}
+.vp-tabla thead th small{display:block;color:var(--oro,#e9a94a);font-size:.72rem}
+.vp-tabla th:first-child,.vp-tabla tbody th{text-align:left;color:var(--verde-hondo,#071f0d)}
+.vp-tabla .vp-ref{color:#9aa69c}
+.vp-tabla .vp-gratis{color:var(--verde-medio,#3a6741);font-weight:900}
+
+/* --------- Contacto --------- */
+.vp-datos{display:flex;flex-direction:column;gap:.5rem;margin:1rem 0}
+.vp-dato{display:flex;flex-direction:column;border-bottom:1px solid rgba(12,51,22,.1);padding-bottom:.45rem}
+.vp-dato span{font-size:.76rem;color:#7a867c}
+.vp-dato strong{color:var(--verde-hondo,#071f0d);white-space:pre-line}
+
+/* --------- Afíliate --------- */
+.vp-pasos{padding-left:1.1rem}
+.vp-pasos li{margin-bottom:.9rem}
+.vp-pasos strong{color:var(--verde,#0c3316)}
+.vp-pasos p{margin:.2rem 0}
+.vp-direccion{white-space:pre-line;background:#f5f8f4;border-radius:8px;padding:.6rem .8rem;font-size:.9rem}
+
+/* --------- Rótulos --------- */
+.vp-menu{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;background:#fff;border-bottom:1px solid rgba(12,51,22,.12);padding:1rem 1.4rem}
+.vp-menu-item{font-weight:700;color:var(--verde-hondo,#071f0d);font-size:.92rem}
+.vp-btn-mini{padding:.45rem 1rem;font-size:.85rem}
+.vp-form{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.8rem 0}
+.vp-campo span{display:block;font-size:.8rem;font-weight:700;color:var(--verde-hondo,#071f0d);margin-bottom:.25rem}
+.vp-caja{height:2rem;border:1px solid rgba(12,51,22,.18);border-radius:6px;background:#fafcf9}
+.vp-privacidad{font-size:.82rem;color:#56675b}
+
+/* --------- Diseño --------- */
+.vp-colores{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.7rem;margin-bottom:1.4rem}
+.vp-color{display:flex;align-items:center;gap:.5rem;font-size:.78rem}
+.vp-color span{width:26px;height:26px;border-radius:6px;border:1px solid rgba(0,0,0,.12);flex-shrink:0}
+.vp-color small{color:#56675b}
+.vp-color code{color:#9aa69c;font-size:.72rem}
+.vp-ejemplo{padding:1.2rem;border-radius:10px}
+.vp-ejemplo h2{font-size:1.5rem;font-weight:900;margin:0 0 .4rem}
+.vp-tarjeta-ej{margin-top:1rem;padding:1rem 1.2rem;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+
+/* --------- Categorías --------- */
+.vp-chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 1rem}
+.vp-chip{font-size:.8rem;font-weight:700;color:var(--verde,#0c3316);border:1px solid rgba(12,51,22,.2);border-radius:999px;padding:.35rem .8rem}
+.vp-chip-activo{background:var(--verde,#0c3316);color:#fff;border-color:var(--verde,#0c3316)}
+.vp-nota{font-size:.82rem;color:#7a867c}
