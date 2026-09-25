@@ -165,6 +165,30 @@ module.exports = function (eleventyConfig) {
     });
   });
 
+  // Filtro "enlacesDe": junta en una sola lista los enlaces de todos los
+  // bloques de una página de servicio, para poder limitar cuántos se ven.
+  eleventyConfig.addFilter("enlacesDe", function (bloques) {
+    const salida = [];
+    (bloques || []).forEach((b) => {
+      (b.enlaces || []).forEach((e) => {
+        if (e.archivo || e.destino) salida.push(e);
+      });
+    });
+    return salida;
+  });
+
+  // Filtro "unir": junta dos listas (subpáginas de servicios + páginas sueltas).
+  eleventyConfig.addFilter("unir", function (a, b) {
+    return (a || []).concat(b || []);
+  });
+
+  // Colección "paginas": las páginas sueltas, ordenadas por su número de orden.
+  eleventyConfig.addCollection("paginas", function (collectionApi) {
+    return collectionApi.getFilteredByGlob("src/paginas/*.md").sort((a, b) => {
+      return Number(a.data.orden || 0) - Number(b.data.orden || 0);
+    });
+  });
+
   // Filtro "principales": las páginas de servicios de primer nivel (las que
   // salen en el menú); las subpáginas llevan "padre" y se excluyen.
   eleventyConfig.addFilter("principales", function (array) {
