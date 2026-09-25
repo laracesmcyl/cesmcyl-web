@@ -1,0 +1,32 @@
+{
+  "colores": {
+    "verde": "#0c3316",
+    "verde_hondo": "#071f0d",
+    "verde_medio": "#3a6741",
+    "oro": "#e9a94a",
+    "oro_claro": "#f3c77f",
+    "papel": "#f1f5ef",
+    "tinta": "#16241a"
+  },
+  "tipografia": {
+    "fuente": "Lato",
+    "tamano_base": 17
+  },
+  "formas": {
+    "radio_tarjetas": 14,
+    "radio_botones": 6,
+    "ancho_lateral": 3.5
+  },
+  "secciones": [
+    "inicio",
+    "noticias",
+    "quienes",
+    "servicios",
+    "contacto"
+  ],
+  "aviso": {
+    "fondo": "#e9a94a",
+    "texto": "#071f0d",
+    "tamano": 0.92
+  }
+}

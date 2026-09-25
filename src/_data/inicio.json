@@ -5,6 +5,16 @@
   "titulo_destacado2": "médicos",
   "titulo_destacado3": "de Valladolid",
   "lead": "Integrados en CESM Castilla y León y en CESM a nivel nacional. Trabajamos para proteger tus derechos, mantenerte informado y darte respaldo cuando lo necesites.",
-  "boton_principal": { "texto": "Afíliate ahora", "destino": "/afiliate/" },
-  "boton_secundario": { "texto": "Conócenos", "destino": "#quienes" }
+  "boton_principal": {
+    "texto": "Afíliate ahora",
+    "destino": "/afiliate/"
+  },
+  "boton_secundario": {
+    "texto": "Conócenos",
+    "destino": "#quienes"
+  },
+  "tablon_titulo": "Tablón",
+  "tablon_documentos": "Últimos documentos",
+  "tablon_noticias": "Últimas noticias",
+  "imagen_fondo": "/hero-bg.jpg"
 }

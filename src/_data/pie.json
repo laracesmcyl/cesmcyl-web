@@ -1,0 +1,19 @@
+{
+  "descripcion": "Sindicato médico de Valladolid, integrado en CESM Castilla y León y en CESM. Defendiendo los derechos de los médicos desde hace más de 30 años.",
+  "titulo_columna1": "CESM Valladolid",
+  "enlaces_columna1": [
+    { "texto": "Quiénes somos", "destino": "/#quienes" },
+    { "texto": "Noticias", "destino": "/#noticias" },
+    { "texto": "Afíliate", "destino": "/afiliate/" },
+    { "texto": "Contacto", "destino": "/#contacto" }
+  ],
+  "titulo_servicios": "Servicios",
+  "titulo_contacto": "Contacto",
+  "copyright": "CESM Valladolid · Sindicato médico de Valladolid",
+  "enlaces_legales": [
+    { "texto": "Aviso legal", "destino": "/aviso-legal/" },
+    { "texto": "Política de privacidad", "destino": "/politica-de-privacidad/" },
+    { "texto": "Cookies", "destino": "/cookies/" },
+    { "texto": "Panel de cookies", "destino": "/cookies/#panel-de-cookies" }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "migas": "Servicios",
+  "migas_destino": "/#servicios",
+  "titulo": "Tarifas de asesoría jurídica",
+  "intro": "Aprobadas en Comité Ejecutivo. Cuantos más años llevas afiliado a CESM Valladolid, menos pagas, y con más de seis años de afiliación todos los servicios son gratuitos.",
+  "etiqueta_selector": "¿Cuánto tiempo llevas afiliado?",
+  "columna_servicio": "Servicio",
+  "columna_referencia": "Precio de referencia",
+  "texto_gratis": "Gratuita",
+  "tramos": [
+    {
+      "nombre": "Hasta 1 año",
+      "corto": "Hasta 1 año",
+      "nota": ""
+    },
+    {
+      "nombre": "De 1 a 3 años",
+      "corto": "1 a 3 años",
+      "nota": "−10 %"
+    },
+    {
+      "nombre": "De 3 a 5 años",
+      "corto": "3 a 5 años",
+      "nota": "−40 %"
+    },
+    {
+      "nombre": "De 5 a 6 años",
+      "corto": "5 a 6 años",
+      "nota": "−60 %"
+    },
+    {
+      "nombre": "Más de 6 años",
+      "corto": "Más de 6 años",
+      "nota": ""
+    }
+  ],
+  "filas": [
+    {
+      "servicio": "Consulta",
+      "referencia": "100 €",
+      "precios": [
+        "Gratuita",
+        "Gratuita",
+        "Gratuita",
+        "Gratuita",
+        "Gratuita"
+      ]
+    },
+    {
+      "servicio": "Escritos o solicitud",
+      "referencia": "100 €",
+      "precios": [
+        "30 €",
+        "Gratuita",
+        "Gratuita",
+        "Gratuita",
+        "Gratuita"
+      ]
+    },
+    {
+      "servicio": "Denuncias ante la Inspección de Trabajo",
+      "referencia": "400 €",
+      "precios": [
+        "150 €",
+        "135 €",
+        "90 €",
+        "60 €",
+        "Gratuita"
+      ]
+    },
+    {
+      "servicio": "Reclamaciones previas y recursos en vía administrativa",
+      "referencia": "600 €",
+      "precios": [
+        "200 €",
+        "180 €",
+        "120 €",
+        "80 €",
+        "Gratuita"
+      ]
+    },
+    {
+      "servicio": "Conciliación judicial",
+      "referencia": "600 €",
+      "precios": [
+        "200 €",
+        "180 €",
+        "120 €",
+        "80 €",
+        "Gratuita"
+      ]
+    },
+    {
+      "servicio": "Recurso de apelación, suplicación o impugnación (TSJ)",
+      "referencia": "2.500 €",
+      "precios": [
+        "300 €",
+        "270 €",
+        "180 €",
+        "120 €",
+        "Gratuita"
+      ]
+    },
+    {
+      "servicio": "Juzgados de lo Social",
+      "referencia": "2.500 €",
+      "precios": [
+        "300 €",
+        "270 €",
+        "180 €",
+        "120 €",
+        "Gratuita"
+      ]
+    },
+    {
+      "servicio": "Incidente de ejecución o extensión de efectos de sentencia",
+      "referencia": "2.500 €",
+      "precios": [
+        "300 €",
+        "270 €",
+        "180 €",
+        "120 €",
+        "Gratuita"
+      ]
+    },
+    {
+      "servicio": "Recurso contencioso-administrativo (Juzgado)",
+      "referencia": "2.600 €",
+      "precios": [
+        "350 €",
+        "315 €",
+        "210 €",
+        "140 €",
+        "Gratuita"
+      ]
+    },
+    {
+      "servicio": "Recurso contencioso-administrativo (TSJ)",
+      "referencia": "2.700 €",
+      "precios": [
+        "400 €",
+        "360 €",
+        "240 €",
+        "160 €",
+        "Gratuita"
+      ]
+    },
+    {
+      "servicio": "Recurso ante el Tribunal Supremo",
+      "referencia": "2.800 €",
+      "precios": [
+        "450 €",
+        "405 €",
+        "270 €",
+        "180 €",
+        "Gratuita"
+      ]
+    },
+    {
+      "servicio": "Recurso ante el Tribunal Constitucional",
+      "referencia": "3.000 €",
+      "precios": [
+        "550 €",
+        "495 €",
+        "330 €",
+        "220 €",
+        "Gratuita"
+      ]
+    }
+  ],
+  "bloques": [
+    {
+      "titulo": "Corren por cuenta del afiliado",
+      "puntos": [
+        {
+          "texto": "Los poderes notariales. Cuando es posible, se sustituyen por poderes apud acta, sin coste."
+        },
+        {
+          "texto": "Habilitaciones, suplidos, informes médicos, costas y tasas."
+        },
+        {
+          "texto": "Los gastos de procurador, solo cuando su intervención sea imprescindible."
+        }
+      ]
+    },
+    {
+      "titulo": "Condiciones",
+      "texto": "La prestación de servicios por la Asesoría Jurídica está condicionada a que las pretensiones del afiliado no contradigan la política y los objetivos del sindicato.\n\nCuando se obtenga un derecho de carácter económico, se aplica un 7 % sobre la cantidad conseguida, con independencia de la antigüedad como afiliado."
+    }
+  ],
+  "pago": {
+    "titulo": "Forma de pago",
+    "texto": "En efectivo o por transferencia bancaria a CaixaBank, a nombre de CESM Valladolid.",
+    "iban": "ES06 2100 1751 4722 0055 7764",
+    "concepto": "En el concepto, indica tu nombre y apellidos y «Asesoría Jurídica»."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "titulo": "Afíliate a CESM Valladolid",
+  "intro": "Al afiliarte a CESM Valladolid pasas a formar parte de CESM Castilla y León, la confederación de sindicatos médicos de la comunidad, y de CESM a nivel nacional. Desde ese momento cuentas con asesoría jurídica, información puntual y el respaldo de todo el sindicato.",
+  "titulo_pasos": "¿Qué tengo que hacer para afiliarme a CESM Castilla y León en Valladolid?",
+  "pasos": [
+    { "titulo": "Descarga la hoja de afiliación", "texto": "La tienes aquí al lado para consultarla, o puedes descargarla directamente.", "boton": "Descargar hoja de afiliación" },
+    { "titulo": "Rellena todos los campos", "texto": "Completa la hoja con tus datos personales. Si no puedes rellenarla en el ordenador, imprímela, rellénala a mano y escanéala o hazle una foto nítida." },
+    { "titulo": "Envíanosla", "texto": "Por correo electrónico, adjuntando el PDF con tus datos:", "texto_postal": "O por correo postal a:", "direccion_postal": "Sindicato Médico de Valladolid\nC/ Angustias 34, 1.º izq.\n47003 Valladolid" },
+    { "titulo": "Te damos la bienvenida", "texto": "Nos pondremos en contacto contigo y recibirás un correo de confirmación cuando tu afiliación esté completada." }
+  ],
+  "dudas": "¿Tienes dudas? Llámanos al",
+  "documento": "/documentos/hoja-afiliacion-valladolid.pdf",
+  "titulo_documento": "Hoja de afiliación"
+}
