@@ -9,8 +9,28 @@
 <link rel="apple-touch-icon" href="/icono-cesm.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+{%- set fuente = diseno.tipografia.fuente or "Lato" %}
+<link href="https://fonts.googleapis.com/css2?family={{ fuente | replace(' ', '+') }}:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/main.css">
+<style>
+:root{
+  --verde:{{ diseno.colores.verde }};
+  --verde-hondo:{{ diseno.colores.verde_hondo }};
+  --verde-medio:{{ diseno.colores.verde_medio }};
+  --oro:{{ diseno.colores.oro }};
+  --oro-claro:{{ diseno.colores.oro_claro }};
+  --papel:{{ diseno.colores.papel }};
+  --tinta:{{ diseno.colores.tinta }};
+  --sans:"{{ fuente }}","Carlito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --radio:{{ diseno.formas.radio_tarjetas or 14 }}px;
+  --radio-boton:{{ diseno.formas.radio_botones or 6 }}px;
+  --lado:{{ diseno.formas.ancho_lateral or 3.5 }}%;
+  --aviso-fondo:{{ diseno.aviso.fondo or "#e9a94a" }};
+  --aviso-texto:{{ diseno.aviso.texto or "#071f0d" }};
+  --aviso-tamano:{{ diseno.aviso.tamano or 0.92 }}rem;
+}
+html{font-size:{{ diseno.tipografia.tamano_base or 17 }}px}
+</style>
 <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -36,8 +56,8 @@
       </span>
     </div>
     <div class="topbar-der">
-      <a href="https://www.cesmcyl.org/formacion-tiscyl-cesm/" target="_blank" rel="noopener">Campus TISCYL-CESM</a>
-      <a href="/admin/">Acceso admin</a>
+      <a href="{{ textos.campus_destino }}" target="_blank" rel="noopener">{{ textos.topbar_campus or "Campus TISCYL-CESM" }}</a>
+      <a href="/admin/">{{ textos.topbar_admin or "Acceso admin" }}</a>
     </div>
   </div>
 
@@ -45,14 +65,14 @@
     <a href="/" class="logo"><img src="/logo-cesm-vll-hq.png" alt="CESM Valladolid" width="496" height="242"></a>
     <button type="button" class="hamburguesa" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
     <ul class="menu" id="navLinks">
-      <li><a href="/#inicio" data-seccion="inicio"{% if page.url == "/" %} class="activo"{% endif %}>Inicio</a></li>
-      <li><a href="/#noticias" data-seccion="noticias"{% if seccion == "noticias" %} class="activo"{% endif %}>Noticias</a></li>
-      <li><a href="/#quienes" data-seccion="quienes">Quiénes somos</a></li>
+      <li><a href="/#inicio" data-seccion="inicio"{% if page.url == "/" %} class="activo"{% endif %}>{{ textos.menu_inicio or "Inicio" }}</a></li>
+      <li><a href="/#noticias" data-seccion="noticias"{% if seccion == "noticias" %} class="activo"{% endif %}>{{ textos.menu_noticias or "Noticias" }}</a></li>
+      <li><a href="/#quienes" data-seccion="quienes">{{ textos.menu_quienes or "Quiénes somos" }}</a></li>
       <li class="desplegable">
-        <a href="/#servicios" data-seccion="servicios"{% if seccion == "servicios" %} class="activo"{% endif %}>Servicios<span class="flechita" aria-hidden="true"></span></a>
+        <a href="/#servicios" data-seccion="servicios"{% if seccion == "servicios" %} class="activo"{% endif %}>{{ textos.menu_servicios or "Servicios" }}<span class="flechita" aria-hidden="true"></span></a>
         <ul class="submenu">
           {%- for serv in collections.servicios | principales %}
-          {%- set hijasMenu = collections.servicios | hijasDe(serv.fileSlug) %}
+          {%- set hijasMenu = collections.servicios | hijasDe(serv.fileSlug) | unir(collections.paginas | hijasDe(serv.fileSlug)) %}
           <li><a href="{{ serv.data.destino or serv.url }}">{{ serv.data.menu or serv.data.title }}</a>
             {%- if hijasMenu | length %}
             <ul class="submenu-hijas">
@@ -65,10 +85,10 @@
           {%- endfor %}
         </ul>
       </li>
-      <li><a href="/#contacto" data-seccion="contacto">Contacto</a></li>
-      <li><a href="/afiliate/" class="btn-afiliate">Afíliate</a></li>
-      <li class="solo-movil"><a href="https://www.cesmcyl.org/formacion-tiscyl-cesm/" target="_blank" rel="noopener">Campus TISCYL-CESM</a></li>
-      <li class="solo-movil"><a href="/admin/">Acceso admin</a></li>
+      <li><a href="/#contacto" data-seccion="contacto">{{ textos.menu_contacto or "Contacto" }}</a></li>
+      <li><a href="/afiliate/" class="btn-afiliate">{{ textos.menu_afiliate or "Afíliate" }}</a></li>
+      <li class="solo-movil"><a href="{{ textos.campus_destino }}" target="_blank" rel="noopener">{{ textos.topbar_campus or "Campus TISCYL-CESM" }}</a></li>
+      <li class="solo-movil"><a href="/admin/">{{ textos.topbar_admin or "Acceso admin" }}</a></li>
       <li class="solo-movil menu-contacto">
         <a href="tel:{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a>
         <a href="mailto:{{ contacto.email }}">{{ contacto.email }}</a>
@@ -92,23 +112,22 @@
   <div class="pie-inner">
     <div class="pie-marca">
       <img src="/logo-cesm-vll-hq.png" alt="CESM Valladolid" width="496" height="242">
-      <p>Sindicato médico de Valladolid, integrado en CESM Castilla y León y en CESM. Defendiendo los derechos de los médicos desde hace más de 30 años.</p>
+      <p>{{ pie.descripcion }}</p>
     </div>
     <div class="pie-col" role="navigation" aria-label="CESM Valladolid">
-      <h4>CESM Valladolid</h4>
-      <a href="/#quienes">Quiénes somos</a>
-      <a href="/#noticias">Noticias</a>
-      <a href="/afiliate/">Afíliate</a>
-      <a href="/#contacto">Contacto</a>
+      <h4>{{ pie.titulo_columna1 or "CESM Valladolid" }}</h4>
+      {%- for e in pie.enlaces_columna1 %}
+      <a href="{{ e.destino }}">{{ e.texto }}</a>
+      {%- endfor %}
     </div>
     <div class="pie-col" role="navigation" aria-label="Servicios">
-      <h4>Servicios</h4>
+      <h4>{{ pie.titulo_servicios or "Servicios" }}</h4>
       {%- for serv in collections.servicios | principales %}
       <a href="{{ serv.data.destino or serv.url }}">{{ serv.data.menu or serv.data.title }}</a>
       {%- endfor %}
     </div>
     <div class="pie-col">
-      <h4>Contacto</h4>
+      <h4>{{ pie.titulo_contacto or "Contacto" }}</h4>
       <a href="tel:{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a>
       <a href="mailto:{{ contacto.email }}">{{ contacto.email }}</a>
       <p>{{ contacto.direccion | nl2br | safe }}</p>
@@ -117,12 +136,11 @@
   </div>
 
   <div class="pie-barra">
-    <span>© {{ anio }} CESM Valladolid · Sindicato médico de Valladolid</span>
+    <span>© {{ anio }} {{ pie.copyright }}</span>
     <span class="pie-legal">
-      <a href="/aviso-legal/">Aviso legal</a>
-      <a href="/politica-de-privacidad/">Política de privacidad</a>
-      <a href="/cookies/">Cookies</a>
-      <a href="/cookies/#panel-de-cookies">Panel de cookies</a>
+      {%- for e in pie.enlaces_legales %}
+      <a href="{{ e.destino }}">{{ e.texto }}</a>
+      {%- endfor %}
     </span>
   </div>
 </footer>

@@ -12,6 +12,7 @@ seccion: servicios
 </article>
 {%- endmacro %}
 {%- set hijas = collections.servicios | hijasDe(page.fileSlug) %}
+{%- set hijasPaginas = collections.paginas | hijasDe(page.fileSlug) %}
 {%- set hermanas = collections.servicios | hermanasDe(padre, page.fileSlug) %}
 {%- set subaps = listaCategorias | subapartadosDe(subapartados) %}
 {%- set noticiasServicio = collections.noticias | reverse | deCategorias(categorias) | limit(6) %}
@@ -24,9 +25,9 @@ seccion: servicios
   </div>
 </header>
 
-{%- if hijas | length %}
+{%- if (hijas | length) or (hijasPaginas | length) %}
 <nav class="serv-sub" aria-label="Apartados de {{ title }}">
-  {%- for h in hijas %}
+  {%- for h in hijas | unir(hijasPaginas) %}
   <a href="{{ h.data.destino or h.url }}">
     {{ ico.icono(h.data.icono, "serv-sub-ico") }}
     <span><strong>{{ h.data.menu or h.data.title }}</strong>{% if h.data.entradilla %}<small>{{ h.data.entradilla }}</small>{% endif %}</span>
@@ -43,15 +44,14 @@ seccion: servicios
 
   {%- if bloques | length %}
   <aside class="pag-lateral lateral-caja">
-    <h2 class="lateral-titulo">Enlaces</h2>
-    {%- for b in bloques %}
+    <h2 class="lateral-titulo">{{ textos.serv_enlaces or "Enlaces" }}</h2>
+    {%- set enlaces = bloques | enlacesDe %}
+    {%- set tope = textos.serv_enlaces_visibles or 5 %}
     <div class="documentos">
-      {%- if b.titulo and b.titulo != "Enlaces útiles" and b.titulo != "Enlaces" %}<h2>{{ b.titulo }}</h2>{% endif %}
-      {%- for e in b.enlaces %}
+      {%- for e in enlaces %}
       {%- set destino = e.archivo or e.destino %}
-      {%- if destino %}
       {%- set esExterno = "http" in destino and not e.archivo %}
-      <a href="{{ destino }}" class="doc"{% if esExterno %} target="_blank" rel="noopener"{% elif e.archivo %} download{% endif %}>
+      <a href="{{ destino }}" class="doc{% if loop.index > tope %} doc-extra{% endif %}"{% if esExterno %} target="_blank" rel="noopener"{% elif e.archivo %} download{% endif %}>
         {%- if e.archivo %}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
         {%- elif esExterno %}
@@ -61,10 +61,11 @@ seccion: servicios
         {%- endif %}
         <span>{{ e.texto }}{% if e.descripcion %}<small>{{ e.descripcion }}</small>{% endif %}</span>
       </a>
-      {%- endif %}
       {%- endfor %}
+      {%- if enlaces | length > tope %}
+      <button type="button" class="mas-enlaces" data-mas="{{ textos.serv_enlaces_boton or 'Ver todos los enlaces' }}" data-menos="{{ textos.serv_enlaces_boton_menos or 'Ver menos' }}" aria-expanded="false">{{ textos.serv_enlaces_boton or "Ver todos los enlaces" }} ({{ enlaces | length }})</button>
+      {%- endif %}
     </div>
-    {%- endfor %}
   </aside>
   {%- endif %}
 
@@ -87,7 +88,7 @@ seccion: servicios
         <div class="notas notas-dos">
           {%- for n in todasSub | limit(8) %}{{ tarjetaNoticia(n) }}{%- endfor %}
         </div>
-        {%- else %}<p class="subap-vacio">Todavía no hay noticias en este apartado.</p>{%- endif %}
+        {%- else %}<p class="subap-vacio">{{ textos.serv_vacio }}</p>{%- endif %}
       </div>
       {%- for s in subaps %}
       {%- set deEsta = collections.noticias | reverse | deCategoria(s.completo) %}
@@ -99,24 +100,24 @@ seccion: servicios
         {%- else %}<p class="subap-vacio">Todavía no hay noticias en «{{ s.corto }}». Aparecerán aquí en cuanto publiques una con la categoría <strong>{{ s.completo }}</strong>.</p>{%- endif %}
       </div>
       {%- endfor %}
-      <a href="/#noticias" class="enlace-verde">Ver todas las noticias <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="/#noticias" class="enlace-verde">{{ textos.serv_ver_todas or "Ver todas las noticias" }} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </section>
 
     {%- elif noticiasServicio | length %}
     <section class="serv-noticias">
-      <h2>Noticias relacionadas</h2>
+      <h2>{{ textos.serv_noticias or "Noticias relacionadas" }}</h2>
       <div class="notas notas-dos">
         {%- for n in noticiasServicio %}
         {{ tarjetaNoticia(n) }}
         {%- endfor %}
       </div>
-      <a href="/#noticias" class="enlace-verde">Ver todas las noticias <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="/#noticias" class="enlace-verde">{{ textos.serv_ver_todas or "Ver todas las noticias" }} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </section>
     {%- endif %}
 
     {%- if hermanas | length %}
     <section class="serv-hermanas">
-      <h2>También te puede interesar</h2>
+      <h2>{{ textos.serv_hermanas or "También te puede interesar" }}</h2>
       <div class="serv-hermanas-lista">
         {%- for h in hermanas %}
         <a href="{{ h.data.destino or h.url }}">
@@ -147,3 +148,14 @@ document.querySelectorAll('.subap').forEach(function (sec) {
 });
 </script>
 {%- endif %}
+
+<script>
+document.querySelectorAll('.mas-enlaces').forEach(function (boton) {
+  boton.addEventListener('click', function () {
+    var caja = boton.closest('.documentos');
+    var abierto = caja.classList.toggle('enlaces-abiertos');
+    boton.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+    boton.textContent = abierto ? boton.dataset.menos : boton.dataset.mas + ' (' + caja.querySelectorAll('.doc').length + ')';
+  });
+});
+</script>

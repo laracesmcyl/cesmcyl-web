@@ -3,7 +3,8 @@ layout: base.njk
 ---
 <header class="pag-cab">
   <div class="pag-cab-inner">
-    {%- if migas %}<a href="{{ migas_destino or '/' }}" class="migas">{{ migas }}</a>{% endif %}
+    {%- if padre %}<a href="{{ collections.servicios | urlDe(padre) }}" class="migas">{{ collections.servicios | tituloDe(padre) }}</a>
+    {%- elif migas %}<a href="{{ migas_destino or '/' }}" class="migas">{{ migas }}</a>{% endif %}
     <h1>{{ title }}</h1>
     {%- if entradilla %}<p>{{ entradilla }}</p>{% endif %}
   </div>
