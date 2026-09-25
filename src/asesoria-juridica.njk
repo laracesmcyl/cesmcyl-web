@@ -6,21 +6,19 @@ descripcion: "Tarifas de la asesoría jurídica de CESM Valladolid según tu ant
 ---
 <header class="pag-cab">
   <div class="pag-cab-inner">
-    <a href="/#servicios" class="migas">Servicios</a>
-    <h1>Tarifas de asesoría jurídica</h1>
-    <p>Aprobadas en Comité Ejecutivo. Cuantos más años llevas afiliado a CESM Valladolid, menos pagas, y con más de seis años de afiliación todos los servicios son gratuitos.</p>
+    <a href="{{ tarifas.migas_destino or '/#servicios' }}" class="migas">{{ tarifas.migas or "Servicios" }}</a>
+    <h1>{{ tarifas.titulo }}</h1>
+    <p>{{ tarifas.intro }}</p>
   </div>
 </header>
 
 <div class="tarifas">
   <div class="selector">
-    <span id="sel-etiqueta">¿Cuánto tiempo llevas afiliado?</span>
+    <span id="sel-etiqueta">{{ tarifas.etiqueta_selector }}</span>
     <div class="segmentos" role="group" aria-labelledby="sel-etiqueta">
-      <button type="button" data-col="0" class="activo">Hasta 1 año</button>
-      <button type="button" data-col="1">De 1 a 3 años</button>
-      <button type="button" data-col="2">De 3 a 5 años</button>
-      <button type="button" data-col="3">De 5 a 6 años</button>
-      <button type="button" data-col="4">Más de 6 años</button>
+      {%- for t in tarifas.tramos %}
+      <button type="button" data-col="{{ loop.index0 }}"{% if loop.first %} class="activo"{% endif %}>{{ t.nombre }}</button>
+      {%- endfor %}
     </div>
   </div>
 
@@ -28,54 +26,49 @@ descripcion: "Tarifas de la asesoría jurídica de CESM Valladolid según tu ant
     <table class="tabla" id="tabla-tarifas">
       <thead>
         <tr>
-          <th scope="col">Servicio</th>
-          <th scope="col" class="ref">Precio de referencia</th>
-          <th scope="col" data-col="0">Hasta 1 año</th>
-          <th scope="col" data-col="1">1 a 3 años<small>−10 %</small></th>
-          <th scope="col" data-col="2">3 a 5 años<small>−40 %</small></th>
-          <th scope="col" data-col="3">5 a 6 años<small>−60 %</small></th>
-          <th scope="col" data-col="4">Más de 6 años</th>
+          <th scope="col">{{ tarifas.columna_servicio or "Servicio" }}</th>
+          <th scope="col" class="ref">{{ tarifas.columna_referencia or "Precio de referencia" }}</th>
+          {%- for t in tarifas.tramos %}
+          <th scope="col" data-col="{{ loop.index0 }}">{{ t.corto or t.nombre }}{% if t.nota %}<small>{{ t.nota }}</small>{% endif %}</th>
+          {%- endfor %}
         </tr>
       </thead>
       <tbody>
-          <tr><th scope="row">Consulta</th><td class="ref">100 €</td><td data-col="0" class="gratis">Gratuita</td><td data-col="1" class="gratis">Gratuita</td><td data-col="2" class="gratis">Gratuita</td><td data-col="3" class="gratis">Gratuita</td><td data-col="4" class="gratis">Gratuita</td></tr>
-          <tr><th scope="row">Escritos o solicitud</th><td class="ref">100 €</td><td data-col="0">30 €</td><td data-col="1" class="gratis">Gratuita</td><td data-col="2" class="gratis">Gratuita</td><td data-col="3" class="gratis">Gratuita</td><td data-col="4" class="gratis">Gratuita</td></tr>
-          <tr><th scope="row">Denuncias ante la Inspección de Trabajo</th><td class="ref">400 €</td><td data-col="0">150 €</td><td data-col="1">135 €</td><td data-col="2">90 €</td><td data-col="3">60 €</td><td data-col="4" class="gratis">Gratuita</td></tr>
-          <tr><th scope="row">Reclamaciones previas y recursos en vía administrativa</th><td class="ref">600 €</td><td data-col="0">200 €</td><td data-col="1">180 €</td><td data-col="2">120 €</td><td data-col="3">80 €</td><td data-col="4" class="gratis">Gratuita</td></tr>
-          <tr><th scope="row">Conciliación judicial</th><td class="ref">600 €</td><td data-col="0">200 €</td><td data-col="1">180 €</td><td data-col="2">120 €</td><td data-col="3">80 €</td><td data-col="4" class="gratis">Gratuita</td></tr>
-          <tr><th scope="row">Recurso de apelación, suplicación o impugnación (TSJ)</th><td class="ref">2.500 €</td><td data-col="0">300 €</td><td data-col="1">270 €</td><td data-col="2">180 €</td><td data-col="3">120 €</td><td data-col="4" class="gratis">Gratuita</td></tr>
-          <tr><th scope="row">Juzgados de lo Social</th><td class="ref">2.500 €</td><td data-col="0">300 €</td><td data-col="1">270 €</td><td data-col="2">180 €</td><td data-col="3">120 €</td><td data-col="4" class="gratis">Gratuita</td></tr>
-          <tr><th scope="row">Incidente de ejecución o extensión de efectos de sentencia</th><td class="ref">2.500 €</td><td data-col="0">300 €</td><td data-col="1">270 €</td><td data-col="2">180 €</td><td data-col="3">120 €</td><td data-col="4" class="gratis">Gratuita</td></tr>
-          <tr><th scope="row">Recurso contencioso-administrativo (Juzgado)</th><td class="ref">2.600 €</td><td data-col="0">350 €</td><td data-col="1">315 €</td><td data-col="2">210 €</td><td data-col="3">140 €</td><td data-col="4" class="gratis">Gratuita</td></tr>
-          <tr><th scope="row">Recurso contencioso-administrativo (TSJ)</th><td class="ref">2.700 €</td><td data-col="0">400 €</td><td data-col="1">360 €</td><td data-col="2">240 €</td><td data-col="3">160 €</td><td data-col="4" class="gratis">Gratuita</td></tr>
-          <tr><th scope="row">Recurso ante el Tribunal Supremo</th><td class="ref">2.800 €</td><td data-col="0">450 €</td><td data-col="1">405 €</td><td data-col="2">270 €</td><td data-col="3">180 €</td><td data-col="4" class="gratis">Gratuita</td></tr>
-          <tr><th scope="row">Recurso ante el Tribunal Constitucional</th><td class="ref">3.000 €</td><td data-col="0">550 €</td><td data-col="1">495 €</td><td data-col="2">330 €</td><td data-col="3">220 €</td><td data-col="4" class="gratis">Gratuita</td></tr>
+        {%- for f in tarifas.filas %}
+        <tr><th scope="row">{{ f.servicio }}</th><td class="ref">{{ f.referencia }}</td>
+          {%- for p in f.precios %}
+          <td data-col="{{ loop.index0 }}"{% if p == tarifas.texto_gratis %} class="gratis"{% endif %}>{{ p }}</td>
+          {%- endfor %}
+        </tr>
+        {%- endfor %}
       </tbody>
     </table>
   </div>
 
   <div class="info-tarifas">
+    {%- for b in tarifas.bloques %}
     <section>
-      <h2>Corren por cuenta del afiliado</h2>
+      <h2>{{ b.titulo }}</h2>
+      {%- if b.puntos | length %}
       <ul class="lista">
-        <li>Los poderes notariales. Cuando es posible, se sustituyen por poderes <i>apud acta</i>, sin coste.</li>
-        <li>Habilitaciones, suplidos, informes médicos, costas y tasas.</li>
-        <li>Los gastos de procurador, solo cuando su intervención sea imprescindible.</li>
+        {%- for p in b.puntos %}
+        <li>{{ p.texto }}</li>
+        {%- endfor %}
       </ul>
+      {%- endif %}
+      {%- if b.texto %}{{ b.texto | md | safe }}{% endif %}
     </section>
+    {%- endfor %}
     <section>
-      <h2>Condiciones</h2>
-      <p>La prestación de servicios por la Asesoría Jurídica está condicionada a que las pretensiones del afiliado no contradigan la política y los objetivos del sindicato.</p>
-      <p>Cuando se obtenga un derecho de carácter económico, se aplica un 7 % sobre la cantidad conseguida, con independencia de la antigüedad como afiliado.</p>
-    </section>
-    <section>
-      <h2>Forma de pago</h2>
-      <p>En efectivo o por transferencia bancaria a CaixaBank, a nombre de CESM Valladolid.</p>
+      <h2>{{ tarifas.pago.titulo }}</h2>
+      <p>{{ tarifas.pago.texto }}</p>
+      {%- if tarifas.pago.iban %}
       <div class="iban">
-        <span><small>IBAN</small><code id="iban">ES06 2100 1751 4722 0055 7764</code></span>
+        <span><small>IBAN</small><code id="iban">{{ tarifas.pago.iban }}</code></span>
         <button type="button" id="copiar-iban" aria-label="Copiar IBAN"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg><span>Copiar</span></button>
       </div>
-      <p class="concepto">En el concepto, indica tu nombre y apellidos y «Asesoría Jurídica».</p>
+      {%- endif %}
+      {%- if tarifas.pago.concepto %}<p class="concepto">{{ tarifas.pago.concepto }}</p>{% endif %}
     </section>
   </div>
 </div>

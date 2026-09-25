@@ -5,8 +5,8 @@ descripcion: "Cómo afiliarte a CESM Valladolid, sindicato médico integrado en 
 ---
 <header class="pag-cab con-estructura">
   <div class="pag-cab-inner">
-    <h1>Afíliate a CESM Valladolid</h1>
-    <p>Al afiliarte a CESM Valladolid pasas a formar parte de CESM Castilla y León, la confederación de sindicatos médicos de la comunidad, y de CESM a nivel nacional. Desde ese momento cuentas con asesoría jurídica, información puntual y el respaldo de todo el sindicato.</p>
+    <h1>{{ afiliate.titulo }}</h1>
+    <p>{{ afiliate.intro }}</p>
   </div>
   <div class="estructura" aria-label="CESM Valladolid forma parte de CESM Castilla y León, que forma parte de CESM">
     <div class="nivel n1"><span>CESM<small>Nacional</small></span>
@@ -19,42 +19,37 @@ descripcion: "Cómo afiliarte a CESM Valladolid, sindicato médico integrado en 
 
 <div class="afi">
   <section class="afi-pasos">
-    <h2>¿Qué tengo que hacer para afiliarme a CESM Castilla y León en Valladolid?</h2>
+    <h2>{{ afiliate.titulo_pasos }}</h2>
     <ol class="pasos-num">
+      {%- for paso in afiliate.pasos %}
       <li>
-        <div><h3>Descarga la hoja de afiliación</h3>
-        <p>La tienes aquí al lado para consultarla, o puedes descargarla directamente.</p>
-        <a href="/hoja-afiliacion-valladolid.pdf" download class="btn-oro btn-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg>Descargar hoja de afiliación</a></div>
+        <div><h3>{{ paso.titulo }}</h3>
+        <p>{{ paso.texto }}</p>
+        {%- if loop.first %}
+        <a href="{{ afiliate.documento }}" download class="btn-oro btn-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg>{{ paso.boton or "Descargar hoja de afiliación" }}</a>
+        {%- endif %}
+        {%- if paso.direccion_postal %}
+        <a href="mailto:{{ contacto.email }}?subject=Afiliaci%C3%B3n%20CESM%20Valladolid" class="enlace-mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>{{ contacto.email }}</a>
+        <p class="o-bien">{{ paso.texto_postal }}</p>
+        <address>{{ paso.direccion_postal | nl2br | safe }}</address>
+        {%- endif %}
+        </div>
       </li>
-      <li>
-        <div><h3>Rellena todos los campos</h3>
-        <p>Completa la hoja con tus datos personales. Si no puedes rellenarla en el ordenador, imprímela, rellénala a mano y escanéala o hazle una foto nítida.</p></div>
-      </li>
-      <li>
-        <div><h3>Envíanosla</h3>
-        <p>Por correo electrónico, adjuntando el PDF con tus datos:</p>
-        <a href="mailto:cesmvalladolid@cesmcyl.es?subject=Afiliaci%C3%B3n%20CESM%20Valladolid" class="enlace-mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>cesmvalladolid@cesmcyl.es</a>
-        <p class="o-bien">O por correo postal a:</p>
-        <address>Sindicato Médico de Valladolid<br>C/ Angustias 34, 1.º izq.<br>47003 Valladolid</address></div>
-      </li>
-      <li>
-        <div><h3>Te damos la bienvenida</h3>
-        <p>Nos pondremos en contacto contigo y recibirás un correo de confirmación cuando tu afiliación esté completada.</p></div>
-      </li>
+      {%- endfor %}
     </ol>
-    <p class="afi-dudas">¿Tienes dudas? Llámanos al <a href="tel:+34983218524">983 218 524</a>.</p>
+    <p class="afi-dudas">{{ afiliate.dudas }} <a href="tel:{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a>.</p>
   </section>
 
   <aside class="afi-pdf">
     <div class="visor-barra">
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>Hoja de afiliación <small>PDF</small></span>
-      <a href="/hoja-afiliacion-valladolid.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>Abrir en pestaña nueva</a>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>{{ afiliate.titulo_documento or "Hoja de afiliación" }} <small>PDF</small></span>
+      <a href="{{ afiliate.documento }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>Abrir en pestaña nueva</a>
     </div>
-    <object data="/hoja-afiliacion-valladolid.pdf#view=FitH" type="application/pdf" class="visor">
+    <object data="{{ afiliate.documento }}#view=FitH" type="application/pdf" class="visor">
       <div class="visor-alt">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
         <p>Tu navegador no puede mostrar el documento aquí.</p>
-        <a href="/hoja-afiliacion-valladolid.pdf" download class="btn-oro btn-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg>Descargar hoja de afiliación</a>
+        <a href="{{ afiliate.documento }}" download class="btn-oro btn-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg>Descargar hoja de afiliación</a>
       </div>
     </object>
   </aside>
