@@ -1,0 +1,93 @@
+<!-- ============ PRIMERA PANTALLA ============ -->
+<section class="hero" id="inicio">
+  <div class="hero-foto" aria-hidden="true"{% if inicio.imagen_fondo %} style="background-image:url('{{ inicio.imagen_fondo }}')"{% endif %}></div>
+  <div class="hero-velo" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-texto">
+      <p class="hero-firma entra" style="--d:.1s"><svg class="pulso" viewBox="0 0 74 22" aria-hidden="true"><path d="M1 13h22l4-8 5 15 5-19 4 12 3-2h29"/></svg>{{ inicio.firma }}</p>
+      <h1 class="hero-titulo">
+        <span class="linea"><span style="--d:.2s">{{ inicio.titulo_linea1 }}</span></span>
+        <span class="linea"><span style="--d:.34s">{{ inicio.titulo_linea2 }}<em>{{ inicio.titulo_destacado2 }}</em></span></span>
+        <span class="linea"><span style="--d:.48s"><em>{{ inicio.titulo_destacado3 }}</em></span></span>
+      </h1>
+      <p class="hero-lead entra" style="--d:.8s">{{ inicio.lead }}</p>
+      <div class="hero-acciones entra" style="--d:.95s">
+        <a href="{{ inicio.boton_principal.destino }}" class="btn-oro">{{ inicio.boton_principal.texto }}</a>
+        <a href="{{ inicio.boton_secundario.destino }}" class="enlace-blanco">{{ inicio.boton_secundario.texto }} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+      </div>
+    </div>
+
+    <!-- TABLÓN -->
+    <aside class="tablon" aria-label="Tablón">
+      <h2 class="tablon-cab entra" style="--d:.6s">{{ inicio.tablon_titulo or "Tablón" }}</h2>
+
+      {%- set grupos = collections.tablon | porCategoria %}
+      {%- if grupos | length %}
+      <div class="tablon-destacados entra" style="--d:.72s">
+        <h3 class="tablon-sub">{{ inicio.tablon_documentos or "Últimos documentos" }}</h3>
+        {%- if grupos | length > 1 %}
+        <div class="pestanas" role="tablist" aria-label="Temas del tablón">
+          {%- for g in grupos %}
+          <button type="button" class="pestana{% if loop.first %} activa{% endif %}" role="tab" data-grupo="{{ g.nombre | slugify }}" aria-selected="{{ 'true' if loop.first else 'false' }}">{{ g.nombre | corto }}<span class="cuenta">{{ g.elementos | length }}</span></button>
+          {%- endfor %}
+        </div>
+        {%- endif %}
+        {%- for g in grupos %}
+        <div class="grupo-fijos{% if loop.first %} visible{% endif %}{% if g.elementos | length > 1 %} apilado{% endif %}" data-grupo="{{ g.nombre | slugify }}" role="tabpanel">
+          {%- for item in g.elementos %}
+          {%- set destino = item.data.archivo or item.data.enlace %}
+          {%- if destino %}
+          <a href="{{ destino }}" class="fijo"{% if item.data.enlace and not item.data.archivo %} target="_blank" rel="noopener"{% else %} download{% endif %}>
+            <span class="fijo-cab">
+              {%- set etiqueta = item.data | cat %}
+              {% if etiqueta %}<span class="tag">{{ etiqueta }}</span>{% else %}<span></span>{% endif %}
+              <svg class="chincheta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-label="Fijado"><path d="M9 4v6l-2 4h10l-2-4V4M12 14v6M8 4h8"/></svg>
+            </span>
+            <span class="fijo-titulo">{{ item.data.title }}</span>
+            {%- if item.data.descripcion %}<span class="fijo-desc">{{ item.data.descripcion }}</span>{% endif %}
+            <span class="descarga">
+              {%- if item.data.archivo %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></svg>
+              {%- else %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+              {%- endif %}
+              {{ item.data.texto_boton or ("Descargar" if item.data.archivo else "Ver más") }}
+            </span>
+          </a>
+          {%- endif %}
+          {%- endfor %}
+          {%- if g.elementos | length > 1 %}
+          <button type="button" class="abrir-pila" aria-expanded="false">
+            <span class="abrir-texto">Ver los {{ g.elementos | length }} documentos</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          {%- endif %}
+        </div>
+        {%- endfor %}
+      </div>
+      {%- endif %}
+
+      {%- set noticiasCarrusel = collections.noticias | reverse | limit(8) %}
+      <div class="tn-cab entra" style="--d:.95s">
+        <span>{{ inicio.tablon_noticias or "Últimas noticias" }}</span>
+        <div class="flechas">
+          <button type="button" id="carrusel-anterior" aria-label="Noticia anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <span class="contador" id="carrusel-contador">1 / {{ noticiasCarrusel | length }}</span>
+          <button type="button" id="carrusel-siguiente" aria-label="Noticia siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      <div class="tn-marco entra" style="--d:1.05s" id="carrusel">
+        {%- for noticia in noticiasCarrusel %}
+        <a href="/noticias/{{ noticia.fileSlug }}/" class="tn{% if loop.first %} visible{% endif %}">
+          <span class="tn-meta"><b>{% if (noticia.data | cat) != "Noticias" %}{{ noticia.data | cat }}{% endif %}</b><span>{{ noticia.data.date | fecha }}</span></span>
+          <span class="tn-titulo">{{ noticia.data.title }}</span>
+          <span class="tn-desc">{{ noticia.data.description or (noticia.templateContent | excerpt(150)) }}</span>
+        </a>
+        {%- endfor %}
+        <span class="progreso" id="carrusel-progreso"></span>
+      </div>
+
+    </aside>
+  </div>
+</section>
+
