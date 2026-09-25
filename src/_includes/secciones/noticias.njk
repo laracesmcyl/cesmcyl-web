@@ -1,0 +1,52 @@
+<!-- ============ NOTICIAS ============ -->
+<section class="noticias" id="noticias">
+  <div class="noticias-top">
+    <div>
+      <h2 class="titulo-seccion">{{ noticias.titulo or "Noticias" }}</h2>
+      <p class="sub-seccion">{{ noticias.intro }}</p>
+    </div>
+    <label class="buscador">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input type="search" id="buscador-noticias" placeholder="{{ noticias.buscador or 'Buscar noticias' }}" aria-label="{{ noticias.buscador or 'Buscar noticias' }}">
+    </label>
+  </div>
+  <div class="chips" role="group" aria-label="Filtrar noticias por tema">
+    <button type="button" class="chip activo" data-cat="todas">Todas</button>
+    {%- for g in collections.noticias | reverse | categoriasAgrupadas(listaCategorias) %}
+    {%- if g.subs | length %}
+    <div class="chip-grupo">
+      <button type="button" class="chip chip-con-menu" data-cat="{{ g.nombre | slugify }}" aria-expanded="false">{{ g.nombre }}<svg class="chip-flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="chip-menu">
+        {%- for sub in g.subs %}
+        <button type="button" class="chip-sub" data-cat="{{ sub.completo | slugify }}">{{ sub.corto }}</button>
+        {%- endfor %}
+      </div>
+    </div>
+    {%- else %}
+    <button type="button" class="chip" data-cat="{{ g.nombre | slugify }}">{{ g.nombre }}</button>
+    {%- endif %}
+    {%- endfor %}
+  </div>
+  <div class="notas" id="notas">
+    {%- for noticia in collections.noticias | reverse %}
+    <article class="nota" data-cat="{{ noticia.data | cat | slugify }}" data-grupo="{{ noticia.data | cat | grupo | slugify }}">
+      <div class="nota-meta"><span class="nota-tag">{% if (noticia.data | cat) != "Noticias" %}{{ noticia.data | cat }}{% endif %}</span><time datetime="{{ noticia.data.date }}">{{ noticia.data.date | fecha }}</time></div>
+      <h3><a href="/noticias/{{ noticia.fileSlug }}/">{{ noticia.data.title }}</a></h3>
+      <p>{{ noticia.data.description or (noticia.templateContent | excerpt(170)) }}</p>
+      <span class="nota-leer" aria-hidden="true">Leer más {{ flecha | safe }}</span>
+    </article>
+    {%- endfor %}
+  </div>
+  <p class="notas-vacio" id="notas-vacio" hidden>No hay noticias que coincidan con la búsqueda.</p>
+  <div class="notas-pie"><button type="button" class="btn-mas" id="btn-mas">{{ noticias.boton or "Ver más noticias" }}</button></div>
+  <div class="acciones-seccion">
+    <a href="/afiliate/" class="btn-oro">Afíliate</a>
+    <div class="acciones-col">
+      <div class="acciones-col">
+        <a href="/#contacto" class="enlace-verde">Contacta con nosotros {{ flecha | safe }}</a>
+        {% include "redes.njk" %}
+      </div>
+    </div>
+  </div>
+</section>
+

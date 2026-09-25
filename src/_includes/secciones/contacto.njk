@@ -1,0 +1,66 @@
+<!-- ============ CONTACTO ============ -->
+<section class="contacto" id="contacto">
+  <div class="contacto-info">
+    <h2 class="titulo-seccion">{{ contacto.titulo }}</h2>
+    <p class="sub-seccion">{{ contacto.intro }}</p>
+    <ul class="datos">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><div><span>Teléfono</span><a href="tel:{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><div><span>Correo electrónico</span><a href="mailto:{{ contacto.email }}">{{ contacto.email }}</a></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><div><span>Sede</span><p>{{ contacto.direccion | nl2br | safe }}</p></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><span>Horario</span><p>{{ contacto.horario }}</p></div></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg><div><span>CESM Castilla y León</span><a href="{{ contacto.web_cesmcyl }}" target="_blank" rel="noopener">{{ contacto.web_cesmcyl | sinProtocolo }}</a></div></li>
+    </ul>
+
+    <div class="contacto-redes" id="redes">
+      <h3>{{ contacto.titulo_redes or "Conoce nuestras redes" }}</h3>
+      <p>{{ contacto.texto_redes }}</p>
+      <div class="redes-botones">
+      <a href="{{ contacto.redes.instagram }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/></svg>Instagram</a>
+      <a href="{{ contacto.redes.facebook }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.87.24-1.5 1.53-1.5H16.5V4.3c-.28-.04-1.23-.12-2.33-.12-2.3 0-3.87 1.4-3.87 3.98V10.5H8v3h2.3V21h3.2z"/></svg>Facebook</a>
+      <a href="{{ contacto.redes.tiktok }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82c-.9-.98-1.4-2.26-1.4-3.58h-3.16v13.68c0 1.5-1.22 2.72-2.72 2.72s-2.72-1.22-2.72-2.72 1.22-2.72 2.72-2.72c.3 0 .59.05.86.14V9.94a5.9 5.9 0 00-.86-.06c-3.24 0-5.86 2.62-5.86 5.86S6.16 21.6 9.4 21.6s5.86-2.62 5.86-5.86V9.05a7.24 7.24 0 004.22 1.35V7.24c-1 0-1.94-.35-2.68-.94l-.2-.48z"/></svg>TikTok</a>
+      <a href="{{ contacto.redes.x }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.3 8.3L23.3 22H16.7l-5.2-6.8L5.5 22H2.4l7.8-8.9L1.7 2h6.8l4.7 6.2L18.9 2z"/></svg>X</a>
+      <a href="{{ contacto.redes.youtube }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3-5.2 3z"/></svg>YouTube</a>
+    </div>
+    </div>
+  </div>
+
+  <form class="formulario" id="formulario" novalidate>
+    <h3>{{ contacto.titulo_formulario or "Envíanos un mensaje" }}</h3>
+    <div class="campos">
+      <label>{{ textos.form_nombre or "Nombre" }}<input type="text" name="nombre" autocomplete="given-name" required></label>
+      <label>{{ textos.form_apellidos or "Apellidos" }}<input type="text" name="apellidos" autocomplete="family-name" required></label>
+      <label>{{ textos.form_email or "Correo electrónico" }}<input type="email" name="email" autocomplete="email" placeholder="nombre@correo.es" required></label>
+      <label><span>{{ textos.form_telefono or "Teléfono" }} <em>(opcional)</em></span><input type="tel" name="telefono" autocomplete="tel" placeholder="600 000 000"></label>
+      <label class="ancho">{{ textos.form_provincia or "Provincia" }}
+        <select name="provincia">
+          <option>Ávila</option><option>Burgos</option><option>León</option><option>Palencia</option><option>Salamanca</option><option>Segovia</option><option>Soria</option><option selected>Valladolid</option><option>Zamora</option>
+        </select>
+      </label>
+      <label class="ancho">{{ textos.form_mensaje or "Mensaje" }}<textarea name="mensaje" rows="5" placeholder="{{ textos.form_mensaje_ayuda }}" required></textarea></label>
+    </div>
+    <label class="casilla"><input type="checkbox" name="privacidad" required><span>{{ textos.form_privacidad }}</span></label>
+    <p class="form-error" id="form-error" role="alert"></p>
+    <button type="submit" class="btn-oro btn-enviar">{{ textos.form_boton or "Enviar mensaje" }}</button>
+    <p class="form-nota">Al enviar se abrirá tu programa de correo con el mensaje ya preparado para <b>cesmvalladolid@cesmcyl.es</b>.</p>
+    <p class="form-ok" id="form-ok" role="status"></p>
+  </form>
+
+  {%- set publicaciones = collections.tablon | enRedes %}
+  {%- if publicaciones | length %}
+  <div class="contacto-publicaciones">
+    <h3>Lo último que hemos publicado</h3>
+    <div class="redes-grid">
+    {%- for pub in publicaciones | limit(4) %}
+    <a href="{{ pub.data.enlace or pub.data.archivo }}" target="_blank" rel="noopener" class="pub">
+      <span class="pub-foto">
+        {%- if pub.data.imagen %}<img src="{{ pub.data.imagen }}" alt="" loading="lazy">{% endif %}
+        {% if pub.data | cat %}<span class="pub-red">{{ pub.data | cat }}</span>{% endif %}
+      </span>
+      <span class="pub-texto">{{ pub.data.title }}{% if pub.data.descripcion %} — {{ pub.data.descripcion }}{% endif %}</span>
+      <span class="pub-ir">{{ pub.data.texto_boton or "Ver publicación" }} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span>
+    </a>
+    {%- endfor %}
+    </div>
+  </div>
+  {%- endif %}
+</section>

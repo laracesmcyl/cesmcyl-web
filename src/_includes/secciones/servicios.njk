@@ -1,0 +1,50 @@
+<!-- ============ SERVICIOS ============ -->
+<section class="servicios" id="servicios">
+  <div class="servicios-top">
+    <div>
+      <h2 class="titulo-seccion">{{ servicios.titulo }}</h2>
+      <p>{{ servicios.intro }}</p>
+    </div>
+  </div>
+  <div class="serv-grid-paginas">
+    {%- for serv in collections.servicios | principales %}
+    {%- set destino = serv.data.destino or serv.url %}
+    {%- set esPropiaSeccion = destino == "/#servicios" %}
+    {%- set hijas = collections.servicios | hijasDe(serv.fileSlug) | unir(collections.paginas | hijasDe(serv.fileSlug)) %}
+    <article class="serv-tarjeta{% if hijas | length %} con-hijas{% endif %}{% if esPropiaSeccion %} serv-tarjeta-fija{% endif %}">
+      <div class="serv-tarjeta-cuerpo">
+        {{ ico.icono(serv.data.icono) }}
+        <h3>{% if esPropiaSeccion %}{{ serv.data.menu or serv.data.title }}{% else %}<a href="{{ destino }}" class="serv-tarjeta-principal">{{ serv.data.menu or serv.data.title }}</a>{% endif %}</h3>
+        {%- if serv.data.entradilla %}<p>{{ serv.data.entradilla }}</p>{% endif %}
+        {%- if esPropiaSeccion %}
+        <span class="serv-tarjeta-contacto">
+          <a href="tel:{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a>
+          <a href="mailto:{{ contacto.email }}">{{ contacto.email }}</a>
+        </span>
+        {%- else %}
+        <span class="serv-tarjeta-ir">Ver más {{ flecha | safe }}</span>
+        {%- endif %}
+      </div>
+      {%- if hijas | length %}
+      <div class="serv-tarjeta-sub">
+        <span class="serv-tarjeta-sub-titulo">Dentro encontrarás</span>
+        {%- for h in hijas %}
+        <a href="{{ h.data.destino or h.url }}">{{ h.data.menu or h.data.title }} {{ flecha | safe }}</a>
+        {%- endfor %}
+      </div>
+      {%- endif %}
+    </article>
+    {%- endfor %}
+  </div>
+
+  <div class="acciones-seccion">
+    <a href="/afiliate/" class="btn-oro">Afíliate</a>
+    <div class="acciones-col">
+      <div class="acciones-col">
+        <a href="/#contacto" class="enlace-blanco">Contacta con nosotros {{ flecha | safe }}</a>
+        {% include "redes.njk" %}
+      </div>
+    </div>
+  </div>
+</section>
+

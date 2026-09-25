@@ -1,0 +1,30 @@
+<!-- ============ QUIÉNES SOMOS ============ -->
+<section class="quienes" id="quienes">
+  <div class="quienes-inner">
+    <div>
+      <h2 class="titulo-seccion">{{ quienes.titulo }}</h2>
+      <p class="intro">{{ quienes.intro | md | safe }}</p>
+      {%- if quienes.lema %}<p class="lema">{{ quienes.lema }}</p>{% endif %}
+      <div class="acciones-seccion">
+        <a href="/afiliate/" class="btn-oro">Afíliate</a>
+        <div class="acciones-col">
+          <div class="acciones-col">
+            <a href="/#contacto" class="enlace-verde">Contacta con nosotros {{ flecha | safe }}</a>
+            {% include "redes.njk" %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {%- if quienes.objetivos | length %}
+    <div class="objetivos">
+      <h3>{{ quienes.titulo_objetivos or "Nuestros objetivos" }}</h3>
+      <ol>
+        {%- for o in quienes.objetivos %}
+        <li><span>{{ o.texto | md | safe }}</span></li>
+        {%- endfor %}
+      </ol>
+    </div>
+    {%- endif %}
+  </div>
+</section>
+
