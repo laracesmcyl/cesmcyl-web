@@ -4,15 +4,122 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel de edición · CESM Valladolid</title>
-  <link rel="icon" href="/logo-cesm-vll-hq.png">
+  <link rel="icon" href="/icono-cesm.png" type="image/png">
 </head>
 <body>
-  <!--
-    Sveltia CMS. Lee la configuración de config.yml, que está en esta misma
-    carpeta. El acceso ya no es con la clave compartida: ahora cada persona
-    entra con su cuenta de GitHub, y solo pueden editar quienes tengan
-    permiso en el repositorio.
-  -->
-  <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js" type="module"></script>
+
+<script src="https://unpkg.com/@sveltia/cms@0/dist/sveltia-cms.js" type="module"></script>
+
+<script>
+/* ---------------------------------------------------------------------------
+   Vista previa del panel.
+
+   Mientras editas, la mitad derecha de la pantalla enseña cómo va a quedar el
+   contenido con los colores y la tipografía de la web de verdad. Si algo de
+   esto fallara, el panel sigue funcionando igual: todo va dentro de try/catch.
+   --------------------------------------------------------------------------- */
+window.addEventListener('load', function () {
+  var intentos = 0;
+  var reloj = setInterval(function () {
+    intentos++;
+    if (window.CMS) { clearInterval(reloj); preparar(window.CMS); }
+    else if (intentos > 60) { clearInterval(reloj); }
+  }, 250);
+
+  function preparar(CMS) {
+    try {
+      CMS.registerPreviewStyle('/css/main.css');
+      CMS.registerPreviewStyle('/admin/vista-previa.css');
+    } catch (e) {}
+
+    var R = window.React;
+    if (!R || !CMS.registerPreviewTemplate) return;
+    var h = R.createElement;
+
+    function valor(entry, campo) {
+      try { return entry.getIn(['data', campo]) || ''; } catch (e) { return ''; }
+    }
+
+    function fecha(valorFecha) {
+      if (!valorFecha) return '';
+      var meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+      var p = String(valorFecha).slice(0, 10).split('-');
+      if (p.length < 3) return String(valorFecha);
+      return Number(p[2]) + ' ' + meses[Number(p[1]) - 1] + ' ' + p[0];
+    }
+
+    /* --------- Noticia --------- */
+    function VistaNoticia(props) {
+      var entry = props.entry;
+      var cat = valor(entry, 'category_nueva') || valor(entry, 'category');
+      return h('div', { className: 'vp' },
+        h('header', { className: 'vp-cab' },
+          h('span', { className: 'vp-migas' }, 'Noticias'),
+          h('h1', null, valor(entry, 'title') || 'Título de la noticia'),
+          h('p', { className: 'vp-fecha' },
+            cat ? h('span', { className: 'vp-tag' }, cat) : null,
+            fecha(valor(entry, 'date'))
+          )
+        ),
+        h('div', { className: 'vp-cuerpo cuerpo' }, props.widgetFor('body'))
+      );
+    }
+
+    /* --------- Página --------- */
+    function VistaPagina(props) {
+      var entry = props.entry;
+      return h('div', { className: 'vp' },
+        h('header', { className: 'vp-cab' },
+          h('h1', null, valor(entry, 'title') || 'Título de la página'),
+          valor(entry, 'entradilla') ? h('p', { className: 'vp-entradilla' }, valor(entry, 'entradilla')) : null
+        ),
+        h('div', { className: 'vp-cuerpo cuerpo' }, props.widgetFor('body'))
+      );
+    }
+
+    /* --------- Página de servicio --------- */
+    function VistaServicio(props) {
+      var entry = props.entry;
+      return h('div', { className: 'vp' },
+        h('header', { className: 'vp-cab' },
+          h('span', { className: 'vp-migas' }, 'Servicios'),
+          h('h1', null, valor(entry, 'title') || 'Título del servicio'),
+          valor(entry, 'entradilla') ? h('p', { className: 'vp-entradilla' }, valor(entry, 'entradilla')) : null
+        ),
+        h('div', { className: 'vp-cuerpo cuerpo' }, props.widgetFor('body'))
+      );
+    }
+
+    /* --------- Documento del tablón --------- */
+    function VistaTablon(props) {
+      var entry = props.entry;
+      var cat = valor(entry, 'category_nueva') || valor(entry, 'category');
+      return h('div', { className: 'vp vp-oscuro' },
+        h('div', { className: 'vp-fijo' },
+          cat ? h('span', { className: 'vp-tag vp-tag-oro' }, cat) : null,
+          h('h3', null, valor(entry, 'title') || 'Título del documento'),
+          valor(entry, 'descripcion') ? h('p', null, valor(entry, 'descripcion')) : null,
+          h('span', { className: 'vp-boton' }, valor(entry, 'texto_boton') || 'Descargar')
+        )
+      );
+    }
+
+    function registrar(nombre, componente) {
+      try {
+        var Clase = function (props) { R.Component.call(this, props); };
+        Clase.prototype = Object.create(R.Component.prototype);
+        Clase.prototype.render = function () { return componente(this.props); };
+        CMS.registerPreviewTemplate(nombre, Clase);
+      } catch (e) {}
+    }
+
+    registrar('noticias', VistaNoticia);
+    registrar('paginas', VistaPagina);
+    registrar('servicios', VistaServicio);
+    registrar('tablon', VistaTablon);
+  }
+});
+</script>
+
 </body>
 </html>

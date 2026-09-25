@@ -332,6 +332,8 @@ collections:
     label: "Noticias"
     label_singular: "Noticia"
     folder: "src/noticias"
+    editor:
+      preview: true
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     extension: "md"
@@ -374,6 +376,8 @@ collections:
     label: "Servicios"
     label_singular: "Página de servicio"
     folder: "src/servicios"
+    editor:
+      preview: true
     create: true
     slug: "{{slug}}"
     extension: "md"
@@ -445,6 +449,8 @@ collections:
     label: "Tablón (portada)"
     label_singular: "Destacado"
     folder: "src/tablon"
+    editor:
+      preview: true
     create: true
     slug: "{{fields.orden}}-{{slug}}"
     extension: "md"
@@ -485,6 +491,8 @@ collections:
     label: "Páginas"
     label_singular: "Página"
     folder: "src/paginas"
+    editor:
+      preview: true
     create: true
     slug: "{{slug}}"
     extension: "md"

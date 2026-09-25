@@ -1,0 +1,90 @@
+/* Estilos de la vista previa del panel.
+   Se cargan dentro del marco de la vista previa, junto con el CSS de la web,
+   para que lo que ves mientras editas se parezca a la página publicada. */
+
+body{
+  margin:0;
+  background:#fff;
+  color:var(--tinta,#16241a);
+  font-family:var(--sans,"Lato","Carlito",system-ui,sans-serif);
+  line-height:1.6;
+}
+
+.vp{padding:0 0 2.5rem}
+
+.vp-cab{
+  background:var(--verde,#0c3316);
+  color:#fff;
+  padding:2.2rem 2rem 2rem;
+}
+.vp-cab h1{
+  font-size:2rem;
+  font-weight:900;
+  letter-spacing:-.02em;
+  line-height:1.15;
+  margin:.2rem 0 .6rem;
+}
+.vp-migas{
+  display:inline-block;
+  font-size:.8rem;
+  font-weight:700;
+  color:var(--oro,#e9a94a);
+  margin-bottom:.3rem;
+}
+.vp-entradilla{
+  font-size:1.02rem;
+  color:rgba(255,255,255,.82);
+  max-width:40rem;
+  margin:0;
+}
+.vp-fecha{
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+  font-size:.85rem;
+  color:rgba(255,255,255,.75);
+  margin:0;
+}
+.vp-tag{
+  display:inline-block;
+  font-size:.74rem;
+  font-weight:700;
+  color:var(--verde-hondo,#071f0d);
+  background:var(--oro,#e9a94a);
+  border-radius:999px;
+  padding:.2rem .6rem;
+}
+
+.vp-cuerpo{
+  padding:2rem;
+  font-size:1.05rem;
+  color:#26352b;
+  max-width:44rem;
+}
+.vp-cuerpo h2{font-size:1.5rem;font-weight:900;color:var(--verde,#0c3316);margin:1.6rem 0 .7rem}
+.vp-cuerpo h3{font-size:1.2rem;font-weight:900;color:var(--verde,#0c3316);margin:1.4rem 0 .6rem}
+.vp-cuerpo p{margin:0 0 .9rem}
+.vp-cuerpo ul,.vp-cuerpo ol{margin:0 0 1rem 1.2rem}
+.vp-cuerpo li{margin-bottom:.35rem}
+.vp-cuerpo a{color:var(--verde-medio,#3a6741);text-decoration:underline}
+.vp-cuerpo img{max-width:100%;border-radius:10px}
+
+/* Documento del tablón: se ve sobre el fondo verde, como en la portada */
+.vp-oscuro{background:var(--verde-hondo,#071f0d);padding:2rem}
+.vp-fijo{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:var(--radio,14px);
+  padding:1.3rem 1.4rem;
+  color:#fff;
+  max-width:30rem;
+}
+.vp-fijo h3{font-size:1.1rem;font-weight:900;margin:.6rem 0 .4rem}
+.vp-fijo p{font-size:.92rem;color:rgba(255,255,255,.75);margin:0 0 1rem}
+.vp-tag-oro{background:var(--oro,#e9a94a);color:var(--verde-hondo,#071f0d)}
+.vp-boton{
+  display:inline-block;
+  font-size:.86rem;
+  font-weight:700;
+  color:var(--oro,#e9a94a);
+}
