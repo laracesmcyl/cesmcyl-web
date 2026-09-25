@@ -9,27 +9,32 @@
 <link rel="apple-touch-icon" href="/icono-cesm.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-{%- set fuente = diseno.tipografia.fuente or "Lato" %}
+{%- set dis = diseno or {} %}
+{%- set col = dis.colores or {} %}
+{%- set tip = dis.tipografia or {} %}
+{%- set frm = dis.formas or {} %}
+{%- set avi = dis.aviso or {} %}
+{%- set fuente = tip.fuente or "Lato" %}
 <link href="https://fonts.googleapis.com/css2?family={{ fuente | replace(' ', '+') }}:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/main.css">
 <style>
 :root{
-  --verde:{{ diseno.colores.verde }};
-  --verde-hondo:{{ diseno.colores.verde_hondo }};
-  --verde-medio:{{ diseno.colores.verde_medio }};
-  --oro:{{ diseno.colores.oro }};
-  --oro-claro:{{ diseno.colores.oro_claro }};
-  --papel:{{ diseno.colores.papel }};
-  --tinta:{{ diseno.colores.tinta }};
+  --verde:{{ col.verde or "#0c3316" }};
+  --verde-hondo:{{ col.verde_hondo or "#071f0d" }};
+  --verde-medio:{{ col.verde_medio or "#3a6741" }};
+  --oro:{{ col.oro or "#e9a94a" }};
+  --oro-claro:{{ col.oro_claro or "#f3c77f" }};
+  --papel:{{ col.papel or "#f1f5ef" }};
+  --tinta:{{ col.tinta or "#16241a" }};
   --sans:"{{ fuente }}","Carlito",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --radio:{{ diseno.formas.radio_tarjetas or 14 }}px;
-  --radio-boton:{{ diseno.formas.radio_botones or 6 }}px;
-  --lado:{{ diseno.formas.ancho_lateral or 3.5 }}%;
-  --aviso-fondo:{{ diseno.aviso.fondo or "#e9a94a" }};
-  --aviso-texto:{{ diseno.aviso.texto or "#071f0d" }};
-  --aviso-tamano:{{ diseno.aviso.tamano or 0.92 }}rem;
+  --radio:{{ frm.radio_tarjetas or 14 }}px;
+  --radio-boton:{{ frm.radio_botones or 6 }}px;
+  --lado:{{ frm.ancho_lateral or 3.5 }}%;
+  --aviso-fondo:{{ avi.fondo or "#e9a94a" }};
+  --aviso-texto:{{ avi.texto or "#071f0d" }};
+  --aviso-tamano:{{ avi.tamano or 0.92 }}rem;
 }
-html{font-size:{{ diseno.tipografia.tamano_base or 17 }}px}
+html{font-size:{{ tip.tamano_base or 17 }}px}
 </style>
 <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -56,7 +61,7 @@ html{font-size:{{ diseno.tipografia.tamano_base or 17 }}px}
       </span>
     </div>
     <div class="topbar-der">
-      <a href="{{ textos.campus_destino }}" target="_blank" rel="noopener">{{ textos.topbar_campus or "Campus TISCYL-CESM" }}</a>
+      <a href="{{ textos.campus_destino or "https://www.cesmcyl.org/formacion-tiscyl-cesm/" }}" target="_blank" rel="noopener">{{ textos.topbar_campus or "Campus TISCYL-CESM" }}</a>
       <a href="/admin/">{{ textos.topbar_admin or "Acceso admin" }}</a>
     </div>
   </div>
@@ -87,7 +92,7 @@ html{font-size:{{ diseno.tipografia.tamano_base or 17 }}px}
       </li>
       <li><a href="/#contacto" data-seccion="contacto">{{ textos.menu_contacto or "Contacto" }}</a></li>
       <li><a href="/afiliate/" class="btn-afiliate">{{ textos.menu_afiliate or "Afíliate" }}</a></li>
-      <li class="solo-movil"><a href="{{ textos.campus_destino }}" target="_blank" rel="noopener">{{ textos.topbar_campus or "Campus TISCYL-CESM" }}</a></li>
+      <li class="solo-movil"><a href="{{ textos.campus_destino or "https://www.cesmcyl.org/formacion-tiscyl-cesm/" }}" target="_blank" rel="noopener">{{ textos.topbar_campus or "Campus TISCYL-CESM" }}</a></li>
       <li class="solo-movil"><a href="/admin/">{{ textos.topbar_admin or "Acceso admin" }}</a></li>
       <li class="solo-movil menu-contacto">
         <a href="tel:{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a>
@@ -112,7 +117,7 @@ html{font-size:{{ diseno.tipografia.tamano_base or 17 }}px}
   <div class="pie-inner">
     <div class="pie-marca">
       <img src="/logo-cesm-vll-hq.png" alt="CESM Valladolid" width="496" height="242">
-      <p>{{ pie.descripcion }}</p>
+      <p>{{ pie.descripcion or "Sindicato médico de Valladolid, integrado en CESM Castilla y León y en CESM." }}</p>
     </div>
     <div class="pie-col" role="navigation" aria-label="CESM Valladolid">
       <h4>{{ pie.titulo_columna1 or "CESM Valladolid" }}</h4>
@@ -136,7 +141,7 @@ html{font-size:{{ diseno.tipografia.tamano_base or 17 }}px}
   </div>
 
   <div class="pie-barra">
-    <span>© {{ anio }} {{ pie.copyright }}</span>
+    <span>© {{ anio }} {{ pie.copyright or "CESM Valladolid · Sindicato médico de Valladolid" }}</span>
     <span class="pie-legal">
       {%- for e in pie.enlaces_legales %}
       <a href="{{ e.destino }}">{{ e.texto }}</a>

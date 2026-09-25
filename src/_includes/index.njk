@@ -1,0 +1,12 @@
+---
+layout: base.njk
+title: "CESM Valladolid · Sindicato médico de Valladolid"
+---
+{%- import "iconos-servicio.njk" as ico -%}
+{%- set flecha = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' -%}
+{%- set externo = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>' -%}
+
+{%- set orden = (diseno or {}).secciones or ["inicio","noticias","quienes","servicios","contacto"] %}
+{%- for seccion in orden %}
+{% include "secciones/" + seccion + ".njk" %}
+{%- endfor %}
