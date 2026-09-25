@@ -24,6 +24,10 @@ collections:
           - { label: "Título · línea 2 (en dorado)", name: "titulo_destacado2", widget: "string" }
           - { label: "Título · línea 3 (en dorado)", name: "titulo_destacado3", widget: "string" }
           - { label: "Texto", name: "lead", widget: "text" }
+          - { label: "Foto de fondo", name: "imagen_fondo", widget: "image", required: false }
+          - { label: "Título del tablón", name: "tablon_titulo", widget: "string", required: false }
+          - { label: "Título de los documentos del tablón", name: "tablon_documentos", widget: "string", required: false }
+          - { label: "Título de las noticias del tablón", name: "tablon_noticias", widget: "string", required: false }
           - label: "Botón principal"
             name: "boton_principal"
             widget: "object"
@@ -43,7 +47,16 @@ collections:
         file: "src/static/aviso-urgente.json"
         fields:
           - { label: "Mostrar el aviso", name: "activo", widget: "boolean", default: false }
-          - { label: "Mensaje del aviso", name: "texto", widget: "markdown", required: false }
+          - { label: "Mensaje del aviso", name: "texto", widget: "markdown", required: false, hint: "Con los botones de arriba pones negrita, cursiva, subrayado y enlaces." }
+          - label: "Alineación del mensaje"
+            name: "alineacion"
+            widget: "select"
+            required: false
+            default: "izquierda"
+            options:
+              - { label: "A la izquierda", value: "izquierda" }
+              - { label: "Centrado", value: "centro" }
+              - { label: "A la derecha", value: "derecha" }
 
   # --------------------------------------------------------------- NOTICIAS
       - name: "quienes"
@@ -64,20 +77,211 @@ collections:
 
   # --------------------------------------------------------------- SERVICIOS
       - name: "servicios-portada"
-        label: "Servicios (título y franja de la portada)"
+        label: "Sección «Servicios» de la portada"
         file: "src/_data/servicios.json"
         fields:
           - { label: "Título", name: "titulo", widget: "string" }
           - { label: "Introducción", name: "intro", widget: "text" }
-          - label: "Franja del canal de denuncias"
-            name: "canal"
+      - name: "noticias-portada"
+        label: "Sección «Noticias» de la portada"
+        file: "src/_data/noticias.json"
+        fields:
+          - { label: "Título", name: "titulo", widget: "string" }
+          - { label: "Frase debajo del título", name: "intro", widget: "text" }
+          - { label: "Texto del botón «ver más»", name: "boton", widget: "string" }
+          - { label: "Texto del buscador", name: "buscador", widget: "string" }
+
+      - name: "afiliate"
+        label: "Página «Afíliate»"
+        file: "src/_data/afiliate.json"
+        fields:
+          - { label: "Título", name: "titulo", widget: "string" }
+          - { label: "Introducción", name: "intro", widget: "text" }
+          - { label: "Título de los pasos", name: "titulo_pasos", widget: "string" }
+          - label: "Pasos"
+            name: "pasos"
+            widget: "list"
+            label_singular: "Paso"
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: "Título del paso", name: "titulo", widget: "string" }
+              - { label: "Texto", name: "texto", widget: "text" }
+              - { label: "Texto del botón de descarga", name: "boton", widget: "string", required: false, hint: "Solo en el primer paso." }
+              - { label: "Frase antes de la dirección postal", name: "texto_postal", widget: "string", required: false }
+              - { label: "Dirección postal", name: "direccion_postal", widget: "text", required: false, hint: "Si lo rellenas, en este paso salen el correo y la dirección." }
+          - { label: "Frase de dudas", name: "dudas", widget: "string" }
+          - { label: "Hoja de afiliación (PDF)", name: "documento", widget: "file" }
+          - { label: "Nombre del documento", name: "titulo_documento", widget: "string" }
+
+      - name: "pie"
+        label: "Pie de página"
+        file: "src/_data/pie.json"
+        fields:
+          - { label: "Descripción del sindicato", name: "descripcion", widget: "text" }
+          - { label: "Título de la primera columna", name: "titulo_columna1", widget: "string" }
+          - label: "Enlaces de la primera columna"
+            name: "enlaces_columna1"
+            widget: "list"
+            label_singular: "Enlace"
+            summary: "{{fields.texto}}"
+            fields:
+              - { label: "Texto", name: "texto", widget: "string" }
+              - { label: "Destino", name: "destino", widget: "string" }
+          - { label: "Título de la columna de servicios", name: "titulo_servicios", widget: "string" }
+          - { label: "Título de la columna de contacto", name: "titulo_contacto", widget: "string" }
+          - { label: "Línea de copyright", name: "copyright", widget: "string", hint: "El año se pone solo delante." }
+          - label: "Enlaces legales de la barra de abajo"
+            name: "enlaces_legales"
+            widget: "list"
+            label_singular: "Enlace"
+            summary: "{{fields.texto}}"
+            fields:
+              - { label: "Texto", name: "texto", widget: "string" }
+              - { label: "Destino", name: "destino", widget: "string" }
+
+      - name: "tarifas"
+        label: "Tarifas de asesoría jurídica"
+        file: "src/_data/tarifas.json"
+        fields:
+          - { label: "Título", name: "titulo", widget: "string" }
+          - { label: "Introducción", name: "intro", widget: "text" }
+          - { label: "Pregunta del selector", name: "etiqueta_selector", widget: "string" }
+          - { label: "Cabecera de la primera columna", name: "columna_servicio", widget: "string" }
+          - { label: "Cabecera de la columna de referencia", name: "columna_referencia", widget: "string" }
+          - { label: "Palabra para lo gratuito", name: "texto_gratis", widget: "string", hint: "Las casillas con esta palabra se pintan en verde." }
+          - label: "Tramos de antigüedad"
+            name: "tramos"
+            widget: "list"
+            label_singular: "Tramo"
+            summary: "{{fields.nombre}}"
+            fields:
+              - { label: "Nombre", name: "nombre", widget: "string" }
+              - { label: "Nombre corto (cabecera de la tabla)", name: "corto", widget: "string", required: false }
+              - { label: "Descuento", name: "nota", widget: "string", required: false }
+          - label: "Filas de la tabla"
+            name: "filas"
+            widget: "list"
+            label_singular: "Servicio"
+            summary: "{{fields.servicio}}"
+            fields:
+              - { label: "Servicio", name: "servicio", widget: "string" }
+              - { label: "Precio de referencia", name: "referencia", widget: "string" }
+              - label: "Precios por tramo"
+                name: "precios"
+                widget: "list"
+                field: { label: "Precio", name: "precio", widget: "string" }
+                hint: "Un precio por cada tramo y en el mismo orden."
+          - label: "Bloques de información"
+            name: "bloques"
+            widget: "list"
+            label_singular: "Bloque"
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Texto", name: "texto", widget: "text", required: false }
+              - label: "Lista de puntos"
+                name: "puntos"
+                widget: "list"
+                required: false
+                summary: "{{fields.texto}}"
+                fields:
+                  - { label: "Texto", name: "texto", widget: "string" }
+          - label: "Forma de pago"
+            name: "pago"
             widget: "object"
             fields:
-              - { label: "Mostrar la franja", name: "mostrar", widget: "boolean", default: true }
               - { label: "Título", name: "titulo", widget: "string" }
               - { label: "Texto", name: "texto", widget: "text" }
-              - { label: "Destino", name: "destino", widget: "string" }
-              - { label: "Texto del botón", name: "texto_boton", widget: "string", default: "Acceder" }
+              - { label: "IBAN", name: "iban", widget: "string", required: false }
+              - { label: "Nota del concepto", name: "concepto", widget: "string", required: false }
+
+      - name: "textos"
+        label: "Rótulos del menú y del formulario"
+        file: "src/_data/textos.json"
+        fields:
+          - { label: "Menú · Inicio", name: "menu_inicio", widget: "string" }
+          - { label: "Menú · Noticias", name: "menu_noticias", widget: "string" }
+          - { label: "Menú · Quiénes somos", name: "menu_quienes", widget: "string" }
+          - { label: "Menú · Servicios", name: "menu_servicios", widget: "string" }
+          - { label: "Menú · Contacto", name: "menu_contacto", widget: "string" }
+          - { label: "Menú · Botón Afíliate", name: "menu_afiliate", widget: "string" }
+          - { label: "Barra de arriba · Campus", name: "topbar_campus", widget: "string" }
+          - { label: "Barra de arriba · Enlace del campus", name: "campus_destino", widget: "string" }
+          - { label: "Barra de arriba · Acceso al panel", name: "topbar_admin", widget: "string" }
+          - { label: "Servicios · Título de las noticias", name: "serv_noticias", widget: "string" }
+          - { label: "Servicios · Título de las páginas hermanas", name: "serv_hermanas", widget: "string" }
+          - { label: "Servicios · Título del recuadro de enlaces", name: "serv_enlaces", widget: "string" }
+          - { label: "Servicios · Enlaces que se ven sin desplegar", name: "serv_enlaces_visibles", widget: "number", value_type: "int", hint: "A partir de este número aparece el botón «Ver todos los enlaces»." }
+          - { label: "Servicios · Texto del botón de ver todos", name: "serv_enlaces_boton", widget: "string" }
+          - { label: "Servicios · Texto del botón de ver menos", name: "serv_enlaces_boton_menos", widget: "string" }
+          - { label: "Servicios · Enlace «ver todas»", name: "serv_ver_todas", widget: "string" }
+          - { label: "Servicios · Aviso de apartado sin noticias", name: "serv_vacio", widget: "string" }
+          - { label: "Formulario · Nombre", name: "form_nombre", widget: "string" }
+          - { label: "Formulario · Apellidos", name: "form_apellidos", widget: "string" }
+          - { label: "Formulario · Correo", name: "form_email", widget: "string" }
+          - { label: "Formulario · Teléfono", name: "form_telefono", widget: "string" }
+          - { label: "Formulario · Provincia", name: "form_provincia", widget: "string" }
+          - { label: "Formulario · Mensaje", name: "form_mensaje", widget: "string" }
+          - { label: "Formulario · Texto de ayuda del mensaje", name: "form_mensaje_ayuda", widget: "string" }
+          - { label: "Formulario · Casilla de privacidad", name: "form_privacidad", widget: "text" }
+          - { label: "Formulario · Botón de enviar", name: "form_boton", widget: "string" }
+
+      - name: "diseno"
+        label: "Diseño de la web"
+        file: "src/_data/diseno.json"
+        fields:
+          - label: "Colores"
+            name: "colores"
+            widget: "object"
+            fields:
+              - { label: "Verde principal", name: "verde", widget: "color", hint: "El de los fondos oscuros y los títulos." }
+              - { label: "Verde oscuro", name: "verde_hondo", widget: "color" }
+              - { label: "Verde suave", name: "verde_medio", widget: "color" }
+              - { label: "Dorado", name: "oro", widget: "color", hint: "Botones y detalles." }
+              - { label: "Dorado claro", name: "oro_claro", widget: "color" }
+              - { label: "Fondo claro", name: "papel", widget: "color", hint: "El verde muy claro de algunas secciones." }
+              - { label: "Color del texto", name: "tinta", widget: "color" }
+          - label: "Tipografía"
+            name: "tipografia"
+            widget: "object"
+            fields:
+              - label: "Fuente"
+                name: "fuente"
+                widget: "select"
+                options: ["Lato", "Inter", "Open Sans", "Source Sans 3", "Nunito Sans", "Roboto", "Montserrat", "Work Sans", "Merriweather Sans"]
+                hint: "Se aplica a toda la web."
+              - { label: "Tamaño del texto (px)", name: "tamano_base", widget: "number", value_type: "int", min: 14, max: 20, hint: "17 es lo normal. Súbelo para que se lea más grande en toda la web." }
+          - label: "Formas"
+            name: "formas"
+            widget: "object"
+            fields:
+              - { label: "Redondeo de las tarjetas (px)", name: "radio_tarjetas", widget: "number", value_type: "int", min: 0, max: 30, hint: "0 = esquinas rectas." }
+              - { label: "Redondeo de los botones (px)", name: "radio_botones", widget: "number", value_type: "int", min: 0, max: 30 }
+              - { label: "Margen lateral de la web (%)", name: "ancho_lateral", widget: "number", value_type: "float", min: 1, max: 10, step: 0.5, hint: "Cuánto aire queda a los lados. 3.5 es lo actual." }
+          - label: "Franja de aviso"
+            name: "aviso"
+            widget: "object"
+            fields:
+              - { label: "Color de fondo", name: "fondo", widget: "color" }
+              - { label: "Color del texto", name: "texto", widget: "color" }
+              - { label: "Tamaño de la letra", name: "tamano", widget: "number", value_type: "float", min: 0.7, max: 1.6, step: 0.02, hint: "0.92 es lo normal. 1.2 se ve bastante más grande." }
+
+          - label: "Orden de las secciones de la portada"
+            name: "secciones"
+            widget: "list"
+            label_singular: "Sección"
+            hint: "Arrastra para cambiar el orden. Si quitas una, deja de verse en la portada."
+            field:
+              label: "Sección"
+              name: "seccion"
+              widget: "select"
+              options:
+                - { label: "Primera pantalla y tablón", value: "inicio" }
+                - { label: "Noticias", value: "noticias" }
+                - { label: "Quiénes somos", value: "quienes" }
+                - { label: "Servicios", value: "servicios" }
+                - { label: "Contacto", value: "contacto" }
+
       - name: "contacto"
         label: "Datos de contacto y redes"
         file: "src/_data/contacto.json"
@@ -90,6 +294,9 @@ collections:
           - { label: "Dirección", name: "direccion", widget: "text" }
           - { label: "Horario", name: "horario", widget: "string" }
           - { label: "Web de CESM Castilla y León", name: "web_cesmcyl", widget: "string" }
+          - { label: "Título del bloque de redes", name: "titulo_redes", widget: "string", required: false }
+          - { label: "Texto del bloque de redes", name: "texto_redes", widget: "text", required: false }
+          - { label: "Título del formulario", name: "titulo_formulario", widget: "string", required: false }
           - label: "Redes sociales"
             name: "redes"
             widget: "object"
@@ -289,7 +496,23 @@ collections:
     fields:
       - { label: "Título", name: "title", widget: "string" }
       - { label: "Entradilla (el texto bajo el título)", name: "entradilla", widget: "text", required: false }
-      - { label: "Texto de la miga de pan", name: "migas", widget: "string", required: false, default: "Inicio", hint: "El enlace pequeño de vuelta que sale arriba." }
+      - label: "¿Va dentro de un servicio?"
+        name: "padre"
+        widget: "relation"
+        collection: "servicios"
+        value_field: "{{slug}}"
+        display_fields: ["title"]
+        search_fields: ["title"]
+        required: false
+        hint: "Si eliges uno, esta página aparece como apartado dentro de él, igual que OPEs dentro de Información y orientación laboral."
+      - { label: "Nombre corto (para el menú)", name: "menu", widget: "string", required: false }
+      - { label: "Orden dentro del servicio", name: "orden", widget: "number", required: false, value_type: "int" }
+      - label: "Icono"
+        name: "icono"
+        widget: "select"
+        required: false
+        options: ["documento", "maletin", "libro", "corazon", "escudo", "balanza", "info", "brujula", "personas"]
+      - { label: "Texto de la miga de pan", name: "migas", widget: "string", required: false, default: "Inicio", hint: "Solo si la página no va dentro de un servicio." }
       - { label: "A dónde vuelve la miga de pan", name: "migas_destino", widget: "string", required: false, default: "/" }
       - { label: "Contenido", name: "body", widget: "markdown" }
       - { label: "Título de la columna de documentos", name: "titulo_documentos", widget: "string", required: false, default: "Documentos y enlaces" }
