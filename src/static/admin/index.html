@@ -5,8 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel de edición · CESM Valladolid</title>
   <link rel="icon" href="/icono-cesm.png" type="image/png">
+  <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
 </head>
 <body>
+
+<!-- React hace falta para las vistas previas con diseño propio -->
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 
 <script src="https://unpkg.com/@sveltia/cms@0/dist/sveltia-cms.js" type="module"></script>
 
@@ -33,7 +38,11 @@ window.addEventListener('load', function () {
     } catch (e) {}
 
     var R = window.React;
-    if (!R || !CMS.registerPreviewTemplate) return;
+    if (!R || !CMS.registerPreviewTemplate) {
+      console.warn('[panel] Vista previa con diseño no disponible:', !R ? 'falta React' : 'el CMS no admite plantillas');
+      return;
+    }
+    console.info('[panel] Registrando vistas previas con diseño.');
     var h = R.createElement;
 
     function valor(entry, campo) {
