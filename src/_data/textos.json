@@ -6,11 +6,14 @@
   "menu_contacto": "Contacto",
   "menu_afiliate": "Afíliate",
   "topbar_campus": "Campus TISCYL-CESM",
-  "topbar_admin": "Acceso admin",
   "campus_destino": "https://www.cesmcyl.org/formacion-tiscyl-cesm/",
+  "topbar_admin": "Acceso Admin",
   "serv_noticias": "Noticias relacionadas",
   "serv_hermanas": "También te puede interesar",
   "serv_enlaces": "Enlaces",
+  "serv_enlaces_visibles": 5,
+  "serv_enlaces_boton": "Ver todos los enlaces",
+  "serv_enlaces_boton_menos": "Ver menos",
   "serv_ver_todas": "Ver todas las noticias",
   "serv_vacio": "Todavía no hay noticias en este apartado.",
   "form_nombre": "Nombre",
@@ -21,8 +24,5 @@
   "form_mensaje": "Mensaje",
   "form_mensaje_ayuda": "Cuéntanos en qué podemos ayudarte",
   "form_privacidad": "Acepto que CESM Valladolid use estos datos únicamente para responder a mi consulta.",
-  "form_boton": "Enviar mensaje",
-  "serv_enlaces_visibles": 5,
-  "serv_enlaces_boton": "Ver todos los enlaces",
-  "serv_enlaces_boton_menos": "Ver menos"
+  "form_boton": "Enviar mensaje"
 }
