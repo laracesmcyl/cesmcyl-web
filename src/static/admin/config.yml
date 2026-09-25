@@ -357,7 +357,7 @@ collections:
       - label: "Categoría"
         name: "category"
         widget: "relation"
-        collection: "categorias"
+        collection: "portada"
         file: "categorias"
         value_field: "categorias.*.nombre"
         display_fields: ["categorias.*.nombre"]
@@ -410,7 +410,7 @@ collections:
           label: "Categoría"
           name: "categoria"
           widget: "relation"
-          collection: "categorias"
+          collection: "portada"
           file: "categorias"
           value_field: "categorias.*.nombre"
           display_fields: ["categorias.*.nombre"]
@@ -459,7 +459,7 @@ collections:
       - label: "Categoría"
         name: "category"
         widget: "relation"
-        collection: "categorias"
+        collection: "portada"
         file: "categorias"
         value_field: "categorias.*.nombre"
         display_fields: ["categorias.*.nombre"]
