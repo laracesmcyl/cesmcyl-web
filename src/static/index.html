@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de edición · CESM Valladolid</title>
+  <link rel="icon" href="/icono-cesm.png" type="image/png">
+</head>
+<body>
+
+<script src="https://unpkg.com/@sveltia/cms@0/dist/sveltia-cms.js" type="module"></script>
+
+<script>
+/* ---------------------------------------------------------------------------
+   Vista previa del panel.
+
+   Mientras editas, la mitad derecha de la pantalla enseña cómo va a quedar el
+   contenido con los colores y la tipografía de la web de verdad. Si algo de
+   esto fallara, el panel sigue funcionando igual: todo va dentro de try/catch.
+   --------------------------------------------------------------------------- */
+window.addEventListener('load', function () {
+  var intentos = 0;
+  var reloj = setInterval(function () {
+    intentos++;
+    if (window.CMS) { clearInterval(reloj); preparar(window.CMS); }
+    else if (intentos > 60) { clearInterval(reloj); }
+  }, 250);
+
+  function preparar(CMS) {
+    try {
+      CMS.registerPreviewStyle('/css/main.css');
+      CMS.registerPreviewStyle('/admin/vista-previa.css');
+    } catch (e) {}
+
+    var R = window.React;
+    if (!R || !CMS.registerPreviewTemplate) return;
+    var h = R.createElement;
+
+    function valor(entry, campo) {
+      try { return entry.getIn(['data', campo]) || ''; } catch (e) { return ''; }
+    }
+
+    function fecha(valorFecha) {
+      if (!valorFecha) return '';
+      var meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+      var p = String(valorFecha).slice(0, 10).split('-');
+      if (p.length < 3) return String(valorFecha);
+      return Number(p[2]) + ' ' + meses[Number(p[1]) - 1] + ' ' + p[0];
+    }
+
+    /* --------- Noticia --------- */
+    function VistaNoticia(props) {
+      var entry = props.entry;
+      var cat = valor(entry, 'category_nueva') || valor(entry, 'category');
+      return h('div', { className: 'vp' },
+        h('header', { className: 'vp-cab' },
+          h('span', { className: 'vp-migas' }, 'Noticias'),
+          h('h1', null, valor(entry, 'title') || 'Título de la noticia'),
+          h('p', { className: 'vp-fecha' },
+            cat ? h('span', { className: 'vp-tag' }, cat) : null,
+            fecha(valor(entry, 'date'))
+          )
+        ),
+        h('div', { className: 'vp-cuerpo cuerpo' }, props.widgetFor('body'))
+      );
+    }
+
+    /* --------- Página --------- */
+    function VistaPagina(props) {
+      var entry = props.entry;
+      return h('div', { className: 'vp' },
+        h('header', { className: 'vp-cab' },
+          h('h1', null, valor(entry, 'title') || 'Título de la página'),
+          valor(entry, 'entradilla') ? h('p', { className: 'vp-entradilla' }, valor(entry, 'entradilla')) : null
+        ),
+        h('div', { className: 'vp-cuerpo cuerpo' }, props.widgetFor('body'))
+      );
+    }
+
+    /* --------- Página de servicio --------- */
+    function VistaServicio(props) {
+      var entry = props.entry;
+      return h('div', { className: 'vp' },
+        h('header', { className: 'vp-cab' },
+          h('span', { className: 'vp-migas' }, 'Servicios'),
+          h('h1', null, valor(entry, 'title') || 'Título del servicio'),
+          valor(entry, 'entradilla') ? h('p', { className: 'vp-entradilla' }, valor(entry, 'entradilla')) : null
+        ),
+        h('div', { className: 'vp-cuerpo cuerpo' }, props.widgetFor('body'))
+      );
+    }
+
+    /* --------- Documento del tablón --------- */
+    function VistaTablon(props) {
+      var entry = props.entry;
+      var cat = valor(entry, 'category_nueva') || valor(entry, 'category');
+      return h('div', { className: 'vp vp-oscuro' },
+        h('div', { className: 'vp-fijo' },
+          cat ? h('span', { className: 'vp-tag vp-tag-oro' }, cat) : null,
+          h('h3', null, valor(entry, 'title') || 'Título del documento'),
+          valor(entry, 'descripcion') ? h('p', null, valor(entry, 'descripcion')) : null,
+          h('span', { className: 'vp-boton' }, valor(entry, 'texto_boton') || 'Descargar')
+        )
+      );
+    }
+
+    function registrar(nombre, componente) {
+      try {
+        var Clase = function (props) { R.Component.call(this, props); };
+        Clase.prototype = Object.create(R.Component.prototype);
+        Clase.prototype.render = function () { return componente(this.props); };
+        CMS.registerPreviewTemplate(nombre, Clase);
+      } catch (e) {}
+    }
+
+
+    /* --------- Primera pantalla de la portada --------- */
+    function VistaInicio(props) {
+      var e2 = props.entry;
+      var bp = e2.getIn(['data', 'boton_principal']);
+      var bs = e2.getIn(['data', 'boton_secundario']);
+      var texto = function (obj, campo) { try { return obj.get(campo) || ''; } catch (x) { return ''; } };
+      return h('div', { className: 'vp vp-hero' },
+        h('p', { className: 'vp-firma' }, valor(e2, 'firma')),
+        h('h1', { className: 'vp-titular' },
+          h('span', null, valor(e2, 'titulo_linea1')), h('br'),
+          h('span', null, valor(e2, 'titulo_linea2') + ' '),
+          h('em', null, valor(e2, 'titulo_destacado2')), h('br'),
+          h('em', null, valor(e2, 'titulo_destacado3'))
+        ),
+        h('p', { className: 'vp-lead' }, valor(e2, 'lead')),
+        h('p', { className: 'vp-acciones' },
+          h('span', { className: 'vp-btn' }, bp ? texto(bp, 'texto') : 'Afíliate'),
+          h('span', { className: 'vp-enlace' }, bs ? texto(bs, 'texto') : '')
+        ),
+        h('div', { className: 'vp-tablon' },
+          h('span', { className: 'vp-tablon-tit' }, valor(e2, 'tablon_titulo') || 'Tablón'),
+          h('span', { className: 'vp-tablon-sub' }, valor(e2, 'tablon_documentos') || 'Últimos documentos'),
+          h('span', { className: 'vp-tablon-sub' }, valor(e2, 'tablon_noticias') || 'Últimas noticias')
+        )
+      );
+    }
+
+    /* --------- Quiénes somos --------- */
+    function VistaQuienes(props) {
+      var e2 = props.entry;
+      var objetivos = [];
+      try {
+        var lista = e2.getIn(['data', 'objetivos']);
+        if (lista && lista.forEach) lista.forEach(function (o) { objetivos.push(o.get('texto')); });
+      } catch (x) {}
+      return h('div', { className: 'vp vp-claro' },
+        h('h2', { className: 'vp-seccion' }, valor(e2, 'titulo') || 'Quiénes somos'),
+        h('p', { className: 'vp-intro' }, valor(e2, 'intro')),
+        valor(e2, 'lema') ? h('p', { className: 'vp-lema' }, valor(e2, 'lema')) : null,
+        objetivos.length ? h('h3', { className: 'vp-objetivos-tit' }, valor(e2, 'titulo_objetivos') || 'Nuestros objetivos') : null,
+        h('ol', { className: 'vp-objetivos' }, objetivos.map(function (t, i) { return h('li', { key: i }, t); }))
+      );
+    }
+
+    /* --------- Sección de noticias de la portada --------- */
+    function VistaNoticiasPortada(props) {
+      var e2 = props.entry;
+      return h('div', { className: 'vp vp-claro' },
+        h('h2', { className: 'vp-seccion' }, valor(e2, 'titulo') || 'Noticias'),
+        h('p', { className: 'vp-intro' }, valor(e2, 'intro')),
+        h('p', null, h('span', { className: 'vp-btn vp-btn-linea' }, valor(e2, 'boton') || 'Ver más noticias'))
+      );
+    }
+
+    /* --------- Sección de servicios de la portada --------- */
+    function VistaServiciosPortada(props) {
+      var e2 = props.entry;
+      return h('div', { className: 'vp vp-oscuro' },
+        h('h2', { className: 'vp-seccion vp-blanco' }, valor(e2, 'titulo') || 'Servicios'),
+        h('p', { className: 'vp-intro vp-blanco' }, valor(e2, 'intro'))
+      );
+    }
+
+    /* --------- Franja de aviso --------- */
+    function VistaAviso(props) {
+      var e2 = props.entry;
+      var activo = e2.getIn(['data', 'activo']);
+      var alineacion = valor(e2, 'alineacion') || 'izquierda';
+      if (!activo) return h('div', { className: 'vp vp-claro' }, h('p', { className: 'vp-intro' }, 'El aviso está desactivado: ahora mismo no se ve en la web.'));
+      return h('div', { className: 'vp' },
+        h('div', { className: 'vp-aviso vp-aviso-' + alineacion },
+          h('span', { className: 'vp-aviso-etiqueta' }, 'Aviso'),
+          h('span', { className: 'vp-aviso-texto' }, props.widgetFor('texto'))
+        )
+      );
+    }
+
+
+    function lista(entry, campo) {
+      var salida = [];
+      try {
+        var l = entry.getIn(['data', campo]);
+        if (l && l.forEach) l.forEach(function (x) { salida.push(x); });
+      } catch (x) {}
+      return salida;
+    }
+    function campo(obj, nombre) { try { return obj.get(nombre) || ''; } catch (x) { return ''; } }
+
+    /* --------- Pie de página --------- */
+    function VistaPie(props) {
+      var e2 = props.entry;
+      return h('div', { className: 'vp vp-pie' },
+        h('div', { className: 'vp-pie-cols' },
+          h('div', null,
+            h('span', { className: 'vp-pie-logo' }, 'CESM Valladolid'),
+            h('p', { className: 'vp-pie-desc' }, valor(e2, 'descripcion'))
+          ),
+          h('div', null,
+            h('h4', null, valor(e2, 'titulo_columna1') || 'CESM Valladolid'),
+            lista(e2, 'enlaces_columna1').map(function (x, i) { return h('span', { key: i, className: 'vp-pie-enlace' }, campo(x, 'texto')); })
+          ),
+          h('div', null, h('h4', null, valor(e2, 'titulo_servicios') || 'Servicios'), h('span', { className: 'vp-pie-nota' }, 'Se rellena solo con los servicios')),
+          h('div', null, h('h4', null, valor(e2, 'titulo_contacto') || 'Contacto'), h('span', { className: 'vp-pie-nota' }, 'Teléfono, correo y dirección'))
+        ),
+        h('div', { className: 'vp-pie-barra' },
+          h('span', null, '© 2026 ' + valor(e2, 'copyright')),
+          h('span', { className: 'vp-pie-legal' }, lista(e2, 'enlaces_legales').map(function (x, i) { return h('span', { key: i }, campo(x, 'texto')); }))
+        )
+      );
+    }
+
+    /* --------- Tarifas --------- */
+    function VistaTarifas(props) {
+      var e2 = props.entry;
+      var tramos = lista(e2, 'tramos');
+      var filas = lista(e2, 'filas');
+      var gratis = valor(e2, 'texto_gratis') || 'Gratuita';
+      return h('div', { className: 'vp' },
+        h('header', { className: 'vp-cab' },
+          h('h1', null, valor(e2, 'titulo') || 'Tarifas'),
+          h('p', { className: 'vp-entradilla' }, valor(e2, 'intro'))
+        ),
+        h('div', { className: 'vp-tabla-marco' },
+          h('table', { className: 'vp-tabla' },
+            h('thead', null, h('tr', null,
+              h('th', null, valor(e2, 'columna_servicio') || 'Servicio'),
+              h('th', null, valor(e2, 'columna_referencia') || 'Referencia'),
+              tramos.map(function (t, i) { return h('th', { key: i }, campo(t, 'corto') || campo(t, 'nombre'), campo(t, 'nota') ? h('small', null, campo(t, 'nota')) : null); })
+            )),
+            h('tbody', null, filas.map(function (f, i) {
+              var precios = [];
+              try { var pl = f.get('precios'); if (pl && pl.forEach) pl.forEach(function (v) { precios.push(v); }); } catch (x) {}
+              return h('tr', { key: i },
+                h('th', null, campo(f, 'servicio')),
+                h('td', { className: 'vp-ref' }, campo(f, 'referencia')),
+                precios.map(function (v, j) { return h('td', { key: j, className: v === gratis ? 'vp-gratis' : '' }, v); })
+              );
+            }))
+          )
+        ),
+        h('div', { className: 'vp-cuerpo' },
+          lista(e2, 'bloques').map(function (b, i) {
+            var puntos = [];
+            try { var pl = b.get('puntos'); if (pl && pl.forEach) pl.forEach(function (x) { puntos.push(campo(x, 'texto')); }); } catch (x) {}
+            return h('div', { key: i },
+              h('h3', null, campo(b, 'titulo')),
+              puntos.length ? h('ul', null, puntos.map(function (t, j) { return h('li', { key: j }, t); })) : null,
+              campo(b, 'texto') ? h('p', null, campo(b, 'texto')) : null
+            );
+          })
+        )
+      );
+    }
+
+    /* --------- Contacto --------- */
+    function VistaContacto(props) {
+      var e2 = props.entry;
+      var fila = function (etiqueta, texto) {
+        return h('div', { className: 'vp-dato' }, h('span', null, etiqueta), h('strong', null, texto));
+      };
+      return h('div', { className: 'vp vp-claro' },
+        h('h2', { className: 'vp-seccion' }, valor(e2, 'titulo') || 'Contacto'),
+        h('p', { className: 'vp-intro' }, valor(e2, 'intro')),
+        h('div', { className: 'vp-datos' },
+          fila('Teléfono', valor(e2, 'telefono')),
+          fila('Correo electrónico', valor(e2, 'email')),
+          fila('Sede', valor(e2, 'direccion')),
+          fila('Horario', valor(e2, 'horario')),
+          fila('CESM Castilla y León', valor(e2, 'web_cesmcyl'))
+        ),
+        h('h3', { className: 'vp-objetivos-tit' }, valor(e2, 'titulo_redes') || 'Conoce nuestras redes'),
+        h('p', { className: 'vp-intro' }, valor(e2, 'texto_redes')),
+        h('p', null, h('span', { className: 'vp-btn vp-btn-linea' }, valor(e2, 'titulo_formulario') || 'Envíanos un mensaje'))
+      );
+    }
+
+    /* --------- Afíliate --------- */
+    function VistaAfiliate(props) {
+      var e2 = props.entry;
+      return h('div', { className: 'vp' },
+        h('header', { className: 'vp-cab' },
+          h('h1', null, valor(e2, 'titulo') || 'Afíliate'),
+          h('p', { className: 'vp-entradilla' }, valor(e2, 'intro'))
+        ),
+        h('div', { className: 'vp-cuerpo' },
+          h('h3', null, valor(e2, 'titulo_pasos')),
+          h('ol', { className: 'vp-pasos' }, lista(e2, 'pasos').map(function (x, i) {
+            return h('li', { key: i },
+              h('strong', null, campo(x, 'titulo')),
+              h('p', null, campo(x, 'texto')),
+              campo(x, 'direccion_postal') ? h('p', { className: 'vp-direccion' }, campo(x, 'direccion_postal')) : null
+            );
+          })),
+          h('p', null, valor(e2, 'dudas'))
+        )
+      );
+    }
+
+    /* --------- Rótulos --------- */
+    function VistaTextos(props) {
+      var e2 = props.entry;
+      var item = function (t) { return h('span', { className: 'vp-menu-item' }, t); };
+      return h('div', { className: 'vp' },
+        h('div', { className: 'vp-menu' },
+          item(valor(e2, 'menu_inicio')), item(valor(e2, 'menu_noticias')), item(valor(e2, 'menu_quienes')),
+          item(valor(e2, 'menu_servicios')), item(valor(e2, 'menu_contacto')),
+          h('span', { className: 'vp-btn vp-btn-mini' }, valor(e2, 'menu_afiliate'))
+        ),
+        h('div', { className: 'vp-cuerpo' },
+          h('h3', null, valor(e2, 'form_boton') ? 'Formulario de contacto' : ''),
+          h('div', { className: 'vp-form' },
+            [valor(e2, 'form_nombre'), valor(e2, 'form_apellidos'), valor(e2, 'form_email'), valor(e2, 'form_telefono'), valor(e2, 'form_provincia'), valor(e2, 'form_mensaje')].map(function (t, i) {
+              return h('div', { key: i, className: 'vp-campo' }, h('span', null, t), h('div', { className: 'vp-caja' }));
+            })
+          ),
+          h('p', { className: 'vp-privacidad' }, valor(e2, 'form_privacidad')),
+          h('p', null, h('span', { className: 'vp-btn' }, valor(e2, 'form_boton')))
+        )
+      );
+    }
+
+    /* --------- Diseño --------- */
+    function VistaDiseno(props) {
+      var e2 = props.entry;
+      var col = e2.getIn(['data', 'colores']);
+      var tip = e2.getIn(['data', 'tipografia']);
+      var frm = e2.getIn(['data', 'formas']);
+      var c = function (n, d) { try { return col.get(n) || d; } catch (x) { return d; } };
+      var muestra = function (nombre, valorColor) {
+        return h('div', { className: 'vp-color' }, h('span', { style: { background: valorColor } }), h('small', null, nombre), h('code', null, valorColor));
+      };
+      var fuente = (function () { try { return tip.get('fuente') || 'Lato'; } catch (x) { return 'Lato'; } })();
+      var radio = (function () { try { return (frm.get('radio_tarjetas') || 14) + 'px'; } catch (x) { return '14px'; } })();
+      var radioB = (function () { try { return (frm.get('radio_botones') || 6) + 'px'; } catch (x) { return '6px'; } })();
+      return h('div', { className: 'vp vp-cuerpo' },
+        h('h3', null, 'Colores'),
+        h('div', { className: 'vp-colores' },
+          muestra('Verde principal', c('verde', '#0c3316')),
+          muestra('Verde oscuro', c('verde_hondo', '#071f0d')),
+          muestra('Verde suave', c('verde_medio', '#3a6741')),
+          muestra('Dorado', c('oro', '#e9a94a')),
+          muestra('Dorado claro', c('oro_claro', '#f3c77f')),
+          muestra('Fondo claro', c('papel', '#f1f5ef')),
+          muestra('Texto', c('tinta', '#16241a'))
+        ),
+        h('h3', null, 'Ejemplo'),
+        h('div', { className: 'vp-ejemplo', style: { fontFamily: fuente + ', sans-serif', background: c('papel', '#f1f5ef') } },
+          h('h2', { style: { color: c('verde', '#0c3316') } }, 'Así se ven los títulos'),
+          h('p', { style: { color: c('tinta', '#16241a') } }, 'Y así el texto normal de la web, con la fuente ' + fuente + '.'),
+          h('div', { className: 'vp-tarjeta-ej', style: { borderRadius: radio, background: c('verde', '#0c3316') } },
+            h('strong', null, 'Tarjeta de servicio'),
+            h('span', { className: 'vp-btn', style: { background: c('oro', '#e9a94a'), borderRadius: radioB, color: c('verde_hondo', '#071f0d') } }, 'Afíliate')
+          )
+        )
+      );
+    }
+
+    /* --------- Página de huelga --------- */
+    function VistaHuelga(props) {
+      return h('div', { className: 'vp' },
+        h('header', { className: 'vp-cab' }, h('h1', null, 'Huelga')),
+        h('div', { className: 'vp-cuerpo cuerpo' }, props.widgetFor('texto'))
+      );
+    }
+
+    /* --------- Lista de categorías --------- */
+    function VistaCategorias(props) {
+      var cats = lista(props.entry, 'categorias');
+      return h('div', { className: 'vp vp-cuerpo' },
+        h('h3', null, 'Así salen los filtros en la web'),
+        h('div', { className: 'vp-chips' },
+          h('span', { className: 'vp-chip vp-chip-activo' }, 'Todas'),
+          cats.map(function (x, i) { return h('span', { key: i, className: 'vp-chip' }, campo(x, 'nombre')); })
+        ),
+        h('p', { className: 'vp-nota' }, 'Las que llevan «Grupo / Nombre» salen dentro del desplegable de su grupo.')
+      );
+    }
+
+    registrar('noticias', VistaNoticia);
+    registrar('paginas', VistaPagina);
+    registrar('servicios', VistaServicio);
+    registrar('tablon', VistaTablon);
+    registrar('inicio', VistaInicio);
+    registrar('quienes', VistaQuienes);
+    registrar('noticias-portada', VistaNoticiasPortada);
+    registrar('servicios-portada', VistaServiciosPortada);
+    registrar('aviso-urgente', VistaAviso);
+    registrar('pie', VistaPie);
+    registrar('tarifas', VistaTarifas);
+    registrar('contacto', VistaContacto);
+    registrar('afiliate', VistaAfiliate);
+    registrar('textos', VistaTextos);
+    registrar('diseno', VistaDiseno);
+    registrar('huelga-info', VistaHuelga);
+    registrar('categorias', VistaCategorias);
+  }
+});
+</script>
+
+</body>
+</html>
