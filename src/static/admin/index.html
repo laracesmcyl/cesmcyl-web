@@ -9,11 +9,7 @@
 </head>
 <body>
 
-<!-- React hace falta para las vistas previas con diseño propio -->
-<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-
-<script src="https://unpkg.com/@sveltia/cms@0/dist/sveltia-cms.js" type="module"></script>
+<script src="https://unpkg.com/@sveltia/cms@0/dist/sveltia-cms.js"></script>
 
 <script>
 /* ---------------------------------------------------------------------------
@@ -37,13 +33,41 @@ window.addEventListener('load', function () {
       CMS.registerPreviewStyle('/admin/vista-previa.css');
     } catch (e) {}
 
-    var R = window.React;
-    if (!R || !CMS.registerPreviewTemplate) {
-      console.warn('[panel] Vista previa con diseño no disponible:', !R ? 'falta React' : 'el CMS no admite plantillas');
+    if (!CMS.registerPreviewTemplate) {
+      console.warn('[panel] Este CMS no admite vistas previas con diseño.');
       return;
     }
     console.info('[panel] Registrando vistas previas con diseño.');
-    var h = R.createElement;
+
+    /* Creamos los elementos con la misma "firma" que usa el React interno del
+       CMS. La deducimos del primer elemento que nos pasa el propio CMS; si no
+       hubiera ninguno, probamos con la firma de React 19 y luego la antigua. */
+    var FIRMA = null;
+    function aprenderFirma(algo) {
+      if (FIRMA || !algo) return;
+      if (algo.$$typeof) { FIRMA = algo.$$typeof; return; }
+      if (Array.isArray(algo)) algo.forEach(aprenderFirma);
+    }
+    function firma() {
+      return FIRMA || Symbol.for('react.transitional.element');
+    }
+    function h(tipo, props) {
+      var hijos = Array.prototype.slice.call(arguments, 2);
+      hijos.forEach(aprenderFirma);
+      var p = {};
+      if (props) for (var k in props) { if (k !== 'key') p[k] = props[k]; }
+      if (hijos.length === 1) p.children = hijos[0];
+      else if (hijos.length > 1) p.children = hijos;
+      return {
+        $$typeof: firma(),
+        type: tipo,
+        key: (props && props.key != null) ? String(props.key) : null,
+        ref: null,
+        props: p,
+        _owner: null,
+        _store: {}
+      };
+    }
 
     function valor(entry, campo) {
       try { return entry.getIn(['data', campo]) || ''; } catch (e) { return ''; }
@@ -115,11 +139,29 @@ window.addEventListener('load', function () {
 
     function registrar(nombre, componente) {
       try {
-        var Clase = function (props) { R.Component.call(this, props); };
-        Clase.prototype = Object.create(R.Component.prototype);
-        Clase.prototype.render = function () { return componente(this.props); };
+        function Clase(props) { this.props = props; }
+        Clase.prototype.isReactComponent = {};
+        Clase.prototype.setState = function () {};
+        Clase.prototype.forceUpdate = function () {};
+        Clase.prototype.render = function () {
+          try {
+            var props = this.props || {};
+            if (!FIRMA && props.widgetFor) {
+              ['body', 'texto', 'title', 'titulo', 'intro', 'descripcion', 'lead'].forEach(function (n) {
+                if (FIRMA) return;
+                try { aprenderFirma(props.widgetFor(n)); } catch (e) {}
+              });
+            }
+            return componente(this.props);
+          } catch (e) {
+            console.warn('[panel] Vista previa de "' + nombre + '":', e);
+            return null;
+          }
+        };
         CMS.registerPreviewTemplate(nombre, Clase);
-      } catch (e) {}
+      } catch (e) {
+        console.warn('[panel] No se pudo registrar la vista previa de "' + nombre + '":', e);
+      }
     }
 
 
