@@ -47,7 +47,8 @@ collections:
         file: "src/static/aviso-urgente.json"
         fields:
           - { label: "Mostrar el aviso", name: "activo", widget: "boolean", default: false }
-          - { label: "Mensaje del aviso", name: "texto", widget: "markdown", required: false, hint: "Con los botones de arriba pones negrita, cursiva, subrayado y enlaces." }
+          - { label: "Etiqueta", name: "etiqueta", widget: "string", required: false, default: "Aviso", hint: "La pastilla negra de la izquierda: Aviso, Urgente, Huelga..." }
+          - { label: "Mensaje del aviso", name: "texto", widget: "markdown", required: false, hint: "Escribe con normalidad. Con el botón B pones negrita. Para subrayar, escribe la palabra entre dos guiones bajos a cada lado: __13 de julio__" }
           - label: "Alineación del mensaje"
             name: "alineacion"
             widget: "select"
@@ -57,8 +58,9 @@ collections:
               - { label: "A la izquierda", value: "izquierda" }
               - { label: "Centrado", value: "centro" }
               - { label: "A la derecha", value: "derecha" }
+          - { label: "Texto del enlace", name: "enlace_texto", widget: "string", required: false, default: "Toda la información" }
+          - { label: "A dónde lleva el enlace", name: "enlace_destino", widget: "string", required: false, default: "/huelga/", hint: "Déjalo vacío para que no salga el enlace." }
 
-  # --------------------------------------------------------------- NOTICIAS
       - name: "quienes"
         label: "Sección «Quiénes somos»"
         file: "src/_data/quienes.json"
