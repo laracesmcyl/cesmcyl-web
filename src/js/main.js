@@ -13,6 +13,7 @@
      Si el texto ya es HTML, se deja tal cual. */
   function enLinea(t) {
     return t
+      .replace(/__([^_]+)__/g, '<u>$1</u>')
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
       .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>')
       .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>');
@@ -101,6 +102,15 @@
     marcarSeccion();
   }
 
+
+  /* Monta la franja de aviso. El texto se escribe libremente en el panel:
+     **negrita**, *cursiva*, [enlace](direccion) y __subrayado__. */
+  function montarAviso(d) {
+    if (!d || !d.texto) return '';
+    var html = markdownAHtml(d.texto).replace(/^<p>|<\/p>$/g, '');
+    return html.replace(/__([^_]+)__/g, '<u>$1</u>');
+  }
+
   /* ---------- Aviso urgente (franja dorada) ----------
      Lee /aviso-urgente.json. Si está activo, muestra el mensaje; si no, la
      franja queda como una línea fina de color. */
@@ -108,11 +118,17 @@
     fetch('/aviso-urgente.json', { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (datos) {
-        var activo = datos && datos.activo && datos.texto;
-        document.getElementById('ticker-text').innerHTML = activo ? markdownAHtml(datos.texto).replace(/^<p>|<\/p>$/g, '') : '';
+        var html = datos ? montarAviso(datos) : '';
+        var activo = !!(datos && datos.activo && html);
+        document.getElementById('ticker-text').innerHTML = activo ? html : '';
         if (activo && datos.alineacion) ticker.classList.add('aviso-' + datos.alineacion);
-        document.getElementById('ticker-label').style.display = activo ? '' : 'none';
-        document.getElementById('ticker-flecha').style.display = activo ? '' : 'none';
+        var etiqueta = document.getElementById('ticker-label');
+        if (activo && datos.etiqueta) etiqueta.lastChild.nodeValue = datos.etiqueta;
+        var flecha = document.getElementById('ticker-flecha');
+        if (activo && datos.enlace_destino) flecha.setAttribute('href', datos.enlace_destino);
+        if (activo && datos.enlace_texto) flecha.firstChild.nodeValue = datos.enlace_texto + ' ';
+        etiqueta.style.display = activo ? '' : 'none';
+        flecha.style.display = (activo && datos.enlace_destino !== '') ? '' : 'none';
         ticker.classList.toggle('vacio', !activo);
         medirCabecera();
       })
