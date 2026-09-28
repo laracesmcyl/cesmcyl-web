@@ -85,41 +85,70 @@ window.addEventListener('load', function () {
     function VistaNoticia(props) {
       var entry = props.entry;
       var cat = valor(entry, 'category_nueva') || valor(entry, 'category');
-      return h('div', { className: 'vp' },
-        h('header', { className: 'vp-cab' },
-          h('span', { className: 'vp-migas' }, 'Noticias'),
-          h('h1', null, valor(entry, 'title') || 'Título de la noticia'),
-          h('p', { className: 'vp-fecha' },
-            cat ? h('span', { className: 'vp-tag' }, cat) : null,
-            fecha(valor(entry, 'date'))
+      return h('div', { className: 'vp-real' },
+        h('header', { className: 'pag-cab articulo-cab' },
+          h('div', { className: 'pag-cab-inner' },
+            h('a', { className: 'migas', href: '#' }, 'Noticias'),
+            h('div', { className: 'articulo-meta' },
+              cat ? h('span', { className: 'tag' }, cat) : null,
+              h('time', null, fecha(valor(entry, 'date')))
+            ),
+            h('h1', null, valor(entry, 'title') || 'Título de la noticia')
           )
         ),
-        h('div', { className: 'vp-cuerpo cuerpo' }, props.widgetFor('body'))
+        h('div', { className: 'articulo' },
+          h('article', { className: 'articulo-cuerpo' },
+            h('div', { className: 'cuerpo' }, props.widgetFor('body'))
+          )
+        )
       );
     }
 
     /* --------- Página --------- */
     function VistaPagina(props) {
       var entry = props.entry;
-      return h('div', { className: 'vp' },
-        h('header', { className: 'vp-cab' },
-          h('h1', null, valor(entry, 'title') || 'Título de la página'),
-          valor(entry, 'entradilla') ? h('p', { className: 'vp-entradilla' }, valor(entry, 'entradilla')) : null
+      return h('div', { className: 'vp-real' },
+        h('header', { className: 'pag-cab' },
+          h('div', { className: 'pag-cab-inner' },
+            h('h1', null, valor(entry, 'title') || 'Título de la página'),
+            valor(entry, 'entradilla') ? h('p', null, valor(entry, 'entradilla')) : null
+          )
         ),
-        h('div', { className: 'vp-cuerpo cuerpo' }, props.widgetFor('body'))
+        h('div', { className: 'pag pag-ancha' },
+          h('div', { className: 'pag-texto' }, h('div', { className: 'cuerpo' }, props.widgetFor('body')))
+        )
       );
     }
 
     /* --------- Página de servicio --------- */
     function VistaServicio(props) {
       var entry = props.entry;
-      return h('div', { className: 'vp' },
-        h('header', { className: 'vp-cab' },
-          h('span', { className: 'vp-migas' }, 'Servicios'),
-          h('h1', null, valor(entry, 'title') || 'Título del servicio'),
-          valor(entry, 'entradilla') ? h('p', { className: 'vp-entradilla' }, valor(entry, 'entradilla')) : null
+      var enlaces = [];
+      try {
+        var bl = entry.getIn(['data', 'bloques']);
+        if (bl && bl.forEach) bl.forEach(function (b) {
+          var el = b.get('enlaces');
+          if (el && el.forEach) el.forEach(function (x) { enlaces.push(x.get('texto')); });
+        });
+      } catch (x) {}
+      return h('div', { className: 'vp-real' },
+        h('header', { className: 'pag-cab' },
+          h('div', { className: 'pag-cab-inner' },
+            h('a', { className: 'migas', href: '#' }, 'Servicios'),
+            h('h1', null, valor(entry, 'title') || 'Título del servicio'),
+            valor(entry, 'entradilla') ? h('p', null, valor(entry, 'entradilla')) : null
+          )
         ),
-        h('div', { className: 'vp-cuerpo cuerpo' }, props.widgetFor('body'))
+        h('div', { className: 'pag' },
+          h('div', { className: 'cuerpo cuerpo-top' }, props.widgetFor('body')),
+          enlaces.length ? h('aside', { className: 'pag-lateral lateral-caja' },
+            h('h2', { className: 'lateral-titulo' }, 'Enlaces'),
+            h('div', { className: 'documentos' }, enlaces.map(function (t, i) {
+              return h('span', { key: i, className: 'doc' }, h('span', null, t));
+            }))
+          ) : null,
+          h('div', { className: 'pag-texto' })
+        )
       );
     }
 
@@ -234,10 +263,11 @@ window.addEventListener('load', function () {
       var activo = e2.getIn(['data', 'activo']);
       var alineacion = valor(e2, 'alineacion') || 'izquierda';
       if (!activo) return h('div', { className: 'vp vp-claro' }, h('p', { className: 'vp-intro' }, 'El aviso está desactivado: ahora mismo no se ve en la web.'));
-      return h('div', { className: 'vp' },
-        h('div', { className: 'vp-aviso vp-aviso-' + alineacion },
-          h('span', { className: 'vp-aviso-etiqueta' }, 'Aviso'),
-          h('span', { className: 'vp-aviso-texto' }, props.widgetFor('texto'))
+      return h('div', { className: 'vp-real' },
+        h('div', { className: 'aviso aviso-' + alineacion },
+          h('span', { className: 'aviso-etiqueta' }, h('span', { className: 'punto' }), 'Aviso'),
+          h('span', { className: 'aviso-texto' }, props.widgetFor('texto')),
+          h('a', { className: 'aviso-enlace', href: '#' }, 'Toda la información →')
         )
       );
     }

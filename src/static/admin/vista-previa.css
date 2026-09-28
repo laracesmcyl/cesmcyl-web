@@ -178,3 +178,9 @@ body{
 .vp-chip{font-size:.8rem;font-weight:700;color:var(--verde,#0c3316);border:1px solid rgba(12,51,22,.2);border-radius:999px;padding:.35rem .8rem}
 .vp-chip-activo{background:var(--verde,#0c3316);color:#fff;border-color:var(--verde,#0c3316)}
 .vp-nota{font-size:.82rem;color:#7a867c}
+
+/* Vistas que usan la maqueta real de la web: no añadimos nada nuestro,
+   solo evitamos que el marco de la vista previa recorte los bloques. */
+.vp-real{overflow-x:hidden}
+.vp-real .pag,.vp-real .articulo{padding-top:2rem;padding-bottom:2rem}
+.vp-real .aviso{position:static}
