@@ -177,6 +177,22 @@ module.exports = function (eleventyConfig) {
     return salida;
   });
 
+  // Filtro "listaDestinos": el listado de páginas de la web que se enseña
+  // como ayuda en los campos de enlace del panel. Se rehace en cada
+  // publicación, así que las páginas nuevas aparecen solas.
+  eleventyConfig.addFilter("listaDestinos", function (servicios, paginas) {
+    const salida = [];
+    (servicios || []).forEach((s) => {
+      if (s.data.permalink === false) return;
+      salida.push(s.url + " (" + (s.data.menu || s.data.title) + ")");
+    });
+    (paginas || []).forEach((p) => {
+      salida.push(p.url + " (" + (p.data.menu || p.data.title) + ")");
+    });
+    ["/afiliate/ (Afíliate)", "/huelga/ (Página de huelga)", "/asesoria-juridica/ (Tarifas)"].forEach((x) => salida.push(x));
+    return salida.join(" · ");
+  });
+
   // Filtro "unir": junta dos listas (subpáginas de servicios + páginas sueltas).
   eleventyConfig.addFilter("unir", function (a, b) {
     return (a || []).concat(b || []);
