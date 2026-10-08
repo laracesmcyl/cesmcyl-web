@@ -169,15 +169,17 @@ body.midiendo #cabecera,body.midiendo #cabecera *{transition:none!important}
 .flechas button:hover{background:rgba(255,255,255,.1);border-color:#fff}
 .flechas svg{width:14px;height:14px}
 .contador{min-width:2.6rem;text-align:center;font-variant-numeric:tabular-nums}
-.tn-marco{position:relative;display:grid;background:rgba(255,255,255,.96);border-radius:10px;overflow:hidden}
-.tn{grid-area:1/1;display:block;padding:1.1rem 1.15rem 1.35rem;color:var(--tinta);opacity:0;transform:translateX(24px);transition:opacity .6s ease,transform .6s ease;pointer-events:none;visibility:hidden}
-.tn.visible{opacity:1;transform:none;pointer-events:auto;visibility:visible}
+.tn-marco{position:relative;background:rgba(255,255,255,.96);border-radius:10px;overflow:hidden}
+/* Solo la noticia visible ocupa sitio: así el recuadro mide lo que mide ella
+   y no se queda el hueco en blanco de la más larga. */
+.tn{position:absolute;top:0;left:0;right:0;display:block;padding:1.1rem 1.15rem 1.35rem;color:var(--tinta);opacity:0;transform:translateX(24px);transition:opacity .6s ease,transform .6s ease;pointer-events:none;visibility:hidden}
+.tn.visible{position:relative;opacity:1;transform:none;pointer-events:auto;visibility:visible}
 .tn.saliendo{visibility:visible;opacity:0;transform:translateX(-24px)}
 .tn-meta{display:flex;justify-content:space-between;gap:1rem;font-size:.76rem;color:#5c6b5f;margin-bottom:.4rem}
 .tn-meta b{color:var(--verde);font-weight:900}
 .tn-titulo{display:block;font-size:1rem;line-height:1.38;font-weight:700;color:var(--verde-hondo)}
 .tn:hover .tn-titulo{color:var(--verde-medio)}
-.tn-desc{font-size:.84rem;color:var(--gris);margin-top:.35rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tn-desc{font-size:.84rem;color:var(--gris);margin-top:.35rem;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .progreso{position:absolute;left:0;bottom:0;height:3px;background:var(--oro);width:0}
 .progreso.corriendo{animation:progreso 30s linear forwards}
 @keyframes progreso{to{width:100%}}
@@ -214,7 +216,7 @@ body.midiendo #cabecera,body.midiendo #cabecera *{transition:none!important}
 .nota h3{font-size:1.18rem;line-height:1.38;font-weight:700;color:var(--verde-hondo);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .nota h3 a::after{content:"";position:absolute;inset:0}
 .nota:hover h3{color:var(--verde-medio)}
-.nota p{font-size:.95rem;line-height:1.65;color:var(--gris);margin-top:.6rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.nota p{font-size:.95rem;line-height:1.65;color:var(--gris);margin-top:.6rem;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 .nota-leer{margin-top:auto;padding-top:1rem;display:inline-flex;align-items:center;gap:.4rem;font-weight:700;font-size:.88rem;color:var(--verde)}
 .nota-leer svg{width:15px;height:15px;transition:transform .25s}
 .nota:hover .nota-leer svg{transform:translateX(4px)}
@@ -795,3 +797,4 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 .cuerpo .grande{font-size:1.25em}
 .cuerpo .pequeno{font-size:.88em}
 .cuerpo .destacado{background:#f5f8f4;border-left:3px solid var(--oro);padding:.9rem 1.1rem;border-radius:0 8px 8px 0;margin:1.2rem 0}
+.aviso-sep{opacity:.5;margin:0 .15rem}
