@@ -9,8 +9,8 @@ eleventyExcludeFromCollections: true
   branch: main
   base_url: "https://sveltia-cms-auth.laracesmcyl.workers.dev"
 
-media_folder: "src/static/imagenes"
-public_folder: "/imagenes"
+media_folder: "src/static/documentos"
+public_folder: "/documentos"
 
 collections:
   - name: "diseno"
@@ -261,8 +261,6 @@ collections:
       - name: "tablon-{{ d.fileSlug }}"
         label: "Tablón · {{ d.data.title }}"
         file: "{{ d.page.inputPath | replace('./','') }}"
-        media_folder: "/src/static/documentos"
-        public_folder: "/documentos"
         fields:
           - { label: "Título", name: "title", widget: "string" }
           - label: "Categoría"
@@ -288,8 +286,6 @@ collections:
       - name: "paginas-{{ d.fileSlug }}"
         label: "Barra inferior · {{ d.data.title }}"
         file: "{{ d.page.inputPath | replace('./','') }}"
-        media_folder: "/src/static/documentos"
-        public_folder: "/documentos"
         fields:
           - { label: "Título", name: "title", widget: "string" }
           - { label: "Entradilla (el texto bajo el título)", name: "entradilla", widget: "text", required: false }
@@ -387,8 +383,6 @@ collections:
     view_groups:
       - label: "Apartado del menú"
         field: padre
-    media_folder: "/src/static/documentos"
-    public_folder: "/documentos"
     fields:
       - { label: "Título de la página", name: "title", widget: "string" }
       - { label: "Nombre en el menú", name: "menu", widget: "string", required: false, hint: "Más corto que el título. Si lo dejas vacío, se usa el título." }
