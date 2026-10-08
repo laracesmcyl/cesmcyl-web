@@ -32,7 +32,7 @@
     <article class="nota" data-cat="{{ noticia.data | cat | slugify }}" data-grupo="{{ noticia.data | cat | grupo | slugify }}">
       <div class="nota-meta"><span class="nota-tag">{% if (noticia.data | cat) != "Noticias" %}{{ noticia.data | cat }}{% endif %}</span><time datetime="{{ noticia.data.date }}">{{ noticia.data.date | fecha }}</time></div>
       <h3><a href="/noticias/{{ noticia.fileSlug }}/">{{ noticia.data.title }}</a></h3>
-      <p>{{ noticia.data.description or (noticia.templateContent | excerpt(170)) }}</p>
+      <p>{{ noticia.data.description or (noticia.templateContent | excerpt(300)) }}</p>
       <span class="nota-leer" aria-hidden="true">Leer más {{ flecha | safe }}</span>
     </article>
     {%- endfor %}
