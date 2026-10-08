@@ -7,7 +7,7 @@ seccion: servicios
 <article class="nota">
   <div class="nota-meta"><span class="nota-tag">{{ n.data | cat }}</span><time datetime="{{ n.data.date }}">{{ n.data.date | fecha }}</time></div>
   <h3><a href="/noticias/{{ n.fileSlug }}/">{{ n.data.title }}</a></h3>
-  <p>{{ n.data.description or (n.templateContent | excerpt(150)) }}</p>
+  <p>{{ n.data.description or (n.templateContent | excerpt(300)) }}</p>
   <span class="nota-leer" aria-hidden="true">Leer más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
 </article>
 {%- endmacro %}
