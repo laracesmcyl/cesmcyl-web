@@ -1,0 +1,71 @@
+---
+layout: base.njk
+---
+<header class="pag-cab">
+  <div class="pag-cab-inner">
+    <a href="{{ tarifas.migas_destino or '/#servicios' }}" class="migas">{{ tarifas.migas or "Servicios" }}</a>
+    <h1>{{ tarifas.titulo }}</h1>
+    <p>{{ tarifas.intro }}</p>
+  </div>
+</header>
+
+<div class="tarifas">
+  <div class="selector">
+    <span id="sel-etiqueta">{{ tarifas.etiqueta_selector }}</span>
+    <div class="segmentos" role="group" aria-labelledby="sel-etiqueta">
+      {%- for t in tarifas.tramos %}
+      <button type="button" data-col="{{ loop.index0 }}"{% if loop.first %} class="activo"{% endif %}>{{ t.nombre }}</button>
+      {%- endfor %}
+    </div>
+  </div>
+
+  <div class="tabla-marco">
+    <table class="tabla" id="tabla-tarifas">
+      <thead>
+        <tr>
+          <th scope="col">{{ tarifas.columna_servicio or "Servicio" }}</th>
+          <th scope="col" class="ref">{{ tarifas.columna_referencia or "Precio de referencia" }}</th>
+          {%- for t in tarifas.tramos %}
+          <th scope="col" data-col="{{ loop.index0 }}">{{ t.corto or t.nombre }}{% if t.nota %}<small>{{ t.nota }}</small>{% endif %}</th>
+          {%- endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {%- for f in tarifas.filas %}
+        <tr><th scope="row">{{ f.servicio }}</th><td class="ref">{{ f.referencia }}</td>
+          {%- for p in f.precios %}
+          <td data-col="{{ loop.index0 }}"{% if p == tarifas.texto_gratis %} class="gratis"{% endif %}>{{ p }}</td>
+          {%- endfor %}
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-tarifas">
+    {%- for b in tarifas.bloques %}
+    <section>
+      <h2>{{ b.titulo }}</h2>
+      {%- if b.puntos | length %}
+      <ul class="lista">
+        {%- for p in b.puntos %}
+        <li>{{ p.texto }}</li>
+        {%- endfor %}
+      </ul>
+      {%- endif %}
+      {%- if b.texto %}{{ b.texto | md | safe }}{% endif %}
+    </section>
+    {%- endfor %}
+    <section>
+      <h2>{{ tarifas.pago.titulo }}</h2>
+      <p>{{ tarifas.pago.texto }}</p>
+      {%- if tarifas.pago.iban %}
+      <div class="iban">
+        <span><small>IBAN</small><code id="iban">{{ tarifas.pago.iban }}</code></span>
+        <button type="button" id="copiar-iban" aria-label="Copiar IBAN"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg><span>Copiar</span></button>
+      </div>
+      {%- endif %}
+      {%- if tarifas.pago.concepto %}<p class="concepto">{{ tarifas.pago.concepto }}</p>{% endif %}
+    </section>
+  </div>
+</div>
