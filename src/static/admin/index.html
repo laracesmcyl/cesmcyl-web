@@ -272,6 +272,301 @@ window.addEventListener('load', function () {
       );
     }
 
+
+    /* --------- Pie de página --------- */
+    function VistaPie(props) {
+      var e2 = props.entry;
+      var lista = function (campo) {
+        var r = [];
+        try {
+          var l = e2.getIn(['data', campo]);
+          if (l && l.forEach) l.forEach(function (x) { r.push(x.get('texto')); });
+        } catch (x) {}
+        return r;
+      };
+      return h('div', { className: 'vp vp-pie' },
+        h('div', { className: 'vp-pie-cols' },
+          h('div', null,
+            h('p', { className: 'vp-pie-logo' }, 'CESM Valladolid'),
+            h('p', { className: 'vp-pie-desc' }, valor(e2, 'descripcion'))
+          ),
+          h('div', null,
+            h('h4', null, valor(e2, 'titulo_columna1') || 'CESM Valladolid'),
+            lista('enlaces_columna1').map(function (t, i) {
+              return h('span', { key: i, className: 'vp-pie-enlace' }, t);
+            })
+          ),
+          h('div', null,
+            h('h4', null, valor(e2, 'titulo_servicios') || 'Servicios'),
+            h('p', { className: 'vp-pie-nota' }, 'Se rellena solo con los servicios de la web.')
+          ),
+          h('div', null,
+            h('h4', null, valor(e2, 'titulo_contacto') || 'Contacto'),
+            h('p', { className: 'vp-pie-nota' }, 'Se rellena solo con los datos de contacto y las redes.')
+          )
+        ),
+        h('div', { className: 'vp-pie-barra' },
+          h('span', null, valor(e2, 'copyright')),
+          h('span', { className: 'vp-pie-legal' }, lista('enlaces_legales').map(function (t, i) {
+            return h('span', { key: i }, t);
+          }))
+        )
+      );
+    }
+
+    /* --------- Tarifas de la asesoría jurídica --------- */
+    function VistaTarifas(props) {
+      var e2 = props.entry;
+      var tramos = [], filas = [], bloques = [];
+      try {
+        var t = e2.getIn(['data', 'tramos']);
+        if (t && t.forEach) t.forEach(function (x) {
+          tramos.push({ corto: x.get('corto') || x.get('nombre'), nota: x.get('nota') });
+        });
+      } catch (x) {}
+      try {
+        var f = e2.getIn(['data', 'filas']);
+        if (f && f.forEach) f.forEach(function (x) {
+          var pr = [];
+          var p = x.get('precios');
+          if (p && p.forEach) p.forEach(function (v) { pr.push(v); });
+          filas.push({ servicio: x.get('servicio'), referencia: x.get('referencia'), precios: pr });
+        });
+      } catch (x) {}
+      try {
+        var b = e2.getIn(['data', 'bloques']);
+        if (b && b.forEach) b.forEach(function (x) { bloques.push(x.get('titulo')); });
+      } catch (x) {}
+      var gratis = valor(e2, 'texto_gratis') || 'Gratuita';
+      return h('div', { className: 'vp' },
+        h('div', { className: 'vp-cab' },
+          h('span', { className: 'vp-migas' }, valor(e2, 'migas') || 'Servicios'),
+          h('h1', null, valor(e2, 'titulo') || 'Tarifas'),
+          h('p', { className: 'vp-entradilla' }, valor(e2, 'intro'))
+        ),
+        h('div', { className: 'vp-tabla-marco' },
+          h('table', { className: 'vp-tabla' },
+            h('thead', null,
+              h('tr', null,
+                h('th', null, valor(e2, 'columna_servicio') || 'Servicio'),
+                h('th', { className: 'vp-ref' }, valor(e2, 'columna_referencia') || 'Precio de referencia'),
+                tramos.map(function (t, i) {
+                  return h('th', { key: i }, t.corto, t.nota ? h('small', null, t.nota) : null);
+                })
+              )
+            ),
+            h('tbody', null, filas.map(function (f, i) {
+              return h('tr', { key: i },
+                h('th', null, f.servicio),
+                h('td', { className: 'vp-ref' }, f.referencia),
+                f.precios.map(function (p, j) {
+                  return h('td', { key: j, className: (p === gratis ? 'vp-gratis' : '') }, p);
+                })
+              );
+            }))
+          )
+        ),
+        h('div', { className: 'vp-cuerpo' },
+          bloques.map(function (t, i) { return h('h2', { key: i }, t); }),
+          h('h2', null, (e2.getIn(['data', 'pago', 'titulo'])) || 'Forma de pago'),
+          h('p', null, (e2.getIn(['data', 'pago', 'texto'])) || ''),
+          h('p', null, h('code', null, (e2.getIn(['data', 'pago', 'iban'])) || ''))
+        )
+      );
+    }
+
+    /* --------- Datos de contacto y redes --------- */
+    function VistaContacto(props) {
+      var e2 = props.entry;
+      var dato = function (etiqueta, campo) {
+        var v = valor(e2, campo);
+        return v ? h('div', { className: 'vp-dato' }, h('span', null, etiqueta), h('strong', null, v)) : null;
+      };
+      var redes = [];
+      try {
+        var r = e2.getIn(['data', 'redes']);
+        if (r) ['instagram', 'facebook', 'tiktok', 'x', 'youtube'].forEach(function (n) {
+          if (r.get(n)) redes.push(n);
+        });
+      } catch (x) {}
+      return h('div', { className: 'vp vp-claro' },
+        h('h2', { className: 'vp-seccion' }, valor(e2, 'titulo') || 'Contacto'),
+        h('p', { className: 'vp-intro' }, valor(e2, 'intro')),
+        h('div', { className: 'vp-datos' },
+          dato('Teléfono', 'telefono'),
+          dato('Correo', 'email'),
+          dato('Dirección', 'direccion'),
+          dato('Horario', 'horario')
+        ),
+        h('h3', { className: 'vp-objetivos-tit' }, valor(e2, 'titulo_redes') || 'Conoce nuestras redes'),
+        h('p', { className: 'vp-intro' }, valor(e2, 'texto_redes')),
+        h('div', { className: 'vp-chips' }, redes.map(function (n, i) {
+          return h('span', { key: i, className: 'vp-chip' }, n);
+        })),
+        h('h3', { className: 'vp-objetivos-tit' }, valor(e2, 'titulo_formulario') || 'Envíanos un mensaje')
+      );
+    }
+
+    /* --------- Página «Afíliate» --------- */
+    function VistaAfiliate(props) {
+      var e2 = props.entry;
+      var pasos = [];
+      try {
+        var l = e2.getIn(['data', 'pasos']);
+        if (l && l.forEach) l.forEach(function (p) {
+          pasos.push({ titulo: p.get('titulo'), texto: p.get('texto'), boton: p.get('boton'), direccion: p.get('direccion_postal') });
+        });
+      } catch (x) {}
+      return h('div', { className: 'vp' },
+        h('div', { className: 'vp-cab' },
+          h('h1', null, valor(e2, 'titulo') || 'Afíliate'),
+          h('p', { className: 'vp-entradilla' }, valor(e2, 'intro'))
+        ),
+        h('div', { className: 'vp-cuerpo' },
+          h('h2', null, valor(e2, 'titulo_pasos') || '¿Qué tengo que hacer?'),
+          h('ol', { className: 'vp-pasos' }, pasos.map(function (p, i) {
+            return h('li', { key: i },
+              h('strong', null, p.titulo),
+              h('p', null, p.texto),
+              p.boton ? h('p', null, h('span', { className: 'vp-btn vp-btn-mini' }, p.boton)) : null,
+              p.direccion ? h('p', { className: 'vp-direccion' }, p.direccion) : null
+            );
+          })),
+          h('p', null, valor(e2, 'dudas'))
+        )
+      );
+    }
+
+    /* --------- Barra de arriba y rótulos del menú --------- */
+    function VistaTextos(props) {
+      var e2 = props.entry;
+      var item = function (campo, porDefecto) {
+        return h('span', { className: 'vp-menu-item' }, valor(e2, campo) || porDefecto);
+      };
+      var campo = function (etiqueta, nombre) {
+        return h('label', { className: 'vp-campo' },
+          h('span', null, valor(e2, nombre) || etiqueta),
+          h('span', { className: 'vp-caja' })
+        );
+      };
+      return h('div', { className: 'vp' },
+        h('div', { className: 'vp-menu' },
+          h('span', { className: 'vp-pie-nota' }, valor(e2, 'topbar_campus') || 'Campus TISCYL-CESM'),
+          h('span', { className: 'vp-pie-nota' }, valor(e2, 'topbar_admin') || 'Acceso admin')
+        ),
+        h('div', { className: 'vp-menu' },
+          item('menu_inicio', 'Inicio'),
+          item('menu_noticias', 'Noticias'),
+          item('menu_quienes', 'Quiénes somos'),
+          item('menu_servicios', 'Servicios'),
+          item('menu_contacto', 'Contacto'),
+          h('span', { className: 'vp-btn vp-btn-mini' }, valor(e2, 'menu_afiliate') || 'Afíliate')
+        ),
+        h('div', { className: 'vp-cuerpo' },
+          h('h3', null, 'Rótulos de las páginas de servicio'),
+          h('div', { className: 'vp-chips' },
+            h('span', { className: 'vp-chip' }, valor(e2, 'serv_noticias') || 'Noticias relacionadas'),
+            h('span', { className: 'vp-chip' }, valor(e2, 'serv_enlaces') || 'Enlaces'),
+            h('span', { className: 'vp-chip' }, valor(e2, 'serv_hermanas') || 'También te puede interesar'),
+            h('span', { className: 'vp-chip' }, valor(e2, 'serv_enlaces_boton') || 'Ver todos los enlaces')
+          ),
+          h('h3', null, valor(e2, 'form_boton') ? 'Formulario de contacto' : 'Formulario'),
+          h('div', { className: 'vp-form' },
+            campo('Nombre', 'form_nombre'),
+            campo('Apellidos', 'form_apellidos'),
+            campo('Correo electrónico', 'form_email'),
+            campo('Teléfono', 'form_telefono')
+          ),
+          h('p', { className: 'vp-privacidad' }, valor(e2, 'form_privacidad')),
+          h('p', null, h('span', { className: 'vp-btn vp-btn-mini' }, valor(e2, 'form_boton') || 'Enviar mensaje'))
+        )
+      );
+    }
+
+    /* --------- Diseño general de la web --------- */
+    function VistaDiseno(props) {
+      var e2 = props.entry;
+      var col = function (nombre) {
+        try { return e2.getIn(['data', 'colores', nombre]) || ''; } catch (x) { return ''; }
+      };
+      var forma = function (nombre, pordefecto) {
+        try { var v = e2.getIn(['data', 'formas', nombre]); return (v === 0 || v) ? v : pordefecto; } catch (x) { return pordefecto; }
+      };
+      var nombres = [
+        ['verde', 'Verde principal'], ['verde_hondo', 'Verde oscuro'], ['verde_medio', 'Verde medio'],
+        ['oro', 'Dorado'], ['oro_claro', 'Dorado claro'], ['papel', 'Fondo claro'], ['tinta', 'Color del texto']
+      ];
+      var fuente = '';
+      try { fuente = e2.getIn(['data', 'tipografia', 'fuente']) || 'Lato'; } catch (x) { fuente = 'Lato'; }
+      var secciones = [];
+      try {
+        var s = e2.getIn(['data', 'secciones']);
+        if (s && s.forEach) s.forEach(function (x) { secciones.push(x); });
+      } catch (x) {}
+      return h('div', { className: 'vp vp-cuerpo' },
+        h('div', { className: 'vp-colores' }, nombres.map(function (n, i) {
+          return h('div', { key: i, className: 'vp-color' },
+            h('span', { style: { background: col(n[0]) || '#ccc' } }),
+            h('small', null, n[1]),
+            h('code', null, col(n[0]))
+          );
+        })),
+        h('div', { className: 'vp-ejemplo', style: { background: col('papel') || '#f1f5ef', borderRadius: forma('radio_tarjetas', 14) + 'px' } },
+          h('h2', { style: { color: col('verde') || '#0c3316', fontFamily: fuente } }, 'Así se ve un titular'),
+          h('p', { style: { color: col('tinta') || '#16241a', fontFamily: fuente } }, 'Y así un párrafo normal de la web, con la tipografía y el color del texto que has elegido.'),
+          h('p', null,
+            h('span', { className: 'vp-btn', style: { background: col('oro') || '#e9a94a', color: col('verde_hondo') || '#071f0d', borderRadius: forma('radio_botones', 6) + 'px' } }, 'Un botón')
+          ),
+          h('div', { className: 'vp-tarjeta-ej', style: { background: col('verde') || '#0c3316', borderRadius: forma('radio_tarjetas', 14) + 'px' } },
+            h('strong', null, 'Una tarjeta de servicio'),
+            h('span', { style: { color: col('oro') || '#e9a94a' } }, 'Ver más →')
+          )
+        ),
+        secciones.length ? h('div', null,
+          h('h3', null, 'Orden de las secciones de la portada'),
+          h('div', { className: 'vp-chips' }, secciones.map(function (s, i) {
+            return h('span', { key: i, className: 'vp-chip' }, (i + 1) + '. ' + s);
+          }))
+        ) : null
+      );
+    }
+
+    /* --------- Categoría de noticias --------- */
+    function VistaCategorias(props) {
+      var e2 = props.entry;
+      var nombre = valor(e2, 'nombre');
+      var lista = [];
+      try {
+        var l = e2.getIn(['data', 'categorias']);
+        if (l && l.forEach) l.forEach(function (c) { lista.push(c.get('nombre')); });
+      } catch (x) {}
+      if (!nombre && !lista.length) {
+        return h('div', { className: 'vp vp-cuerpo' }, h('p', { className: 'vp-nota' }, 'Escribe el nombre de la categoría.'));
+      }
+      if (lista.length) {
+        return h('div', { className: 'vp vp-cuerpo' },
+          h('p', { className: 'vp-nota' }, 'Así salen las pestañas en la web:'),
+          h('div', { className: 'vp-chips' }, lista.map(function (n, i) {
+            return h('span', { key: i, className: 'vp-chip' + (i === 0 ? ' vp-chip-activo' : '') }, n);
+          }))
+        );
+      }
+      var partes = String(nombre).split(' / ');
+      var grupo = partes.length > 1 ? partes[0] : '';
+      var corto = partes.length > 1 ? partes.slice(1).join(' / ') : nombre;
+      return h('div', { className: 'vp vp-cuerpo' },
+        h('p', { className: 'vp-nota' }, grupo
+          ? 'Es un subapartado: sale como pestaña dentro de «' + grupo + '».'
+          : 'Es una categoría principal: sale como pestaña suelta.'),
+        h('div', { className: 'vp-chips' },
+          grupo ? h('span', { className: 'vp-chip' }, grupo) : null,
+          h('span', { className: 'vp-chip vp-chip-activo' }, corto)
+        ),
+        h('p', { className: 'vp-nota' }, 'Y así se ve la etiqueta dorada de una noticia de esta categoría:'),
+        h('p', null, h('span', { className: 'vp-tag' }, corto))
+      );
+    }
+
     registrar('noticias', VistaNoticia);
     registrar('paginas', VistaPagina);
     registrar('servicios', VistaServicio);
@@ -282,13 +577,21 @@ window.addEventListener('load', function () {
     registrar('servicios-portada', VistaServiciosPortada);
     registrar('aviso-urgente', VistaAviso);
     registrar('pie', VistaPie);
-    registrar('tarifas', VistaTarifas);
     registrar('contacto', VistaContacto);
     registrar('afiliate', VistaAfiliate);
     registrar('textos', VistaTextos);
     registrar('diseno', VistaDiseno);
-    registrar('huelga-info', VistaHuelga);
-    registrar('categorias', VistaCategorias);
+
+    // Las fichas del tablón y de la barra inferior se generan solas en la
+    // configuración, así que leemos sus nombres de ahí y les damos su vista previa.
+    fetch('/admin/config.yml').then(function (r) { return r.text(); }).then(function (t) {
+      (t.match(/- name: "tablon-[^"]+"/g) || []).forEach(function (m) {
+        registrar(m.slice(9, -1), VistaTablon);
+      });
+      (t.match(/- name: "paginas-[^"]+"/g) || []).forEach(function (m) {
+        registrar(m.slice(9, -1), VistaPagina);
+      });
+    }).catch(function () {});
   }
 });
 </script>
