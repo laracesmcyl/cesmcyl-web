@@ -81,7 +81,7 @@
         <a href="/noticias/{{ noticia.fileSlug }}/" class="tn{% if loop.first %} visible{% endif %}">
           <span class="tn-meta"><b>{% if (noticia.data | cat) != "Noticias" %}{{ noticia.data | cat }}{% endif %}</b><span>{{ noticia.data.date | fecha }}</span></span>
           <span class="tn-titulo">{{ noticia.data.title }}</span>
-          <span class="tn-desc">{{ noticia.data.description or (noticia.templateContent | excerpt(150)) }}</span>
+          <span class="tn-desc">{{ noticia.data.description or (noticia.templateContent | excerpt(300)) }}</span>
         </a>
         {%- endfor %}
         <span class="progreso" id="carrusel-progreso"></span>
