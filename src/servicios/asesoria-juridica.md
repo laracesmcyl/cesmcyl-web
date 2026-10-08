@@ -4,11 +4,6 @@ menu: "Asesoría jurídica"
 orden: 3
 icono: "balanza"
 entradilla: "Consultas, escritos, reclamaciones y procedimientos judiciales, con tarifas reducidas según tu antigüedad."
-bloques:
-  - titulo: "Enlaces útiles"
-    enlaces:
-      - texto: "Tarifas de asesoría jurídica"
-        destino: "/asesoria-juridica/"
 categorias:
   - "Sentencias"
 ---
