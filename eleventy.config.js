@@ -252,8 +252,23 @@ module.exports = function (eleventyConfig) {
   // noticias). Se lee aquí para poder montar los subapartados de servicios.
   eleventyConfig.addGlobalData("listaCategorias", function () {
     try {
-      const datos = JSON.parse(require("fs").readFileSync("src/static/categorias.json", "utf8"));
-      return (datos.categorias || []).map((c) => c.nombre).filter(Boolean);
+      const fs = require("fs");
+      const datos = JSON.parse(fs.readFileSync("src/static/categorias.json", "utf8"));
+      const lista = (datos.categorias || []).map((c) => c.nombre).filter(Boolean);
+      // Si en una noticia se ha escrito una categoría nueva a mano, la añadimos
+      // al final para que tenga su pestaña sin tocar la lista del panel.
+      const vistas = {};
+      lista.forEach((n) => { vistas[n.toLowerCase()] = true; });
+      const dir = "src/noticias";
+      fs.readdirSync(dir)
+        .filter((f) => f.endsWith(".md"))
+        .forEach((f) => {
+          const txt = fs.readFileSync(dir + "/" + f, "utf8");
+          const m = txt.match(/^category_nueva:\s*["']?(.+?)["']?\s*$/m);
+          const n = m && m[1].trim();
+          if (n && !vistas[n.toLowerCase()]) { vistas[n.toLowerCase()] = true; lista.push(n); }
+        });
+      return lista;
     } catch (e) {
       return [];
     }
