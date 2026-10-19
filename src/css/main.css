@@ -865,3 +865,69 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
   .serv-lista>li>a::after{display:none}
   .submenu-sep,.submenu-propio{display:none}
 }
+
+/* La etiqueta SERVICIOS no lleva la rayita dorada de los demás enlaces */
+.menu>li>a.serv-etq::after{display:none!important}
+.serv-etq{color:var(--oro)}
+.serv-etq:hover,.serv-etq.activo{color:var(--oro-claro)}
+
+/* La etiqueta SERVICIOS, con su rayita dorada delante */
+.serv-etq{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;letter-spacing:.15em}
+.serv-etq::before{content:"";display:block;width:18px;height:3px;border-radius:2px;background:var(--oro);flex-shrink:0;transition:width .25s ease}
+.serv-etq:hover::before,.serv-etq.activo::before{width:26px}
+@media (max-width:1500px){
+  .serv-etq{font-size:.72rem;letter-spacing:.13em;gap:.42rem}
+  .serv-etq::before{width:15px}
+}
+@media (max-width:1300px){
+  .serv-etq{font-size:.8rem;letter-spacing:.14em}
+  .serv-etq::before{width:18px}
+}
+
+/* SERVICIOS va subrayado siempre */
+.serv-etq{text-decoration:underline;text-decoration-color:var(--oro);text-decoration-thickness:2px;text-underline-offset:5px}
+.serv-etq:hover{text-decoration-color:var(--oro-claro)}
+@media (max-width:1300px){.serv-etq{text-underline-offset:4px}}
+
+/* Sin la rayita de delante: solo la palabra subrayada */
+.serv-etq::before{display:none}
+.serv-etq{gap:0}
+.menu>li>a.serv-etq{color:var(--oro)}
+.menu>li>a.serv-etq:hover{color:var(--oro-claro)}
+
+/* La etiqueta SERVICIOS rellena el extremo de la burbuja, en verde oscuro */
+.serv-grupo{padding-left:0;overflow:hidden;align-items:stretch;gap:0}
+.menu>li>a.serv-etq{background:var(--verde-hondo);color:#fff;display:flex;align-items:center;
+  font-size:.95rem;font-weight:900;letter-spacing:0;text-transform:none;text-decoration:none;
+  padding:.55rem 1.15rem;margin-right:1.1rem;border-radius:999px 0 0 999px;transition:background .2s}
+.menu>li>a.serv-etq:hover,.menu>li>a.serv-etq.activo{background:var(--verde-medio);color:#fff}
+.serv-etq::before{display:none}
+@media (max-width:1500px){
+  .menu>li>a.serv-etq{font-size:.9rem;padding:.5rem 1rem;margin-right:.95rem}
+}
+@media (max-width:1300px){
+  .serv-grupo{overflow:visible;align-items:stretch}
+  .menu>li>a.serv-etq{display:flex;background:transparent;color:var(--verde)!important;
+    font-size:1.05rem;padding:1rem 0;margin:0;border-radius:0;border-bottom:1px solid var(--linea)}
+  .menu>li>a.serv-etq:hover{background:transparent;color:var(--verde-medio)!important}
+}
+/* Mismo verde exacto que el botón Afíliate */
+.menu>li>a.serv-etq{background:var(--verde)}
+.menu>li>a.serv-etq:hover,.menu>li>a.serv-etq.activo{background:var(--verde-medio)}
+
+/* Servicios: base dorada difuminada, a la misma altura que la burbuja */
+.serv-grupo{padding:0 1.15rem 0 0;align-items:stretch;overflow:hidden}
+.menu>li>a.serv-etq{
+  background:linear-gradient(90deg,rgba(233,169,74,.95) 0%,rgba(233,169,74,.75) 40%,rgba(233,169,74,.18) 78%,rgba(233,169,74,0) 100%);
+  color:var(--verde-hondo);display:flex;align-items:center;
+  font-size:.95rem;font-weight:900;letter-spacing:0;text-transform:none;text-decoration:none;
+  padding:.72rem 2.6rem .72rem 1.15rem;margin:0;border-radius:999px 0 0 999px;transition:filter .2s}
+.menu>li>a.serv-etq:hover,.menu>li>a.serv-etq.activo{background:linear-gradient(90deg,rgba(233,169,74,1) 0%,rgba(233,169,74,.85) 40%,rgba(233,169,74,.25) 78%,rgba(233,169,74,0) 100%);color:var(--verde-hondo)}
+@media (max-width:1500px){
+  .menu>li>a.serv-etq{font-size:.9rem;padding:.68rem 2.2rem .68rem 1rem}
+}
+@media (max-width:1300px){
+  .serv-grupo{padding:0;overflow:visible}
+  .menu>li>a.serv-etq{background:none!important;color:var(--verde)!important;font-size:1.05rem;
+    padding:1rem 0;border-radius:0;border-bottom:1px solid var(--linea)}
+}
