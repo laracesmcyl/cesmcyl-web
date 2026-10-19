@@ -73,14 +73,17 @@ html{font-size:{{ tip.tamano_base or 17 }}px}
       <li><a href="/#inicio" data-seccion="inicio"{% if page.url == "/" %} class="activo"{% endif %}>{{ textos.menu_inicio or "Inicio" }}</a></li>
       <li><a href="/#noticias" data-seccion="noticias"{% if seccion == "noticias" %} class="activo"{% endif %}>{{ textos.menu_noticias or "Noticias" }}</a></li>
       <li><a href="/#quienes" data-seccion="quienes">{{ textos.menu_quienes or "Quiénes somos" }}</a></li>
-      <li class="desplegable">
-        <a href="/#servicios" data-seccion="servicios"{% if seccion == "servicios" %} class="activo"{% endif %}>{{ textos.menu_servicios or "Servicios" }}<span class="flechita" aria-hidden="true"></span></a>
-        <ul class="submenu">
+      <li class="serv-grupo">
+        <a href="/#servicios" class="serv-etq{% if seccion == "servicios" %} activo{% endif %}" data-seccion="servicios">{{ textos.menu_servicios or "Servicios" }}</a>
+        <ul class="serv-lista">
           {%- for serv in collections.servicios | principales %}
           {%- set hijasMenu = collections.servicios | hijasDe(serv.fileSlug) | unir(collections.paginas | hijasDe(serv.fileSlug)) %}
-          <li><a href="{{ serv.data.destino or serv.url }}">{{ serv.data.menu or serv.data.title }}</a>
+          <li{% if hijasMenu | length %} class="desplegable"{% endif %}>
+            <a href="{{ serv.data.destino or serv.url }}">{{ serv.data.menu or serv.data.title }}{% if hijasMenu | length %}<span class="flechita" aria-hidden="true"></span>{% endif %}</a>
             {%- if hijasMenu | length %}
-            <ul class="submenu-hijas">
+            <ul class="submenu">
+              <li class="submenu-propio"><a href="{{ serv.data.destino or serv.url }}">{{ serv.data.title }}</a></li>
+              <li class="submenu-sep" aria-hidden="true"></li>
               {%- for h in hijasMenu %}
               <li><a href="{{ h.data.destino or h.url }}">{{ h.data.menu or h.data.title }}</a></li>
               {%- endfor %}
