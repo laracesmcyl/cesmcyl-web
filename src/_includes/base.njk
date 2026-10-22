@@ -82,8 +82,6 @@ html{font-size:{{ tip.tamano_base or 17 }}px}
             <a href="{{ serv.data.destino or serv.url }}">{{ serv.data.menu or serv.data.title }}{% if hijasMenu | length %}<span class="flechita" aria-hidden="true"></span>{% endif %}</a>
             {%- if hijasMenu | length %}
             <ul class="submenu">
-              <li class="submenu-propio"><a href="{{ serv.data.destino or serv.url }}">{{ serv.data.title }}</a></li>
-              <li class="submenu-sep" aria-hidden="true"></li>
               {%- for h in hijasMenu %}
               <li><a href="{{ h.data.destino or h.url }}">{{ h.data.menu or h.data.title }}</a></li>
               {%- endfor %}
