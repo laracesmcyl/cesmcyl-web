@@ -364,8 +364,9 @@ body.midiendo #cabecera,body.midiendo #cabecera *{transition:none!important}
 .formulario{background:#fff;border:1px solid rgba(12,51,22,.1);border-radius:14px;padding:2.4rem}
 .formulario h3{font-size:1.5rem;font-weight:900;color:var(--verde);margin-bottom:1.5rem}
 .campos{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 1.2rem}
-.campos label{display:flex;flex-direction:column;gap:.4rem;font-size:.9rem;font-weight:700;color:var(--verde-hondo)}
-.campos label em{font-style:normal;font-weight:400;color:var(--gris-claro)}
+.campos label{display:block;font-size:.9rem;font-weight:700;color:var(--verde-hondo)}
+.campos label input,.campos label select,.campos label textarea{display:block;margin-top:.4rem}
+.campos label em{font-style:normal;font-weight:400;color:var(--gris-claro);margin-left:.3rem}
 .campos .ancho{grid-column:1 / -1}
 .campos input,.campos select,.campos textarea{font:400 1rem var(--sans);color:var(--tinta);background:#fbfcfa;border:1px solid rgba(12,51,22,.18);border-radius:8px;padding:.8rem .9rem;transition:border-color .2s,box-shadow .2s;width:100%}
 .campos textarea{resize:vertical;min-height:130px}
