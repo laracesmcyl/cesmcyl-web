@@ -160,25 +160,24 @@ collections:
               - { label: "Destino", name: "destino", widget: "string" }
       - name: "afiliate"
         label: "Afíliate"
+        description: "La página del formulario de afiliación: el título, la frase de debajo y la cuota."
         file: "src/_data/afiliate.json"
         fields:
           - { label: "Título", name: "titulo", widget: "string" }
           - { label: "Introducción", name: "intro", widget: "text" }
-          - { label: "Título de los pasos", name: "titulo_pasos", widget: "string" }
-          - label: "Pasos"
-            name: "pasos"
-            widget: "list"
-            label_singular: "Paso"
-            summary: "{{fields.titulo}}"
+          - label: "Cuota de afiliación"
+            name: "cuota"
+            widget: "object"
+            required: false
+            collapsed: false
             fields:
-              - { label: "Título del paso", name: "titulo", widget: "string" }
-              - { label: "Texto", name: "texto", widget: "text" }
-              - { label: "Texto del botón de descarga", name: "boton", widget: "string", required: false, hint: "Solo en el primer paso." }
-              - { label: "Frase antes de la dirección postal", name: "texto_postal", widget: "string", required: false }
-              - { label: "Dirección postal", name: "direccion_postal", widget: "text", required: false, hint: "Si lo rellenas, en este paso salen el correo y la dirección." }
-          - { label: "Frase de dudas", name: "dudas", widget: "string" }
-          - { label: "Hoja de afiliación (PDF)", name: "documento", widget: "file" }
-          - { label: "Nombre del documento", name: "titulo_documento", widget: "string" }
+              - { label: "Importe", name: "importe", widget: "string", required: false, hint: "Escríbelo tal cual quieres que se vea: 12 € · 12,50 € · 150 €. Si lo dejas vacío, no sale en ningún sitio." }
+              - label: "Cada cuánto se cobra"
+                name: "periodicidad"
+                widget: "select"
+                required: false
+                options: ["al mes", "al trimestre", "al semestre", "al año"]
+              - { label: "Aclaración (opcional)", name: "nota", widget: "text", required: false, hint: "Por ejemplo: «Los residentes y los jubilados tienen cuota reducida» o «El primer recibo se gira al mes siguiente del alta»." }
       - name: "noticias-portada"
         label: "Sección «Noticias»"
         file: "src/_data/noticias.json"
