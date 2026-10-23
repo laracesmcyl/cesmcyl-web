@@ -10,7 +10,7 @@ descripcion: "Afíliate a CESM Sindicato Médico Valladolid: rellena la solicitu
     <h1>{{ afiliate.titulo or "Afíliate a CESM Valladolid" }}</h1>
     <p>{{ afiliate.intro or "Rellena la solicitud, fírmala electrónicamente y nos llega al momento. No tienes que imprimir, firmar a mano ni escanear nada." }}</p>
     {%- if afiliate.cuota and afiliate.cuota.importe %}
-    <p class="pag-cab-cuota">Cuota de afiliación: <b>{{ afiliate.cuota.importe }}</b>{% if afiliate.cuota.periodicidad %} {{ afiliate.cuota.periodicidad }}{% endif %}</p>
+    <p class="pag-cab-cuota">La cuota de afiliación es de <b>{{ afiliate.cuota.importe }}</b>{% if afiliate.cuota.periodicidad %} {{ afiliate.cuota.periodicidad }}{% endif %}.</p>
     {%- endif %}
   </div>
 </header>
@@ -75,26 +75,18 @@ descripcion: "Afíliate a CESM Sindicato Médico Valladolid: rellena la solicitu
 
       <section class="sol-bloque">
         <h3><span class="sol-num">5</span> Orden de domiciliación de la cuota</h3>
-        <p class="sol-ayuda">Autorizas a CESM Sindicato Médico Valladolid a cargar los recibos de la cuota en tu cuenta.</p>
-        {%- if afiliate.cuota and afiliate.cuota.importe %}
-        <div class="sol-cuota">
-          <div class="sol-cuota-cifra"><b>{{ afiliate.cuota.importe }}</b>{% if afiliate.cuota.periodicidad %}<small>{{ afiliate.cuota.periodicidad }}</small>{% endif %}</div>
-          <div class="sol-cuota-txt">
-            <p>Esta es la cuota de afiliación a CESM Sindicato Médico Valladolid.</p>
-            {%- if afiliate.cuota.nota %}<p class="sol-cuota-nota">{{ afiliate.cuota.nota }}</p>{%- endif %}
-          </div>
-        </div>
-        {%- endif %}
+        {%- set per = afiliate.cuota.periodicidad if afiliate.cuota else "" %}
+        {%- set adj = "mensual" if per == "al mes" else ("trimestral" if per == "al trimestre" else ("semestral" if per == "al semestre" else ("anual" if per == "al año" else "mensual"))) %}
+        <p class="sol-ayuda">Autorizas a CESM Sindicato Médico Valladolid a cargar la cuota {{ adj }} de <b>{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.cuota.importe }}{% else %}10 €{% endif %}</b> en tu cuenta bancaria.{% if afiliate.cuota and afiliate.cuota.nota %} {{ afiliate.cuota.nota }}{% endif %}</p>
         <fieldset class="sol-opciones sol-opciones-2">
           <legend>¿Quieres domiciliar la cuota ahora? <em>obligatorio</em></legend>
-          <label class="sol-radio"><input type="radio" name="momento_sepa" value="Domicilia ahora" checked required><span><b>Sí, ahora</b><small>Relleno los datos bancarios y firmo la orden.</small></span></label>
-          <label class="sol-radio"><input type="radio" name="momento_sepa" value="Lo hará más tarde"><span><b>Más tarde</b><small>Os paso los datos bancarios después.</small></span></label>
+          <label class="sol-radio"><input type="radio" name="momento_sepa" value="Domicilia ahora" checked required><span><b>Sí, ahora</b><small>Relleno los datos bancarios.</small></span></label>
+          <label class="sol-radio"><input type="radio" name="momento_sepa" value="Lo hará más tarde"><span><b>Más tarde</b><small>El Sindicato le solicitará los datos bancarios cuando disponga de cuenta.</small></span></label>
         </fieldset>
         <div class="campos" id="campos-sepa">
           <label class="ancho">Titular de la cuenta<input type="text" name="titular" placeholder="Si eres tú, repite tu nombre y apellidos"></label>
           <label class="ancho">Domicilio del titular<input type="text" name="domicilio_titular"></label>
-          <label>Banco o caja de ahorros<input type="text" name="banco"></label>
-          <label>Agencia u oficina<input type="text" name="agencia"></label>
+          <label class="ancho">Banco o caja de ahorros<input type="text" name="banco"></label>
           <label class="ancho">Número de cuenta (IBAN)<input type="text" name="iban" placeholder="ES00 0000 0000 00 0000000000" autocomplete="off"></label>
         </div>
       </section>
@@ -112,33 +104,46 @@ descripcion: "Afíliate a CESM Sindicato Médico Valladolid: rellena la solicitu
       </section>
 
       <section class="sol-bloque">
-        <h3><span class="sol-num">7</span> Protección de datos</h3>
-        <div class="sol-legal">
-          <p><b>CESM SINDICATO MÉDICO VALLADOLID</b> es el responsable del tratamiento de tus datos personales y te informa de que serán tratados conforme al Reglamento (UE) 2016/679 (RGPD) y a la Ley Orgánica 3/2018 (LOPDGDD).</p>
-          <p><b>Fines:</b> tramitar tu afiliación, permitir el ejercicio de los derechos y obligaciones previstos en los estatutos, emitir el carné de afiliación, gestionar y cobrar las cuotas, enviar publicaciones e información, elaborar estadísticas y prestar servicios.</p>
-          <p><b>Legitimación:</b> interés legítimo del responsable con base en el artículo 9.2.d) del RGPD, que permite tratar los datos en el ámbito de las actividades legítimas del sindicato y con las debidas garantías.</p>
-          <p><b>Conservación:</b> se conservarán mientras sean necesarios para el fin del tratamiento y, después, se suprimirán con medidas de seguridad adecuadas.</p>
-          <p><b>Comunicación:</b> no se cederán a terceros, salvo obligación legal o a las organizaciones sindicales autonómicas o nacionales a las que pertenece CESM Valladolid.</p>
-          <p><b>Tus derechos:</b> retirar el consentimiento en cualquier momento; acceder, rectificar, portar y suprimir tus datos; limitar u oponerte a su tratamiento; y reclamar ante la Agencia Española de Protección de Datos (www.aepd.es).</p>
-          <p><b>Para ejercerlos:</b> CESM Sindicato Médico Valladolid, {{ contacto.direccion | replace("\n", " · ") }}. Correo: {{ contacto.email }}. Delegado de protección de datos: dpo@rsprivacidad.es</p>
+        <h3><span class="sol-num">7</span> Términos y condiciones</h3>
+        <div class="sol-legal" id="texto-legal" hidden>
+          <p><b>CESM SINDICATO MÉDICO VALLADOLID</b> es el Responsable del tratamiento de los datos personales del Interesado y le informa que estos datos serán tratados de conformidad con lo dispuesto en el Reglamento (UE) 2016/679 de 27 de abril (GDPR) y la Ley Orgánica 3/2018 de 5 de diciembre (LOPDGDD), por lo que se le facilita la siguiente información del tratamiento:</p>
+          <p><b>Fines del tratamiento:</b> Tramitar su afiliación, permitir el ejercicio de los derechos y obligaciones previstos en los estatutos, emisión de carnés de afiliación, gestión y cobro de cuotas, envío de publicaciones e información, elaboración de estadísticas y prestación de servicios. Si desempeña labores de representación colectiva, los datos serán tratados para la realización y seguimiento de las actividades sindicales amparadas en la legislación vigente.</p>
+          <p><b>Legitimación del tratamiento:</b> Por interés legítimo del Responsable basado en el artículo 9, apartado 2 letra d) del Reglamento (UE) 2016/679 de 27 de abril de 2016 (GDPR) por el cual se tratarán los datos en el ámbito de sus actividades legítimas y con las debidas garantías.</p>
+          <p><b>Criterios de conservación de los datos:</b> se conservarán durante no más tiempo del necesario para mantener el fin del tratamiento y cuando ya no sea necesario para tal fin, se suprimirán con medidas de seguridad adecuadas para garantizar la seudonimización de los datos o la destrucción total de los mismos.</p>
+          <p><b>Comunicación de los datos:</b> no se comunicarán los datos a terceros, salvo obligación legal, como el caso de organizaciones sindicales autonómicas o nacionales.</p>
+          <p><b>Derechos que asisten al Interesado:</b></p>
+          <ul class="sol-legal-lista">
+            <li>Derecho a retirar el consentimiento en cualquier momento.</li>
+            <li>Derecho de acceso, rectificación, portabilidad y supresión de sus datos y a la limitación u oposición a su tratamiento.</li>
+            <li>Derecho a presentar una reclamación ante la Autoridad de control (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>) si considera que el tratamiento no se ajusta a la normativa vigente.</li>
+          </ul>
+          <p><b>Datos de contacto para ejercer sus derechos:</b> CESM SINDICATO MÉDICO VALLADOLID. CALLE ANGUSTIAS, 34 1 IZQ – 47003 VALLADOLID (Valladolid). Email: <a href="mailto:cesmvalladolid@cesmcyl.es">cesmvalladolid@cesmcyl.es</a></p>
+          <p><b>Datos de contacto del DPO:</b> <a href="mailto:dpo@rsprivacidad.es">dpo@rsprivacidad.es</a></p>
         </div>
         <div class="sol-checks">
-          <label class="sol-check"><input type="checkbox" name="consiente" required><span>Consiento el tratamiento de mis datos en los términos indicados. <em>Obligatorio</em></span></label>
-          <label class="sol-check"><input type="checkbox" name="estatutos" required><span>Declaro conocer y aceptar los estatutos y el reglamento de régimen interno del sindicato. <em>Obligatorio</em></span></label>
-          <label class="sol-check"><input type="checkbox" name="comunicaciones"><span>Quiero recibir comunicaciones, convocatorias y novedades por correo electrónico. <em>opcional</em></span></label>
+          <label class="sol-check" id="check-terminos"><input type="checkbox" name="consiente" id="casilla-terminos" required disabled><span>He leído y acepto los <a href="/terminos-y-condiciones.pdf" id="enlace-terminos" target="_blank" rel="noopener">términos y condiciones</a>.
+            <small class="sol-check-por" id="aviso-terminos">Ábrelos para poder marcar la casilla.</small></span></label>
+          <label class="sol-check"><input type="checkbox" name="comunicaciones"><span>Quiero recibir comunicaciones, convocatorias y novedades del sindicato por nuestros medios de comunicación interna.
+            <small class="sol-check-por">Es opcional: marcar esta casilla mejorará nuestra comunicación contigo, optimizando la organización sindical. Puedes darte de baja en cualquier momento.</small></span></label>
         </div>
       </section>
 
       <section class="sol-bloque" id="bloque-firma">
         <h3><span class="sol-num">8</span> Firma</h3>
-        <p class="sol-ayuda">Escribe tu nombre y apellidos y marca la casilla. Eso es tu firma electrónica: tiene el mismo valor que la firma a mano, y queda registrada con la fecha, la hora y la dirección desde la que la haces.</p>
-        <div class="campos">
-          <label class="ancho">Firma: escribe tu nombre y apellidos completos <em>obligatorio</em><input type="text" name="firma_nombre" class="sol-firma" required autocomplete="off" placeholder="Nombre y apellidos, tal como los has puesto arriba"></label>
+        <p class="sol-ayuda">Firma dentro del recuadro con el ratón, o con el dedo si estás en el móvil o en una tableta. Tiene el mismo valor que la firma a mano y queda registrada con la fecha, la hora y la dirección desde la que la haces.</p>
+        <div class="sol-pad-caja">
+          <span class="sol-pad-etq">Firma del interesado/a <em>obligatorio</em></span>
+          <div class="sol-pad-marco">
+            <canvas id="sol-pad" class="sol-pad" width="900" height="300" aria-label="Recuadro para firmar"></canvas>
+            <span class="sol-pad-linea" aria-hidden="true"></span>
+            <span class="sol-pad-pista" id="sol-pad-pista" aria-hidden="true">Firma aquí</span>
+          </div>
+          <div class="sol-pad-pie">
+            <small>Si no te gusta cómo ha salido, bórrala y vuelve a firmar.</small>
+            <button type="button" class="btn-linea" id="sol-pad-borrar">Borrar firma</button>
+          </div>
         </div>
-        <div class="sol-checks">
-          <label class="sol-check"><input type="checkbox" name="firma_solicitud" required><span>Firmo esta solicitud de afiliación a CESM Sindicato Médico Valladolid. <em>Obligatorio</em></span></label>
-          <label class="sol-check" id="check-sepa"><input type="checkbox" name="firma_sepa"><span>Firmo la orden de domiciliación para que los recibos de la cuota se carguen en la cuenta indicada. <em>Obligatorio si domicilias ahora</em></span></label>
-        </div>
+        <input type="hidden" name="firma_nombre">
       </section>
 
       <p class="sol-trampa" aria-hidden="true"><label>No rellenes esto<input type="text" name="web" tabindex="-1" autocomplete="off"></label></p>
@@ -164,7 +169,7 @@ descripcion: "Afíliate a CESM Sindicato Médico Valladolid: rellena la solicitu
 <!-- Documento que se guarda en PDF. No se ve en pantalla. -->
 <div id="impreso" aria-hidden="true"></div>
 <script>var CESM_EMAIL = "{{ contacto.email }}";
-var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.cuota.importe }}{% if afiliate.cuota.periodicidad %} {{ afiliate.cuota.periodicidad }}{% endif %}{% endif %}";</script>
+var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.cuota.importe }}{% if afiliate.cuota.periodicidad %} {{ afiliate.cuota.periodicidad }}{% endif %}{% else %}10 euros al mes{% endif %}";</script>
 {% raw %}
 <script>
 (function () {
@@ -173,16 +178,80 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
   var error = document.getElementById('sol-error');
   var impreso = document.getElementById('impreso');
 
+  /* Recuadro de firma: se dibuja con el ratón o con el dedo */
+  var pad = document.getElementById('sol-pad');
+  var lienzo = pad.getContext('2d');
+  var pista = document.getElementById('sol-pad-pista');
+  var firmaPNG = '';
+  var trazos = 0;
+  var pintando = false;
+  lienzo.lineWidth = 2.6;
+  lienzo.lineCap = 'round';
+  lienzo.lineJoin = 'round';
+  lienzo.strokeStyle = '#1b2a4e';
+
+  function punto(e) {
+    var c = pad.getBoundingClientRect();
+    return { x: (e.clientX - c.left) * (pad.width / c.width), y: (e.clientY - c.top) * (pad.height / c.height) };
+  }
+  function empieza(e) {
+    e.preventDefault();
+    pintando = true;
+    trazos++;
+    if (pista) pista.hidden = true;
+    document.querySelector('.sol-pad-marco').classList.remove('invalido');
+    var p = punto(e);
+    lienzo.beginPath();
+    lienzo.moveTo(p.x, p.y);
+    lienzo.lineTo(p.x + 0.1, p.y + 0.1);
+    lienzo.stroke();
+    try { pad.setPointerCapture(e.pointerId); } catch (x) {}
+  }
+  function sigue(e) {
+    if (!pintando) return;
+    e.preventDefault();
+    var p = punto(e);
+    lienzo.lineTo(p.x, p.y);
+    lienzo.stroke();
+  }
+  function termina() { pintando = false; }
+  pad.addEventListener('pointerdown', empieza);
+  pad.addEventListener('pointermove', sigue);
+  pad.addEventListener('pointerup', termina);
+  pad.addEventListener('pointerleave', termina);
+  pad.addEventListener('pointercancel', termina);
+
+  function padVacio() { return trazos === 0; }
+  function borraPad() {
+    lienzo.clearRect(0, 0, pad.width, pad.height);
+    trazos = 0;
+    firmaPNG = '';
+    if (pista) pista.hidden = false;
+  }
+  var botonBorrar = document.getElementById('sol-pad-borrar');
+  if (botonBorrar) botonBorrar.addEventListener('click', borraPad);
+
+  /* La casilla de términos no se puede marcar hasta abrir el documento */
+  var enlaceTerminos = document.getElementById('enlace-terminos');
+  var casillaTerminos = document.getElementById('casilla-terminos');
+  var avisoTerminos = document.getElementById('aviso-terminos');
+  if (enlaceTerminos && casillaTerminos) {
+    enlaceTerminos.addEventListener('click', function () {
+      casillaTerminos.disabled = false;
+      document.getElementById('check-terminos').classList.add('sol-check-abierto');
+      if (avisoTerminos) avisoTerminos.textContent = 'Ya puedes marcar la casilla.';
+    });
+  }
+
   /* El bloque de residencia solo se enseña si eliges MIR */
   var camposMir = document.getElementById('campos-mir');
   var camposSepa = document.getElementById('campos-sepa');
-  var checkSepa = form.elements['firma_sepa'];
-  function ajustaSepa() {
+  function domiciliaAhora() {
     var ahora = form.querySelector('[name=momento_sepa]:checked');
-    var si = !ahora || ahora.value.indexOf('Domicilia') === 0;
-    camposSepa.hidden = !si;
-    checkSepa.required = si;
-    document.getElementById('check-sepa').hidden = !si;
+    return !ahora || ahora.value.indexOf('Domicilia') === 0;
+  }
+  function ajustaSepa() {
+    camposSepa.hidden = !domiciliaAhora();
   }
   ajustaSepa();
   form.addEventListener('change', function (e) {
@@ -222,6 +291,7 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
   function firmaElectronica(concepto, quien) {
     var ahora = new Date();
     var f = '<div class="im-firma"><p>En Valladolid, a ' + fechaLarga(ahora.toISOString().slice(0, 10)) + '</p>';
+    if (firmaPNG) f += '<img class="im-rubrica" src="' + firmaPNG + '" alt="">';
     f += '<p class="im-firmado">Firmado electrónicamente por <b>' + esc(quien) + '</b></p>';
     f += '<p class="im-sello">' + esc(concepto) + ' · ' + ahora.toLocaleString('es-ES') + '</p></div>';
     return f;
@@ -244,15 +314,16 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
     var hoy = new Date();
     var nombreCompleto = v('nombre') + ' ' + v('apellidos');
 
-    var sinAcentos = function (t) {
-      return t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
-    };
-    if (sinAcentos(v('firma_nombre')) !== sinAcentos(nombreCompleto)) {
-      error.textContent = 'La firma tiene que ser tu nombre y apellidos completos, igual que los has escrito arriba: ' + nombreCompleto;
-      form.elements['firma_nombre'].classList.add('invalido');
-      form.elements['firma_nombre'].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (padVacio()) {
+      error.textContent = 'Falta tu firma: dibújala dentro del recuadro antes de enviar la solicitud.';
+      document.getElementById('bloque-firma').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.querySelector('.sol-pad-marco').classList.add('invalido');
       return;
     }
+    firmaPNG = pad.toDataURL('image/png');
+    form.elements['firma_nombre'].value = nombreCompleto;
+
+    var participa = marcado('participa');
     var situacion = v('situacion');
     if (situacion.indexOf('Residente') === 0) {
       var extra = [];
@@ -260,7 +331,6 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
       if (v('final_mir')) extra.push('fin previsto: ' + v('final_mir'));
       if (extra.length) situacion += ' (' + extra.join(', ') + ')';
     }
-    var participa = marcado('participa');
 
     var h = '';
     h += '<div class="im-hoja">';
@@ -309,7 +379,6 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
     h += fila('Dr. D./Dña.', v('titular') || nombreCompleto);
     h += fila('Con domicilio en', v('domicilio_titular') || v('domicilio'));
     h += fila('Banco o caja de ahorros', v('banco'));
-    h += fila('Agencia', v('agencia'));
     h += fila('Número de cuenta (IBAN)', v('iban') || '______________________________________');
     if (CESM_CUOTA) { h += fila('Importe de la cuota', CESM_CUOTA); }
     h += '</div>';
@@ -322,7 +391,7 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
     h += '<div class="im-hoja">';
     h += '<div class="im-cab"><img src="/logo-cesm-vll-hq.png" alt=""><div><b>SINDICATO MÉDICO CESM VALLADOLID</b><span>Información sobre protección de datos</span></div></div>';
     h += '<div class="im-legal">' + document.querySelector('.sol-legal').innerHTML + '</div>';
-    h += '<p class="im-parrafo"><b>El interesado consiente el tratamiento de sus datos en los términos expuestos</b>, declara conocer y aceptar los estatutos y el reglamento de régimen interno del sindicato';
+    h += '<p class="im-parrafo"><b>El interesado ha leído y acepta los términos y condiciones</b> y consiente el tratamiento de sus datos en los términos expuestos';
     h += (form.elements['comunicaciones'] && form.elements['comunicaciones'].checked ? ', y acepta recibir comunicaciones e información por correo electrónico.' : '.');
     h += '</p>';
     h += '<div class="im-datos">';
@@ -339,15 +408,16 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
     var textoBoton = boton.textContent;
     boton.textContent = 'Enviando…';
 
-    var carga = { participa: participa, consiente: true, estatutos: true,
+    var carga = { participa: participa, consiente: true,
       firma_solicitud: true,
-      firma_sepa: !!(checkSepa && checkSepa.checked),
+      firma_sepa: domiciliaAhora(),
       firmado_en: hoy.toISOString(),
+      firma_imagen: firmaPNG,
       comunicaciones: !!(form.elements['comunicaciones'] && form.elements['comunicaciones'].checked) };
     ['nombre','apellidos','dni','nacimiento','lugar_nacimiento','domicilio','cp','localidad','provincia',
      'telefono','movil','email','facultad','fin_carrera','colegio','n_colegiado','especialidad','situacion',
      'anio_mir','final_mir','centro','servicio','telefono_trabajo','titular','domicilio_titular',
-     'banco','agencia','iban','momento_sepa','firma_nombre','web'].forEach(function (c) { carga[c] = v(c); });
+     'banco','iban','momento_sepa','firma_nombre','web'].forEach(function (c) { carga[c] = v(c); });
 
     fetch('/api/afiliacion', {
       method: 'POST',
