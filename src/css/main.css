@@ -961,10 +961,15 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 .sol-check{display:flex;align-items:flex-start;gap:.65rem;font-size:.94rem;color:var(--tinta);line-height:1.5;cursor:pointer}
 .sol-check input{margin-top:.2rem;accent-color:var(--verde);width:17px;height:17px;flex-shrink:0}
 .sol-check em{font-style:normal;font-size:.8rem;color:var(--gris-claro)}
+.sol-check-por{display:block;margin-top:.3rem;font-size:.84rem;line-height:1.45;color:rgba(12,51,22,.6)}
+.sol-legal-aviso{font-size:.82rem;color:rgba(12,51,22,.55);margin-bottom:1.1rem}
+.sol-legal-lista{margin:.1rem 0 .55rem 1.1rem;padding:0}
+.sol-legal-lista li{margin-bottom:.25rem}
+.sol-legal a{color:var(--verde);text-decoration:underline}
 .sol-revisado .sol-check input:invalid+span{color:#b3261e}
 .sol-bloque [hidden]{display:none!important}
 
-.sol-legal{background:#f6f9f5;border-radius:10px;padding:1.2rem 1.3rem;margin-bottom:1.3rem;font-size:.86rem;line-height:1.65;color:#3d4c42;max-height:16rem;overflow-y:auto}
+.sol-legal{background:#f6f9f5;border:1px solid rgba(12,51,22,.14);border-radius:10px;padding:1.2rem 1.3rem;margin-bottom:.5rem;font-size:.86rem;line-height:1.65;color:#3d4c42;max-height:16rem;overflow-y:auto}
 .sol-legal p{margin-bottom:.7rem}
 .sol-legal p:last-child{margin-bottom:0}
 
@@ -1028,21 +1033,54 @@ address{font-style:normal;margin-top:.35rem;padding:.9rem 1.1rem;background:var(
 /* Firma electrónica */
 .sol-firma{font-size:1.15rem!important;font-family:"Georgia","Times New Roman",serif!important;font-style:italic}
 .sol-opciones-2{grid-template-columns:1fr 1fr}
-#campos-sepa[hidden],#check-sepa[hidden]{display:none!important}
+#campos-sepa[hidden]{display:none!important}
 
 @media print{
   .im-firmado{margin-top:1.6rem;font-size:11pt}
   .im-sello{margin-top:.2rem;font-size:8.5pt;color:#666}
 }
 
-/* Recuadro de la cuota dentro del formulario */
-.sol-cuota{display:flex;align-items:center;gap:1.3rem;flex-wrap:wrap;background:var(--papel);border:1px solid rgba(12,51,22,.16);border-left:5px solid var(--oro);border-radius:10px;padding:1.1rem 1.3rem;margin:0 0 1.5rem}
-.sol-cuota-cifra{display:flex;flex-direction:column;align-items:flex-start;line-height:1.05}
-.sol-cuota-cifra b{font-size:1.9rem;font-weight:900;color:var(--verde)}
-.sol-cuota-cifra small{font-size:.82rem;font-weight:700;color:rgba(12,51,22,.6);letter-spacing:.02em}
-.sol-cuota-txt{flex:1 1 260px}
-.sol-cuota-txt p{margin:0;font-size:.95rem;line-height:1.5}
-.sol-cuota-nota{margin-top:.35rem !important;font-size:.88rem !important;color:rgba(12,51,22,.68)}
+/* La cuota dentro del formulario */
+.sol-cuota{background:var(--papel);border-left:4px solid var(--oro);border-radius:8px;padding:.85rem 1.1rem;margin:0 0 1.3rem;font-size:1.02rem;font-weight:700;color:var(--verde)}
+.sol-cuota-nota{display:block;margin-top:.3rem;font-size:.88rem;font-weight:400;color:rgba(12,51,22,.68)}
 
 .pag-cab-cuota{margin-top:1rem;font-size:1.02rem}
 .pag-cab-cuota b{color:var(--oro);font-weight:900}
+
+.sol-legal.sol-legal-corto{max-height:none;overflow:visible;margin-bottom:1.3rem}
+
+/* Recuadro de firma a mano */
+.sol-pad-caja{margin:.2rem 0 1.2rem}
+.sol-pad-etq{display:block;font-weight:700;font-size:.95rem;margin-bottom:.5rem;color:var(--tinta)}
+.sol-pad-etq em{font-style:normal;font-size:.8rem;font-weight:400;color:var(--gris-claro);margin-left:.3rem}
+.sol-pad-marco{position:relative;border:1.5px solid rgba(12,51,22,.22);border-radius:10px;background:#fcfdfc;overflow:hidden;transition:border-color .2s,background .2s}
+.sol-pad-marco.invalido{border-color:#c0392b;background:#fdf4f3}
+.sol-pad{display:block;width:100%;height:200px;touch-action:none;cursor:crosshair}
+.sol-pad-linea{position:absolute;left:8%;right:8%;bottom:28%;border-bottom:1px dashed rgba(12,51,22,.22);pointer-events:none}
+.sol-pad-pista{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:italic 1.1rem "Georgia","Times New Roman",serif;color:rgba(12,51,22,.28);pointer-events:none}
+.sol-pad-pista[hidden]{display:none}
+.sol-pad-pie{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:.6rem}
+.sol-pad-pie small{font-size:.84rem;color:rgba(12,51,22,.6)}
+.sol-pad-pie .btn-linea{padding:.55rem 1rem;font-size:.88rem}
+@media (max-width:620px){
+  .sol-pad{height:160px}
+  .sol-pad-pie{flex-direction:column;align-items:stretch}
+}
+
+/* Enlace a los términos y condiciones */
+.sol-terminos{margin:0 0 1.2rem}
+.sol-terminos a{display:inline-flex;align-items:center;gap:.55rem;font-weight:700;color:var(--verde);text-decoration:none;border:1.5px solid rgba(12,51,22,.2);border-radius:var(--radio-boton,6px);padding:.7rem 1.1rem;transition:border-color .2s,background .2s}
+.sol-terminos a:hover{border-color:var(--verde-medio);background:#eef3ec}
+.sol-terminos svg{width:20px;height:20px;flex:0 0 auto}
+.sol-terminos small{font-size:.75rem;font-weight:900;letter-spacing:.06em;color:var(--oro)}
+.sol-check a{color:var(--verde);font-weight:700}
+
+@media print{
+  .im-rubrica{display:block;max-width:62mm;max-height:24mm;margin:.4rem 0 -.2rem}
+}
+
+/* La casilla de términos, bloqueada hasta abrir el documento */
+.sol-check input[type="checkbox"]:disabled{cursor:not-allowed;opacity:.45}
+.sol-check input[type="checkbox"]:disabled ~ span{color:rgba(12,51,22,.5)}
+.sol-check-abierto input[type="checkbox"] ~ span{color:var(--tinta)}
+.sol-check-abierto .sol-check-por{color:var(--verde-medio,#3f7a4e)}
