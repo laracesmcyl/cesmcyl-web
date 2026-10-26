@@ -11,6 +11,16 @@
  *   CORREO_REMITE   una dirección verificada en Brevo, p. ej. web@cesmcyl.es
  */
 
+/** Devuelve la clave de Brevo venga como venga: texto plano o Secrets Store. */
+async function leeClave(valor) {
+  if (!valor) return '';
+  if (typeof valor === 'string') return valor.trim();
+  if (typeof valor.get === 'function') {
+    try { return String(await valor.get() || '').trim(); } catch (e) { return ''; }
+  }
+  return '';
+}
+
 const CAMPOS_OBLIGATORIOS = [
   'nombre', 'apellidos', 'dni', 'nacimiento', 'domicilio',
   'cp', 'localidad', 'provincia', 'movil', 'email', 'n_colegiado', 'situacion',
@@ -140,14 +150,17 @@ export async function onRequestPost({ request, env }) {
   const destino = env.CORREO_DESTINO || 'cesmvalladolid@cesmcyl.es';
   const remite = env.CORREO_REMITE || destino;
 
-  if (!env.BREVO_API_KEY) {
+  // La clave puede llegar como texto (variable o secreto normal) o como
+  // binding del Secrets Store de Cloudflare, que se lee con .get().
+  const clave = await leeClave(env.BREVO_API_KEY);
+  if (!clave) {
     return responde(500, { ok: false, error: 'El envío no está configurado todavía. Escríbenos a ' + destino + '.' });
   }
 
   const enviar = (payload) => fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
     headers: {
-      'api-key': env.BREVO_API_KEY,
+      'api-key': clave,
       'content-type': 'application/json',
       accept: 'application/json'
     },
