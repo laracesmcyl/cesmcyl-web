@@ -17,4 +17,4 @@ CORREO_REMITE = "cesmvalladolid@cesmcyl.es"
 [[secrets_store_secrets]]
 binding = "BREVO_API_KEY"
 store_id = "a92ff1c176424fbfbaa7b04621dce05b"
-secret_name = "brevo""]
+secret_name = "brevo"
