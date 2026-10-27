@@ -1,8 +1,20 @@
 name = "cesmcyl-web"
 main = "worker.js"
 compatibility_date = "2026-01-01"
-
+ 
 [assets]
 directory = "./_site"
 binding = "ASSETS"
 run_worker_first = ["/api/*"]
+ 
+# Direcciones del formulario de afiliación.
+[vars]
+CORREO_DESTINO = "cesmvalladolid@cesmcyl.es"
+CORREO_REMITE = "cesmvalladolid@cesmcyl.es"
+ 
+# La clave de Brevo, guardada en el almacén de secretos de Cloudflare.
+# Aquí solo va la referencia: la clave no sale nunca de Cloudflare.
+[[secrets_store_secrets]]
+binding = "BREVO_API_KEY"
+store_id = "a92ff1c176424fbfbaa7b04621dce05b"
+secret_name = "brevo""]
