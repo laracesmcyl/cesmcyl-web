@@ -35,7 +35,6 @@ descripcion: "Afíliate a CESM Sindicato Médico Valladolid: rellena la solicitu
           <label>Teléfono móvil <em>obligatorio</em><input type="tel" name="movil" required autocomplete="tel"></label>
           <label>Correo electrónico <em>obligatorio</em><input type="email" name="email" required autocomplete="email"></label>
         </div>
-        <p class="sol-ayuda">El correo y el móvil son la vía habitual de comunicación del sindicato contigo.</p>
       </section>
 
       <section class="sol-bloque">
@@ -81,19 +80,7 @@ descripcion: "Afíliate a CESM Sindicato Médico Valladolid: rellena la solicitu
       </section>
 
       <section class="sol-bloque">
-        <h3><span class="sol-num">5</span> ¿Quieres participar? <span class="sol-opcional">opcional</span></h3>
-        <p class="sol-ayuda">Marcar estas casillas no te compromete a nada. Solo sirve para que el sindicato sepa con quién puede contar.</p>
-        <div class="sol-checks">
-          <label class="sol-check"><input type="checkbox" name="participa" value="Formar o reforzar la sección sindical de mi centro"><span>Formar o reforzar la sección sindical de mi centro</span></label>
-          <label class="sol-check"><input type="checkbox" name="participa" value="Presentarme a las elecciones de representación del personal"><span>Presentarme a las elecciones de representación del personal</span></label>
-          <label class="sol-check"><input type="checkbox" name="participa" value="Participar en comités de huelga o movilizaciones"><span>Participar en comités de huelga o movilizaciones</span></label>
-          <label class="sol-check"><input type="checkbox" name="participa" value="Colaborar en comisiones o grupos de trabajo profesionales"><span>Colaborar en comisiones o grupos de trabajo profesionales</span></label>
-          <label class="sol-check"><input type="checkbox" name="participa" value="Dar a conocer el sindicato entre mis compañeros"><span>Dar a conocer el sindicato entre mis compañeros</span></label>
-        </div>
-      </section>
-
-      <section class="sol-bloque">
-        <h3><span class="sol-num">6</span> Términos y condiciones</h3>
+        <h3><span class="sol-num">5</span> Términos y condiciones</h3>
         <div class="sol-legal" id="texto-legal" hidden>
           <p><b>CESM SINDICATO MÉDICO VALLADOLID</b> es el Responsable del tratamiento de los datos personales del Interesado y le informa que estos datos serán tratados de conformidad con lo dispuesto en el Reglamento (UE) 2016/679 de 27 de abril (GDPR) y la Ley Orgánica 3/2018 de 5 de diciembre (LOPDGDD), por lo que se le facilita la siguiente información del tratamiento:</p>
           <p><b>Fines del tratamiento:</b> Tramitar su afiliación, permitir el ejercicio de los derechos y obligaciones previstos en los estatutos, emisión de carnés de afiliación, gestión y cobro de cuotas, envío de publicaciones e información, elaboración de estadísticas y prestación de servicios. Si desempeña labores de representación colectiva, los datos serán tratados para la realización y seguimiento de las actividades sindicales amparadas en la legislación vigente.</p>
@@ -118,7 +105,7 @@ descripcion: "Afíliate a CESM Sindicato Médico Valladolid: rellena la solicitu
       </section>
 
       <section class="sol-bloque" id="bloque-firma">
-        <h3><span class="sol-num">7</span> Firma</h3>
+        <h3><span class="sol-num">6</span> Firma</h3>
         <p class="sol-ayuda">Firma dentro del recuadro con el ratón, o con el dedo si estás en el móvil o en una tableta. Tiene el mismo valor que la firma a mano y queda registrada con la fecha, la hora y la dirección desde la que la haces.</p>
         <div class="sol-pad-caja">
           <span class="sol-pad-etq">Firma del interesado/a <em>obligatorio</em></span>
@@ -349,7 +336,6 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
     firmaPNG = rubricaJpeg();
     form.elements['firma_nombre'].value = nombreCompleto;
 
-    var participa = marcado('participa');
     var situacion = v('situacion');
     if (situacion.indexOf('Residente') === 0) {
       var extra = [];
@@ -388,12 +374,6 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
 
     var trabajo = fila('Centro de trabajo', v('centro')) + fila('Servicio o unidad', v('servicio')) + fila('Teléfono del trabajo', v('telefono_trabajo'));
     if (trabajo) h += '<h2>3 · Lugar de trabajo</h2><div class="im-datos">' + trabajo + '</div>';
-
-    if (participa.length) {
-      h += '<h2>' + (trabajo ? '4' : '3') + ' · Participación</h2><ul class="im-lista">';
-      for (var j = 0; j < participa.length; j++) h += '<li>' + esc(participa[j]) + '</li>';
-      h += '</ul>';
-    }
 
     h += firmaElectronica('Solicitud de afiliación', nombreCompleto);
     h += '</div>';
@@ -434,7 +414,7 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
     var textoBoton = boton.textContent;
     boton.textContent = 'Enviando…';
 
-    var carga = { participa: participa, consiente: true,
+    var carga = { consiente: true,
       firma_solicitud: true,
       firma_sepa: true,
       firmado_en: hoy.toISOString(),
