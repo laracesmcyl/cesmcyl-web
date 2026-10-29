@@ -42,10 +42,12 @@ descripcion: "Afíliate a CESM Sindicato Médico Valladolid: rellena la solicitu
         <h3><span class="sol-num">2</span> Datos profesionales</h3>
         <div class="campos">
           <label>Facultad donde estudiaste<input type="text" name="facultad"></label>
-          <label>Fecha de finalización de la carrera<input type="text" name="fin_carrera" placeholder="Por ejemplo: junio de 2014"></label>
+          <label>Año de fin de carrera<input type="number" name="fin_carrera" inputmode="numeric" min="1950" max="2100" step="1" placeholder="2014"></label>
           <label>Colegio de Médicos<input type="text" name="colegio" value="Valladolid"></label>
           <label>Nº de colegiado <em>obligatorio</em><input type="text" name="n_colegiado" required></label>
-          <label class="ancho">Especialidad<input type="text" name="especialidad"></label>
+          <label class="ancho">Especialidad <em>obligatorio</em><input type="text" name="especialidad" required></label>
+          <label class="ancho">Centro de trabajo <em>obligatorio</em><input type="text" name="centro" required placeholder="Hospital, centro de salud o empresa"></label>
+          <label>Teléfono del trabajo<input type="tel" name="telefono_trabajo" placeholder="Si tienes"></label>
         </div>
       </section>
 
@@ -59,40 +61,27 @@ descripcion: "Afíliate a CESM Sindicato Médico Valladolid: rellena la solicitu
           <label class="sol-radio"><input type="radio" name="situacion" value="Jubilado"><span><b>Jubilado</b><small>Ya no en activo.</small></span></label>
         </fieldset>
         <div class="campos sol-mir" id="campos-mir" hidden>
-          <label>Año de residencia<select name="anio_mir"><option value="">Elige…</option><option>R1</option><option>R2</option><option>R3</option><option>R4</option><option>R5</option></select></label>
-          <label>Fecha prevista de fin de residencia<input type="text" name="final_mir" placeholder="Por ejemplo: mayo de 2028"></label>
+          <label>Año de residencia <em>obligatorio</em><select name="anio_mir"><option value="">Elige…</option><option>R1</option><option>R2</option><option>R3</option><option>R4</option><option>R5</option></select></label>
+          <label>Año de fin de residencia <em>obligatorio</em><input type="number" name="final_mir" inputmode="numeric" min="2024" max="2100" step="1" placeholder="2028"></label>
         </div>
       </section>
 
       <section class="sol-bloque">
-        <h3><span class="sol-num">4</span> Lugar de trabajo</h3>
-        <div class="campos">
-          <label class="ancho">Centro de trabajo<input type="text" name="centro" placeholder="Hospital, centro de salud o empresa"></label>
-          <label>Servicio o unidad<input type="text" name="servicio"></label>
-          <label>Teléfono del trabajo<input type="tel" name="telefono_trabajo"></label>
-        </div>
-      </section>
-
-      <section class="sol-bloque">
-        <h3><span class="sol-num">5</span> Orden de domiciliación de la cuota</h3>
+        <h3><span class="sol-num">4</span> Orden de domiciliación de la cuota <em class="sol-obliga">obligatorio</em></h3>
         {%- set per = afiliate.cuota.periodicidad if afiliate.cuota else "" %}
-        {%- set adj = "mensual" if per == "al mes" else ("trimestral" if per == "al trimestre" else ("semestral" if per == "al semestre" else ("anual" if per == "al año" else "mensual"))) %}
-        <p class="sol-ayuda">Autorizas a CESM Sindicato Médico Valladolid a cargar la cuota {{ adj }} de <b>{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.cuota.importe }}{% else %}10 €{% endif %}</b> en tu cuenta bancaria.{% if afiliate.cuota and afiliate.cuota.nota %} {{ afiliate.cuota.nota }}{% endif %}</p>
-        <fieldset class="sol-opciones sol-opciones-2">
-          <legend>¿Quieres domiciliar la cuota ahora? <em>obligatorio</em></legend>
-          <label class="sol-radio"><input type="radio" name="momento_sepa" value="Domicilia ahora" checked required><span><b>Sí, ahora</b><small>Relleno los datos bancarios.</small></span></label>
-          <label class="sol-radio"><input type="radio" name="momento_sepa" value="Lo hará más tarde"><span><b>Más tarde</b><small>El Sindicato le solicitará los datos bancarios cuando disponga de cuenta.</small></span></label>
-        </fieldset>
+        {%- set adj = "mensual" if per == "al mes" else ("trimestral" if per == "al trimestre" else ("semestral" if per == "al semestre" else ("anual" if per == "al año" else "trimestral"))) %}
+        <p class="sol-ayuda">Autorizas a CESM Sindicato Médico Valladolid a cargar la cuota {{ adj }} de <b>{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.cuota.importe }}{% else %}30 €{% endif %}</b> en tu cuenta bancaria.{% if afiliate.cuota and afiliate.cuota.nota %} {{ afiliate.cuota.nota }}{% endif %}</p>
         <div class="campos" id="campos-sepa">
-          <label class="ancho">Titular de la cuenta<input type="text" name="titular" placeholder="Si eres tú, repite tu nombre y apellidos"></label>
+          <label class="ancho">Titular de la cuenta <em>obligatorio</em><input type="text" name="titular" required placeholder="Si eres tú, repite tu nombre y apellidos"></label>
           <label class="ancho">Domicilio del titular<input type="text" name="domicilio_titular"></label>
           <label class="ancho">Banco o caja de ahorros<input type="text" name="banco"></label>
-          <label class="ancho">Número de cuenta (IBAN)<input type="text" name="iban" placeholder="ES00 0000 0000 00 0000000000" autocomplete="off"></label>
+          <label class="ancho">Número de cuenta (IBAN) <em>obligatorio</em><input type="text" name="iban" id="campo-iban" required inputmode="text" autocomplete="off" spellcheck="false" placeholder="ES00 0000 0000 00 0000000000" aria-describedby="pista-iban"><small class="sol-pista" id="pista-iban">Escribe solo los números: los huecos se ponen solos.</small></label>
+          <input type="hidden" name="momento_sepa" value="Domicilia ahora">
         </div>
       </section>
 
       <section class="sol-bloque">
-        <h3><span class="sol-num">6</span> ¿Quieres participar? <span class="sol-opcional">opcional</span></h3>
+        <h3><span class="sol-num">5</span> ¿Quieres participar? <span class="sol-opcional">opcional</span></h3>
         <p class="sol-ayuda">Marcar estas casillas no te compromete a nada. Solo sirve para que el sindicato sepa con quién puede contar.</p>
         <div class="sol-checks">
           <label class="sol-check"><input type="checkbox" name="participa" value="Formar o reforzar la sección sindical de mi centro"><span>Formar o reforzar la sección sindical de mi centro</span></label>
@@ -104,7 +93,7 @@ descripcion: "Afíliate a CESM Sindicato Médico Valladolid: rellena la solicitu
       </section>
 
       <section class="sol-bloque">
-        <h3><span class="sol-num">7</span> Términos y condiciones</h3>
+        <h3><span class="sol-num">6</span> Términos y condiciones</h3>
         <div class="sol-legal" id="texto-legal" hidden>
           <p><b>CESM SINDICATO MÉDICO VALLADOLID</b> es el Responsable del tratamiento de los datos personales del Interesado y le informa que estos datos serán tratados de conformidad con lo dispuesto en el Reglamento (UE) 2016/679 de 27 de abril (GDPR) y la Ley Orgánica 3/2018 de 5 de diciembre (LOPDGDD), por lo que se le facilita la siguiente información del tratamiento:</p>
           <p><b>Fines del tratamiento:</b> Tramitar su afiliación, permitir el ejercicio de los derechos y obligaciones previstos en los estatutos, emisión de carnés de afiliación, gestión y cobro de cuotas, envío de publicaciones e información, elaboración de estadísticas y prestación de servicios. Si desempeña labores de representación colectiva, los datos serán tratados para la realización y seguimiento de las actividades sindicales amparadas en la legislación vigente.</p>
@@ -129,7 +118,7 @@ descripcion: "Afíliate a CESM Sindicato Médico Valladolid: rellena la solicitu
       </section>
 
       <section class="sol-bloque" id="bloque-firma">
-        <h3><span class="sol-num">8</span> Firma</h3>
+        <h3><span class="sol-num">7</span> Firma</h3>
         <p class="sol-ayuda">Firma dentro del recuadro con el ratón, o con el dedo si estás en el móvil o en una tableta. Tiene el mismo valor que la firma a mano y queda registrada con la fecha, la hora y la dirección desde la que la haces.</p>
         <div class="sol-pad-caja">
           <span class="sol-pad-etq">Firma del interesado/a <em>obligatorio</em></span>
@@ -222,6 +211,17 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
   pad.addEventListener('pointercancel', termina);
 
   function padVacio() { return trazos === 0; }
+  /* La rúbrica se exporta en JPEG sobre blanco: así se puede meter en el PDF. */
+  function rubricaJpeg() {
+    var lienzoBlanco = document.createElement('canvas');
+    lienzoBlanco.width = pad.width;
+    lienzoBlanco.height = pad.height;
+    var ctx = lienzoBlanco.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, lienzoBlanco.width, lienzoBlanco.height);
+    ctx.drawImage(pad, 0, 0);
+    return lienzoBlanco.toDataURL('image/jpeg', 0.92);
+  }
   function borraPad() {
     lienzo.clearRect(0, 0, pad.width, pad.height);
     trazos = 0;
@@ -243,23 +243,49 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
     });
   }
 
-  /* El bloque de residencia solo se enseña si eliges MIR */
+  /* El bloque de residencia solo se enseña si eliges MIR, y entonces
+     sus dos campos pasan a ser obligatorios. */
   var camposMir = document.getElementById('campos-mir');
-  var camposSepa = document.getElementById('campos-sepa');
-  function domiciliaAhora() {
-    var ahora = form.querySelector('[name=momento_sepa]:checked');
-    return !ahora || ahora.value.indexOf('Domicilia') === 0;
+  var anioMir = form.elements['anio_mir'];
+  var finalMir = form.elements['final_mir'];
+  function ajustaMir(esMir) {
+    camposMir.hidden = !esMir;
+    anioMir.required = esMir;
+    finalMir.required = esMir;
+    if (!esMir) { anioMir.value = ''; finalMir.value = ''; }
   }
-  function ajustaSepa() {
-    camposSepa.hidden = !domiciliaAhora();
-  }
-  ajustaSepa();
+  ajustaMir(false);
   form.addEventListener('change', function (e) {
-    if (e.target.name === 'situacion') {
-      camposMir.hidden = e.target.value.indexOf('Residente') !== 0;
-    }
-    if (e.target.name === 'momento_sepa') ajustaSepa();
+    if (e.target.name === 'situacion') ajustaMir(e.target.value.indexOf('Residente') === 0);
   });
+
+  /* El IBAN se va agrupando solo: ES00 0000 0000 00 0000000000 */
+  var campoIban = document.getElementById('campo-iban');
+  var TROZOS = [4, 4, 4, 2, 10];
+  function agrupaIban(texto) {
+    var limpio = String(texto).toUpperCase().replace(/[^0-9A-Z]/g, '').slice(0, 24);
+    var partes = [];
+    var i = 0;
+    for (var t = 0; t < TROZOS.length && i < limpio.length; t++) {
+      partes.push(limpio.slice(i, i + TROZOS[t]));
+      i += TROZOS[t];
+    }
+    return partes.join(' ');
+  }
+  if (campoIban) {
+    campoIban.addEventListener('input', function () {
+      var alFinal = this.selectionStart === this.value.length;
+      var antes = this.value;
+      var nuevo = agrupaIban(antes);
+      if (nuevo !== antes) {
+        this.value = nuevo;
+        if (!alFinal) {
+          try { this.setSelectionRange(nuevo.length, nuevo.length); } catch (x) {}
+        }
+      }
+    });
+    campoIban.addEventListener('blur', function () { this.value = agrupaIban(this.value); });
+  }
 
   function v(nombre) {
     var el = form.elements[nombre];
@@ -320,7 +346,7 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
       document.querySelector('.sol-pad-marco').classList.add('invalido');
       return;
     }
-    firmaPNG = pad.toDataURL('image/png');
+    firmaPNG = rubricaJpeg();
     form.elements['firma_nombre'].value = nombreCompleto;
 
     var participa = marcado('participa');
@@ -410,7 +436,7 @@ var CESM_CUOTA = "{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.
 
     var carga = { participa: participa, consiente: true,
       firma_solicitud: true,
-      firma_sepa: domiciliaAhora(),
+      firma_sepa: true,
       firmado_en: hoy.toISOString(),
       firma_imagen: firmaPNG,
       comunicaciones: !!(form.elements['comunicaciones'] && form.elements['comunicaciones'].checked) };
