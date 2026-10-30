@@ -1,3 +1,5 @@
+import { construyeSolicitudPdf } from './pdf.js';
+
 /**
  * Recibe las solicitudes de afiliación y las envía por correo al sindicato.
  *
@@ -24,7 +26,7 @@ async function leeClave(valor) {
 const CAMPOS_OBLIGATORIOS = [
   'nombre', 'apellidos', 'dni', 'nacimiento', 'domicilio',
   'cp', 'localidad', 'provincia', 'movil', 'email', 'n_colegiado', 'situacion',
-  'firma_nombre'
+  'especialidad', 'centro', 'titular', 'domicilio_titular', 'banco', 'iban', 'firma_nombre'
 ];
 
 const ETIQUETAS = {
@@ -33,11 +35,11 @@ const ETIQUETAS = {
   domicilio: 'Domicilio', cp: 'Código postal', localidad: 'Localidad',
   provincia: 'Provincia', telefono: 'Teléfono', movil: 'Teléfono móvil',
   email: 'Correo electrónico', facultad: 'Facultad',
-  fin_carrera: 'Fin de la carrera', colegio: 'Colegio de Médicos',
+  fin_carrera: 'Año de fin de carrera', colegio: 'Colegio de Médicos',
   n_colegiado: 'Nº de colegiado', especialidad: 'Especialidad',
   situacion: 'Situación profesional', anio_mir: 'Año de residencia',
-  final_mir: 'Fin previsto de la residencia', centro: 'Centro de trabajo',
-  servicio: 'Servicio o unidad', telefono_trabajo: 'Teléfono del trabajo',
+  final_mir: 'Año de fin de residencia', centro: 'Centro de trabajo',
+  telefono_trabajo: 'Teléfono del trabajo',
   titular: 'Titular de la cuenta', domicilio_titular: 'Domicilio del titular',
   banco: 'Banco o caja', iban: 'Número de cuenta (IBAN)',
   momento_sepa: 'Domiciliación', firma_nombre: 'Firmado por'
@@ -47,10 +49,19 @@ const BLOQUES = [
   ['Datos personales', ['apellidos', 'nombre', 'dni', 'nacimiento', 'lugar_nacimiento',
     'domicilio', 'cp', 'localidad', 'provincia', 'telefono', 'movil', 'email']],
   ['Datos profesionales', ['facultad', 'fin_carrera', 'colegio', 'n_colegiado',
-    'especialidad', 'situacion', 'anio_mir', 'final_mir']],
-  ['Lugar de trabajo', ['centro', 'servicio', 'telefono_trabajo']],
-  ['Domiciliación de la cuota', ['momento_sepa', 'titular', 'domicilio_titular', 'banco', 'iban']]
+    'especialidad', 'situacion', 'anio_mir', 'final_mir', 'centro', 'telefono_trabajo']],
+  ['Domiciliación de la cuota', ['titular', 'domicilio_titular', 'banco', 'iban']]
 ];
+
+function fechaEs(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
+  return m ? m[3] + '/' + m[2] + '/' + m[1] : iso;
+}
+
+function nombreArchivo(t) {
+  return String(t).normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase().slice(0, 60) || 'solicitud';
+}
 
 function limpia(v) {
   return String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, 300);
@@ -94,10 +105,10 @@ export async function onRequestPost({ request, env }) {
   if (domiciliaAhora && (datos.firma_sepa !== true || !d.iban)) {
     return responde(400, { ok: false, error: 'Para domiciliar ahora hacen falta el número de cuenta y la firma de la orden.' });
   }
-  // La firma es la rúbrica dibujada en el recuadro: llega como PNG en base64.
+  // La firma es la rúbrica dibujada en el recuadro: llega como JPEG en base64.
   const firmaImagen = typeof datos.firma_imagen === 'string' ? datos.firma_imagen : '';
-  const firmaBase64 = firmaImagen.startsWith('data:image/png;base64,')
-    ? firmaImagen.slice('data:image/png;base64,'.length) : '';
+  const firmaBase64 = firmaImagen.startsWith('data:image/jpeg;base64,')
+    ? firmaImagen.slice('data:image/jpeg;base64,'.length) : '';
   if (!firmaBase64 || firmaBase64.length < 400) {
     return responde(400, { ok: false, error: 'Falta tu firma: dibújala dentro del recuadro antes de enviar la solicitud.' });
   }
@@ -120,7 +131,7 @@ export async function onRequestPost({ request, env }) {
     const filas = campos
       .filter((k) => d[k])
       .map((k) => '<tr><td style="padding:4px 12px 4px 0;color:#555">' + esc(ETIQUETAS[k]) +
-        '</td><td style="padding:4px 0"><b>' + esc(d[k]) + '</b></td></tr>')
+        '</td><td style="padding:4px 0"><b>' + esc(k === 'nacimiento' ? fechaEs(d[k]) : d[k]) + '</b></td></tr>')
       .join('');
     if (!filas) continue;
     html += '<h3 style="font-family:system-ui,sans-serif;color:#0c3316;margin:18px 0 6px">' + esc(titulo) + '</h3>';
@@ -141,7 +152,8 @@ export async function onRequestPost({ request, env }) {
   html += '<li>Firma la solicitud de afiliación: <b>sí</b></li>';
   html += '<li>Firma la orden de domiciliación: <b>' + (datos.firma_sepa === true ? 'sí' : 'no') + '</b></li>';
   html += '<li>Firmado por: <b>' + esc(d.firma_nombre || (d.nombre + ' ' + d.apellidos)) + '</b></li>';
-  html += '<li>Rúbrica manuscrita: <b>adjunta en este correo (firma.png)</b></li>';
+  html += '<li>Rúbrica manuscrita: <b>adjunta en este correo</b></li>';
+  html += '<li>Solicitud completa: <b>adjunta en PDF, lista para archivar</b></li>';
   html += '<li>Fecha y hora (servidor): ' + esc(momento.toISOString()) + '</li>';
   if (ip) html += '<li>Dirección IP desde la que se firmó: ' + esc(ip) + '</li>';
   html += '</ul>';
@@ -167,6 +179,39 @@ export async function onRequestPost({ request, env }) {
     body: JSON.stringify(payload)
   });
 
+  // La solicitud completa en PDF, para que el sindicato la archive.
+  let pdfBase64 = '';
+  try {
+    pdfBase64 = construyeSolicitudPdf({
+      nombreCompleto,
+      fecha: momento.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid' }),
+      bloques: BLOQUES.map(([titulo, campos]) => ({
+        titulo,
+        filas: campos.map((k) => [ETIQUETAS[k] || k, k === 'nacimiento' ? fechaEs(d[k]) : (d[k] || '')])
+      })),
+      participa,
+      consentimientos: [
+        'Ha leído y acepta los términos y condiciones, incluida la información sobre el tratamiento de sus datos.',
+        'Quiere recibir comunicaciones del sindicato: ' + (comunicaciones ? 'sí' : 'no') + '.',
+        'Firma la solicitud de afiliación y la orden de domiciliación de la cuota.'
+      ],
+      firmaJpeg: firmaBase64,
+      sello: [
+        'Firma electrónica simple conforme al Reglamento (UE) 910/2014 (eIDAS).',
+        'Fecha y hora del servidor: ' + momento.toISOString() + (ip ? '  ·  Dirección IP: ' + ip : ''),
+        'Documento generado automáticamente por la web de CESM Sindicato Médico Valladolid.'
+      ]
+    });
+  } catch (e) {
+    console.log('No se pudo generar el PDF: ' + e);
+  }
+
+  const adjuntos = [];
+  if (pdfBase64) {
+    adjuntos.push({ name: 'solicitud-afiliacion-' + nombreArchivo(nombreCompleto) + '.pdf', content: pdfBase64 });
+  }
+  adjuntos.push({ name: 'firma.jpg', content: firmaBase64 });
+
   try {
     const r = await enviar({
       sender: { name: 'Web CESM Valladolid', email: remite },
@@ -174,7 +219,7 @@ export async function onRequestPost({ request, env }) {
       replyTo: { email: d.email, name: nombreCompleto },
       subject: 'Solicitud de afiliación — ' + nombreCompleto,
       htmlContent: html,
-      attachment: [{ name: 'firma.png', content: firmaBase64 }]
+      attachment: adjuntos
     });
     if (!r.ok) {
       const t = await r.text();
@@ -196,11 +241,10 @@ export async function onRequestPost({ request, env }) {
       htmlContent:
         '<div style="font-family:system-ui,sans-serif;font-size:15px;line-height:1.6;color:#16241a">' +
         '<p>Hola ' + esc(d.nombre) + ',</p>' +
-        '<p>Hemos recibido tu solicitud de afiliación a <b>CESM Sindicato Médico Valladolid</b>. ' +
+        '<p>Hemos recibido tu solicitud de afiliación a CESM Sindicato Médico Valladolid. ' +
         'La revisaremos y nos pondremos en contacto contigo.</p>' +
-        '<p><b>No tienes que hacer nada más.</b> Tu firma electrónica ha quedado registrada junto con la solicitud' +
-        (datos.firma_sepa === true ? ', incluida la orden de domiciliación de la cuota' : '') + '.</p>' +
-        '<p>Si tienes cualquier duda, contesta a este mensaje o llámanos al 983 218 524.</p>' +
+        '<p>Si no recibes email de confirmación de la afiliación, contesta a este mensaje ' +
+        'o llámanos al 983 218 524 o al 653 883 739.</p>' +
         '<p>Un saludo,<br>CESM Sindicato Médico Valladolid</p>' +
         '<p style="font-size:12px;color:#777">Puedes ejercer tus derechos de acceso, rectificación, supresión, ' +
         'portabilidad, limitación y oposición escribiendo a ' + esc(destino) + '.</p></div>'
