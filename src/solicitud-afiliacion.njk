@@ -66,14 +66,14 @@ descripcion: "Afíliate a CESM Sindicato Médico Valladolid: rellena la solicitu
       </section>
 
       <section class="sol-bloque">
-        <h3><span class="sol-num">4</span> Orden de domiciliación de la cuota <em class="sol-obliga">obligatorio</em></h3>
+        <h3><span class="sol-num">4</span> Orden de domiciliación de la cuota</h3>
         {%- set per = afiliate.cuota.periodicidad if afiliate.cuota else "" %}
         {%- set adj = "mensual" if per == "al mes" else ("trimestral" if per == "al trimestre" else ("semestral" if per == "al semestre" else ("anual" if per == "al año" else "trimestral"))) %}
         <p class="sol-ayuda">Autorizas a CESM Sindicato Médico Valladolid a cargar la cuota {{ adj }} de <b>{% if afiliate.cuota and afiliate.cuota.importe %}{{ afiliate.cuota.importe }}{% else %}30 €{% endif %}</b> en tu cuenta bancaria.{% if afiliate.cuota and afiliate.cuota.nota %} {{ afiliate.cuota.nota }}{% endif %}</p>
         <div class="campos" id="campos-sepa">
           <label class="ancho">Titular de la cuenta <em>obligatorio</em><input type="text" name="titular" required placeholder="Si eres tú, repite tu nombre y apellidos"></label>
-          <label class="ancho">Domicilio del titular<input type="text" name="domicilio_titular"></label>
-          <label class="ancho">Banco o caja de ahorros<input type="text" name="banco"></label>
+          <label class="ancho">Domicilio del titular <em>obligatorio</em><input type="text" name="domicilio_titular" required></label>
+          <label class="ancho">Banco o caja de ahorros <em>obligatorio</em><input type="text" name="banco" required></label>
           <label class="ancho">Número de cuenta (IBAN) <em>obligatorio</em><input type="text" name="iban" id="campo-iban" required inputmode="text" autocomplete="off" spellcheck="false" placeholder="ES00 0000 0000 00 0000000000" aria-describedby="pista-iban"><small class="sol-pista" id="pista-iban">Escribe solo los números: los huecos se ponen solos.</small></label>
           <input type="hidden" name="momento_sepa" value="Domicilia ahora">
         </div>
